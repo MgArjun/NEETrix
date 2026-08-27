@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEETrix</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<style>
+  :root{--bg:#0b0d14;--panel:#12151f;--panel2:#171b28;--border:#232a3a;--text:#e7e9ee;--muted:#8b93a7;--accent:#5b7fff;--accent2:#8b6bff;--danger:#ef5a5a;--good:#3ecf8e;--warn:#f4b752;--radius:14px;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);}
+  #app{min-height:100vh;}
+  input,textarea,select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:11px 13px;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit;}
+  input:focus,textarea:focus,select:focus{border-color:var(--accent);}
+  button{cursor:pointer;font-family:inherit;}
+  .btn{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px 16px;border-radius:10px;font-size:13.5px;font-weight:600;}
+  .btn:disabled{opacity:.5;}
+  .btn-outline{background:none;border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:9px;font-size:13px;}
+  .btn-danger{background:var(--danger);border:none;color:#fff;padding:7px 12px;border-radius:8px;font-size:12px;}
+  .btn-good{background:var(--good);border:none;color:#06281a;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;}
+  .btn-warn{background:var(--warn);border:none;color:#3a2a00;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;}
+  .btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:7px;font-size:12px;}
+
+  .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .auth-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:32px;width:100%;max-width:380px;}
+  .brand{font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:4px;}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:18px;}
+  .msg{font-size:12.5px;margin:-2px 0 10px;min-height:14px;}
+  .link{color:var(--accent);background:none;border:none;font-size:12.5px;text-align:center;width:100%;margin-top:6px;}
+
+  .topbar{display:flex;align-items:center;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--panel);overflow-x:auto;}
+  .topbar .brand{font-size:17px;margin:0;flex-shrink:0;}
+  .navbtn{background:none;border:1px solid transparent;color:var(--muted);padding:7px 12px;border-radius:8px;font-size:12.5px;white-space:nowrap;flex-shrink:0;}
+  .navbtn.active{background:var(--panel2);color:var(--text);border-color:var(--border);}
+  .spacer{flex:1;min-width:8px;}
+  .content{max-width:920px;margin:0 auto;padding:20px 16px 60px;}
+
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:560px){.grid2{grid-template-columns:1fr;}}
+  .subject-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;}
+  .subject-card:hover{border-color:var(--accent);}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .row-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:8px;}
+  .muted{color:var(--muted);font-size:12.5px;}
+  .badge{font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted);}
+  .badge.admin{color:var(--accent);border-color:var(--accent);}
+  .badge.active{color:var(--good);border-color:var(--good);}
+  .badge.paused{color:var(--warn);border-color:var(--warn);}
+  .badge.blocked{color:var(--danger);border-color:var(--danger);}
+  .badge.pending{color:var(--muted);}
+  .back{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-size:12.5px;margin-bottom:14px;}
+  .tabs2{display:flex;gap:6px;margin:12px 0;flex-wrap:wrap;}
+  .tab2{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:8px;font-size:12.5px;}
+  .tab2.active{color:#fff;background:var(--accent);border-color:var(--accent);}
+  h2{font-size:19px;margin:4px 0 4px;}
+  h3{font-size:15px;margin:14px 0 8px;color:var(--text);}
+  .empty{color:var(--muted);font-size:13px;padding:20px 0;text-align:center;}
+  .yt-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;background:#000;margin-bottom:10px;}
+  .yt-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--border);}
+  th{color:var(--muted);font-weight:600;}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:60;padding:16px;}
+  .modal-box{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);max-width:900px;width:100%;max-height:88vh;overflow:auto;padding:16px;}
+  .modal-close{background:none;border:none;color:var(--muted);float:right;font-size:20px;}
+  .timer{font-size:22px;font-weight:800;color:var(--warn);text-align:center;padding:10px;background:var(--panel2);border-radius:10px;margin-bottom:10px;}
+  .zoom-row{display:flex;gap:8px;justify-content:center;margin-top:8px;}
+  .zoom-row button{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:8px;}
+  .fab{position:fixed;bottom:20px;right:20px;background:none;border:none;color:var(--muted);font-size:12px;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================
+   CONFIG
+   ========================================================= */
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // optional, not required for core app
+/* ========================================================= */
+
+window.onerror = function(msg, url, line){
+  document.body.innerHTML = '<div style="color:#fff;background:#400;padding:20px;font-family:monospace;white-space:pre-wrap;font-size:12px;">ERROR: '+msg+'\nLine: '+line+'</div>';
+};
+window.onunhandledrejection = function(e){
+  document.body.innerHTML = '<div style="color:#fff;background:#400;padding:20px;font-family:monospace;white-space:pre-wrap;font-size:12px;">PROMISE ERROR: '+(e.reason && e.reason.message ? e.reason.message : e.reason)+'</div>';
+};
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const app = document.getElementById("app");
+let session = null, profile = null;
+let activeTab = "content";
+let selSubject = null, selChapter = null, selCategory = "general";
+
+function el(html){ const d=document.createElement("div"); d.innerHTML=html.trim(); return d.firstChild; }
+function esc(s){ return (s||"").toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function fmtDate(iso){ return new Date(iso).toLocaleString(undefined,{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}); }
+function ytId(url){ const m=(url||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/); return m?m[1]:null; }
+
+/* ---------------- AUTH ---------------- */
+function renderAuth(mode){
+  mode = mode || "login";
+  app.innerHTML = "";
+  app.appendChild(el(`
+    <div class="auth-wrap"><div class="auth-card">
+      <div class="brand">NEETrix</div>
+      <div class="sub">The focused way to prepare.</div>
+      <div class="msg" id="msg"></div>
+      <div id="fields"></div>
+      <button class="btn" style="width:100%" id="mainBtn"></button>
+      <button class="link" id="link1"></button>
+      <button class="link" id="link2" style="display:none"></button>
+    </div></div>
+  `));
+  const fields = document.getElementById("fields");
+  const mainBtn = document.getElementById("mainBtn");
+  const link1 = document.getElementById("link1");
+  const link2 = document.getElementById("link2");
+  const msg = document.getElementById("msg");
+
+  if(mode === "login" || mode === "signup"){
+    fields.innerHTML = `<input id="email" type="email" placeholder="Email address" />
+      <input id="pass" type="password" placeholder="Password (8+ characters)" />`;
+    mainBtn.textContent = mode === "login" ? "Log in" : "Create account";
+    link1.textContent = mode === "login" ? "New here? Create an account" : "Already have an account? Log in";
+    link1.onclick = () => renderAuth(mode === "login" ? "signup" : "login");
+    link2.style.display = mode === "login" ? "block" : "none";
+    link2.textContent = "Forgot password?";
+    link2.onclick = () => renderAuth("forgot");
+
+    mainBtn.onclick = async () => {
+      msg.textContent = ""; mainBtn.disabled = true;
+      const email = document.getElementById("email").value.trim();
+      const pass = document.getElementById("pass").value;
+      if(!email || !pass){ msg.style.color="var(--muted)"; msg.textContent="Enter both fields."; mainBtn.disabled=false; return; }
+      try{
+        if(mode === "signup"){
+          const { error } = await db.auth.signUp({ email, password: pass });
+          if(error) throw error;
+          msg.style.color = "var(--good)";
+          msg.textContent = "Account created! Check your email if confirmation is required, then log in.";
+          setTimeout(()=>renderAuth("login"), 1800);
+        } else {
+          const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+          if(error) throw error;
+          session = data.session;
+          await afterLogin();
+        }
+      }catch(e){
+        msg.style.color = "var(--danger)";
+        msg.textContent = e.message || "Something went wrong.";
+      }finally{ mainBtn.disabled = false; }
+    };
+  } else if(mode === "forgot"){
+    fields.innerHTML = `<input id="email" type="email" placeholder="Email address" />`;
+    mainBtn.textContent = "Send reset link";
+    link1.textContent = "Back to log in";
+    link1.onclick = () => renderAuth("login");
+    mainBtn.onclick = async () => {
+      msg.textContent = ""; mainBtn.disabled = true;
+      const email = document.getElementById("email").value.trim();
+      try{
+        const { error } = await db.auth.resetPasswordForEmail(email);
+        if(error) throw error;
+        msg.style.color = "var(--good)";
+        msg.textContent = "Reset link sent — check your email.";
+      }catch(e){
+        msg.style.color = "var(--danger)";
+        msg.textContent = e.message || "Something went wrong.";
+      }finally{ mainBtn.disabled = false; }
+    };
+  }
+}
+
+function renderStatusScreen(status){
+  app.innerHTML = "";
+  const msgs = {
+    pending: ["Request sent", "Your access request has been sent to the admin. You'll be able to log in once approved."],
+    paused: ["Account paused", "Your account has been paused by the admin. Please check back later."],
+    blocked: ["Account blocked", "Your account access has been blocked by the admin."]
+  };
+  const [title, body] = msgs[status] || ["Access unavailable", "Please contact the admin."];
+  app.appendChild(el(`
+    <div class="auth-wrap"><div class="auth-card">
+      <div class="brand">NEETrix</div>
+      <h2 style="margin-top:14px;">${title}</h2>
+      <p class="muted" style="line-height:1.6;">${body}</p>
+      <button class="btn-outline" style="width:100%;margin-top:10px;" id="out">Log out</button>
+    </div></div>
+  `));
+  document.getElementById("out").onclick = async () => { await db.auth.signOut(); session=null; profile=null; renderAuth(); };
+}
+
+async function afterLogin(){
+  await db.from("login_events").insert({ user_id: session.user.id, email: session.user.email });
+  const { data } = await db.from("profiles").select("*").eq("id", session.user.id).single();
+  profile = data;
+  if(!profile || profile.status !== "active"){
+    renderStatusScreen(profile ? profile.status : "pending");
+    return;
+  }
+  renderShell();
+}
+
+/* ---------------- SHELL ---------------- */
+function renderShell(){
+  app.innerHTML = "";
+  const isAdmin = profile.role === "admin";
+  app.appendChild(el(`
+    <div class="topbar">
+      <div class="brand">NEETrix</div>
+      <button class="navbtn" data-t="content">Content</button>
+      <button class="navbtn" data-t="questions">Questions</button>
+      <button class="navbtn" data-t="tests">Test</button>
+      <button class="navbtn" data-t="bookmarks">Bookmarks</button>
+      ${isAdmin ? '<button class="navbtn" data-t="admin">Admin</button>' : ''}
+      <div class="spacer"></div>
+      <button class="btn-outline" id="logout">Log out</button>
+    </div>
+    <div class="content" id="content"></div>
+  `));
+  document.getElementById("logout").onclick = async () => { await db.auth.signOut(); session=null; profile=null; renderAuth(); };
+  document.querySelectorAll(".navbtn").forEach(b => b.onclick = () => { activeTab = b.dataset.t; selSubject=null; selChapter=null; renderTabsUI(); renderBody(); });
+  renderTabsUI();
+  renderBody();
+}
+function renderTabsUI(){ document.querySelectorAll(".navbtn").forEach(b => b.classList.toggle("active", b.dataset.t === activeTab)); }
+function renderBody(){
+  const c = document.getElementById("content");
+  if(activeTab === "content") renderSubjectBrowser(c, "video");
+  else if(activeTab === "questions") renderSubjectBrowser(c, "pdf");
+  else if(activeTab === "tests") renderTests(c);
+  else if(activeTab === "bookmarks") renderBookmarks(c);
+  else if(activeTab === "admin") renderAdmin(c);
+}
+
+/* ---------------- CONTENT / QUESTIONS BROWSER ---------------- */
+async function renderSubjectBrowser(c, mode){
+  if(!selSubject){
+    c.innerHTML = `<h2>${mode==='video'?'Video Lessons':'Question Bank'}</h2><div class="grid2" id="subjList"></div>`;
+    const { data } = await db.from("subjects").select("*").order("sort_order");
+    const wrap = document.getElementById("subjList");
+    if(!data || !data.length){ wrap.innerHTML = `<div class="empty">No subjects yet.</div>`; return; }
+    wrap.innerHTML = "";
+    data.forEach(s => {
+      const card = el(`<div class="subject-card"><h3 style="margin-top:0;">${esc(s.name)}</h3></div>`);
+      card.onclick = () => { selSubject = s; selChapter = null; renderBody(); };
+      wrap.appendChild(card);
+    });
+    return;
+  }
+  if(!selChapter){
+    c.innerHTML = `<button class="back" id="b1">&larr; ${esc(selSubject.name)}</button><h2>Chapters</h2><div id="chapList"></div>`;
+    document.getElementById("b1").onclick = () => { selSubject=null; renderBody(); };
+    const { data } = await db.from("chapters").select("*").eq("subject_id", selSubject.id).order("sort_order");
+    const wrap = document.getElementById("chapList");
+    if(!data || !data.length){ wrap.innerHTML = `<div class="empty">No chapters yet.</div>`; return; }
+    wrap.innerHTML = "";
+    data.forEach(ch => {
+      const row = el(`<div class="card row" style="cursor:pointer;"><span>${esc(ch.name)}</span><span class="muted">&rarr;</span></div>`);
+      row.onclick = () => { selChapter = ch; selCategory="general"; renderBody(); };
+      wrap.appendChild(row);
+    });
+    return;
+  }
+  // inside chapter
+  c.innerHTML = `<button class="back" id="b2">&larr; ${esc(selChapter.name)}</button>`;
+  document.getElementById("b2").onclick = () => { selChapter=null; renderBody(); };
+  if(mode === "video"){
+    const box = el(`<div id="vidBox"></div>`); c.appendChild(box);
+    const { data } = await db.from("videos").select("*").eq("chapter_id", selChapter.id).order("sort_order");
+    if(!data || !data.length){ box.innerHTML = `<div class="empty">No videos yet.</div>`; return; }
+    box.innerHTML = data.map(v => `
+      <h3>${esc(v.title)}</h3>
+      <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${v.youtube_id}?modestbranding=1&rel=0" allowfullscreen></iframe></div>
+    `).join("");
+  } else {
+    const catBox = el(`<div class="tabs2">
+        <button class="tab2" data-c="general">General Practice</button>
+        <button class="tab2" data-c="ncert">NCERT Exemplar</button>
+        <button class="tab2" data-c="pyq">PYQs</button>
+      </div><div id="pdfList"></div>`);
+    c.appendChild(catBox);
+    const draw = async () => {
+      catBox.querySelectorAll(".tab2").forEach(b => b.classList.toggle("active", b.dataset.c === selCategory));
+      const { data } = await db.from("pdfs").select("*").eq("chapter_id", selChapter.id).eq("category", selCategory).order("created_at",{ascending:false});
+      const list = document.getElementById("pdfList");
+      if(!data || !data.length){ list.innerHTML = `<div class="empty">No PDFs in this category yet.</div>`; return; }
+      const { data: bms } = await db.from("bookmarks").select("pdf_id").eq("user_id", session.user.id);
+      const bmSet = new Set((bms||[]).map(b=>b.pdf_id));
+      list.innerHTML = "";
+      data.forEach(p => {
+        const row = el(`<div class="card row">
+            <span style="cursor:pointer;flex:1;" class="openPdf">${esc(p.title)}</span>
+            <button class="btn-small bmBtn">${bmSet.has(p.id)?'★ Saved':'☆ Save'}</button>
+          </div>`);
+        row.querySelector(".openPdf").onclick = () => openPdf(p);
+        row.querySelector(".bmBtn").onclick = async (e) => {
+          e.stopPropagation();
+          if(bmSet.has(p.id)){ await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",p.id); }
+          else { await db.from("bookmarks").insert({ user_id: session.user.id, pdf_id: p.id }); }
+          draw();
+        };
+        list.appendChild(row);
+      });
+    };
+    catBox.querySelectorAll(".tab2").forEach(b => b.onclick = () => { selCategory = b.dataset.c; draw(); });
+    draw();
+  }
+}
+
+async function openPdf(p){
+  const { data } = await db.storage.from("content").createSignedUrl(p.file_path, 3600);
+  if(!data) return;
+  showPdfModal(data.signedUrl, p.title);
+}
+
+function showPdfModal(url, title){
+  const modal = el(`<div class="modal-bg"><div class="modal-box">
+      <button class="modal-close" id="mc">&times;</button>
+      <h3>${esc(title||"")}</h3>
+      <div style="overflow:auto;text-align:center;"><canvas id="pc"></canvas></div>
+      <div class="zoom-row"><button id="zo">-</button><span id="zl">100%</span><button id="zi">+</button></div>
+    </div></div>`);
+  document.body.appendChild(modal);
+  document.getElementById("mc").onclick = () => modal.remove();
+  let scale = 1.2;
+  const pdfjsLib = window.pdfjsLib;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+  pdfjsLib.getDocument(url).promise.then(async pdf => {
+    const page = await pdf.getPage(1);
+    const render = async () => {
+      const vp = page.getViewport({ scale });
+      const canvas = document.getElementById("pc");
+      canvas.width = vp.width; canvas.height = vp.height;
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+      document.getElementById("zl").textContent = Math.round(scale/1.2*100)+"%";
+    };
+    await render();
+    document.getElementById("zi").onclick = () => { scale += 0.3; render(); };
+    document.getElementById("zo").onclick = () => { scale = Math.max(0.5, scale-0.3); render(); };
+  });
+}
+
+/* ---------------- BOOKMARKS ---------------- */
+async function renderBookmarks(c){
+  c.innerHTML = `<h2>My Bookmarks</h2><div id="bmList"></div>`;
+  const { data } = await db.from("bookmarks").select("pdf_id, pdfs(title, id)").eq("user_id", session.user.id);
+  const list = document.getElementById("bmList");
+  if(!data || !data.length){ list.innerHTML = `<div class="empty">No bookmarks yet.</div>`; return; }
+  list.innerHTML = "";
+  data.forEach(b => {
+    if(!b.pdfs) return;
+    const row = el(`<div class="card row" style="cursor:pointer;"><span>${esc(b.pdfs.title)}</span><span class="muted">&rarr;</span></div>`);
+    row.onclick = () => openPdf(b.pdfs);
+    list.appendChild(row);
+  });
+}
+
+/* ---------------- TESTS ---------------- */
+async function renderTests(c){
+  c.innerHTML = `<h2>Tests</h2><div id="testList"></div>`;
+  const { data } = await db.from("tests").select("*").order("created_at",{ascending:false});
+  const list = document.getElementById("testList");
+  if(!data || !data.length){ list.innerHTML = `<div class="empty">No tests available yet.</div>`; return; }
+  list.innerHTML = "";
+  data.forEach(t => {
+    const row = el(`<div class="card row">
+        <div><div>${esc(t.title)}</div><div class="muted">${t.duration_minutes} minutes</div></div>
+        <button class="btn">Start</button>
+      </div>`);
+    row.querySelector("button").onclick = () => startTest(t);
+    list.appendChild(row);
+  });
+}
+
+async function startTest(t){
+  if(!t.file_path){ alert("No question paper uploaded for this test yet."); return; }
+  const { data } = await db.storage.from("content").createSignedUrl(t.file_path, 7200);
+  const modal = el(`<div class="modal-bg"><div class="modal-box">
+      <div class="timer" id="tmr"></div>
+      <h3>${esc(t.title)}</h3>
+      <div style="overflow:auto;text-align:center;"><canvas id="pc"></canvas></div>
+      <div class="zoom-row"><button id="zo">-</button><span id="zl">100%</span><button id="zi">+</button></div>
+      <button class="btn" style="width:100%;margin-top:14px;" id="submitTest">Submit Test</button>
+    </div></div>`);
+  document.body.appendChild(modal);
+  let remaining = t.duration_minutes * 60;
+  const tmr = document.getElementById("tmr");
+  const tick = () => {
+    const m = Math.floor(remaining/60), s = remaining%60;
+    tmr.textContent = `${m}:${s<10?'0':''}${s} remaining`;
+    if(remaining <= 0){ clearInterval(timerRef); finishTest(); return; }
+    remaining--;
+  };
+  tick();
+  const timerRef = setInterval(tick, 1000);
+  const finishTest = () => { clearInterval(timerRef); modal.remove(); alert("Test submitted."); };
+  document.getElementById("submitTest").onclick = () => { if(confirm("Submit the test now?")) finishTest(); };
+
+  let scale = 1.2;
+  const pdfjsLib = window.pdfjsLib;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+  pdfjsLib.getDocument(data.signedUrl).promise.then(async pdf => {
+    const page = await pdf.getPage(1);
+    const render = async () => {
+      const vp = page.getViewport({ scale });
+      const canvas = document.getElementById("pc");
+      canvas.width = vp.width; canvas.height = vp.height;
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+      document.getElementById("zl").textContent = Math.round(scale/1.2*100)+"%";
+    };
+    await render();
+    document.getElementById("zi").onclick = () => { scale += 0.3; render(); };
+    document.getElementById("zo").onclick = () => { scale = Math.max(0.5, scale-0.3); render(); };
+  });
+}
+
+/* ---------------- ADMIN ---------------- */
+let adminTab = "users";
+async function renderAdmin(c){
+  c.innerHTML = `<h2>Admin</h2>
+    <div class="tabs2">
+      <button class="tab2" data-a="users">Users</button>
+      <button class="tab2" data-a="logins">Login History</button>
+      <button class="tab2" data-a="settings">Settings</button>
+      <button class="tab2" data-a="content">Content Manager</button>
+    </div>
+    <div id="adminBody"></div>`;
+  c.querySelectorAll(".tab2").forEach(b => {
+    b.classList.toggle("active", b.dataset.a === adminTab);
+    b.onclick = () => { adminTab = b.dataset.a; renderAdmin(c); };
+  });
+  const body = document.getElementById("adminBody");
+  if(adminTab === "users") await renderAdminUsers(body);
+  else if(adminTab === "logins") await renderAdminLogins(body);
+  else if(adminTab === "settings") await renderAdminSettings(body);
+  else if(adminTab === "content") await renderAdminContent(body);
+}
+
+async function renderAdminUsers(body){
+  const { data } = await db.from("profiles").select("*").order("created_at",{ascending:false});
+  if(!data || !data.length){ body.innerHTML = `<div class="empty">No users yet.</div>`; return; }
+  body.innerHTML = `<table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;
+  const rows = document.getElementById("uRows");
+  data.forEach(u => {
+    const tr = el(`<tr>
+        <td>${esc(u.email)}</td>
+        <td><span class="badge ${u.role==='admin'?'admin':''}">${u.role}</span></td>
+        <td><span class="badge ${u.status}">${u.status}</span></td>
+        <td class="row-wrap" id="act-${u.id}"></td>
+      </tr>`);
+    rows.appendChild(tr);
+    const actBox = tr.querySelector(`#act-${u.id}`);
+    if(u.role === "admin"){ actBox.innerHTML = `<span class="muted">—</span>`; return; }
+    const setStatus = async (s) => { await db.from("profiles").update({ status: s }).eq("id", u.id); renderAdmin(body.parentElement); };
+    if(u.status === "pending"){
+      const a1 = el(`<button class="btn-good">Approve</button>`); a1.onclick = () => setStatus("active"); actBox.appendChild(a1);
+      const a2 = el(`<button class="btn-danger">Reject</button>`); a2.onclick = () => setStatus("blocked"); actBox.appendChild(a2);
+    } else {
+      const pauseBtn = el(`<button class="btn-warn">${u.status==='paused'?'Resume':'Pause'}</button>`);
+      pauseBtn.onclick = () => setStatus(u.status === "paused" ? "active" : "paused");
+      actBox.appendChild(pauseBtn);
+      const blockBtn = el(`<button class="btn-danger">${u.status==='blocked'?'Unblock':'Block'}</button>`);
+      blockBtn.onclick = () => setStatus(u.status === "blocked" ? "active" : "blocked");
+      actBox.appendChild(blockBtn);
+    }
+  });
+}
+
+async function renderAdminLogins(body){
+  const { data } = await db.from("login_events").select("*").order("logged_in_at",{ascending:false}).limit(200);
+  if(!data || !data.length){ body.innerHTML = `<div class="empty">No login activity yet.</div>`; return; }
+  body.innerHTML = `<table><thead><tr><th>Email</th><th>Logged in at</th></tr></thead><tbody>` +
+    data.map(l => `<tr><td>${esc(l.email)}</td><td>${fmtDate(l.logged_in_at)}</td></tr>`).join("") +
+    `</tbody></table>`;
+}
+
+async function renderAdminSettings(body){
+  const { data } = await db.from("app_settings").select("*").eq("id",1).single();
+  const open = data ? data.registration_open : true;
+  body.innerHTML = `<div class="card">
+      <div class="row"><div>
+        <div>Accept new users</div>
+        <div class="muted">When off, new signups go into a pending request queue instead of getting instant access.</div>
+      </div>
+      <button class="btn" id="toggleReg">${open ? "Turn OFF" : "Turn ON"}</button></div>
+    </div>`;
+  document.getElementById("toggleReg").onclick = async () => {
+    await db.from("app_settings").update({ registration_open: !open }).eq("id",1);
+    renderAdminSettings(body);
+  };
+}
+
+async function renderAdminContent(body){
+  body.innerHTML = `
+    <h3>Add Subject</h3>
+    <input id="newSubj" placeholder="Subject name (e.g. Physics)" />
+    <button class="btn" id="addSubj">Add Subject</button>
+
+    <h3>Add Chapter</h3>
+    <select id="chSubj"></select>
+    <input id="newChap" placeholder="Chapter name" />
+    <button class="btn" id="addChap">Add Chapter</button>
+
+    <h3>Add Video (YouTube link)</h3>
+    <select id="vidSubj"></select>
+    <select id="vidChap"></select>
+    <input id="vidTitle" placeholder="Video title" />
+    <input id="vidUrl" placeholder="Paste YouTube link here" />
+    <button class="btn" id="addVid">Add Video</button>
+
+    <h3>Add Question PDF</h3>
+    <select id="pdfSubj"></select>
+    <select id="pdfChap"></select>
+    <select id="pdfCat"><option value="general">General Practice</option><option value="ncert">NCERT Exemplar</option><option value="pyq">PYQs</option></select>
+    <input id="pdfTitle" placeholder="PDF title" />
+    <input type="file" id="pdfFile" accept="application/pdf" />
+    <button class="btn" id="addPdf">Upload PDF</button>
+
+    <h3>Add Test</h3>
+    <input id="testTitle" placeholder="Test title" />
+    <input id="testDur" type="number" placeholder="Duration (minutes)" value="60" />
+    <input type="file" id="testFile" accept="application/pdf" />
+    <button class="btn" id="addTest">Create Test</button>
+  `;
+
+  const { data: subjects } = await db.from("subjects").select("*").order("sort_order");
+  const subjOptions = (subjects||[]).map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
+  ["chSubj","vidSubj","pdfSubj"].forEach(id => document.getElementById(id).innerHTML = subjOptions || `<option value="">No subjects yet</option>`);
+
+  const loadChapters = async (subjSel, chapSel) => {
+    const sid = document.getElementById(subjSel).value;
+    const { data: chaps } = await db.from("chapters").select("*").eq("subject_id", sid).order("sort_order");
+    document.getElementById(chapSel).innerHTML = (chaps||[]).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("") || `<option value="">No chapters yet</option>`;
+  };
+  if(subjects && subjects.length){ await loadChapters("vidSubj","vidChap"); await loadChapters("pdfSubj","pdfChap"); }
+  document.getElementById("vidSubj").onchange = () => loadChapters("vidSubj","vidChap");
+  document.getElementById("pdfSubj").onchange = () => loadChapters("pdfSubj","pdfChap");
+
+  document.getElementById("addSubj").onclick = async () => {
+    const name = document.getElementById("newSubj").value.trim();
+    if(!name) return;
+    await db.from("subjects").insert({ name });
+    renderAdminContent(body);
+  };
+  document.getElementById("addChap").onclick = async () => {
+    const subject_id = document.getElementById("chSubj").value;
+    const name = document.getElementById("newChap").value.trim();
+    if(!subject_id || !name) return;
+    await db.from("chapters").insert({ subject_id, name });
+    renderAdminContent(body);
+  };
+  document.getElementById("addVid").onclick = async () => {
+    const chapter_id = document.getElementById("vidChap").value;
+    const title = document.getElementById("vidTitle").value.trim();
+    const url = document.getElementById("vidUrl").value.trim();
+    const id = ytId(url);
+    if(!chapter_id || !title || !id){ alert("Check chapter, title, and that the YouTube link is valid."); return; }
+    await db.from("videos").insert({ chapter_id, title, youtube_id: id });
+    renderAdminContent(body);
+  };
+  document.getElementById("addPdf").onclick = async () => {
+    const chapter_id = document.getElementById("pdfChap").value;
+    const category = document.getElementById("pdfCat").value;
+    const title = document.getElementById("pdfTitle").value.trim();
+    const file = document.getElementById("pdfFile").files[0];
+    if(!chapter_id || !title || !file) return;
+    const path = `pdfs/${crypto.randomUUID()}_${file.name}`;
+    await db.storage.from("content").upload(path, file);
+    await db.from("pdfs").insert({ chapter_id, category, title, file_path: path });
+    renderAdminContent(body);
+  };
+  document.getElementById("addTest").onclick = async () => {
+    const title = document.getElementById("testTitle").value.trim();
+    const duration_minutes = parseInt(document.getElementById("testDur").value) || 60;
+    const file = document.getElementById("testFile").files[0];
+    if(!title) return;
+    let file_path = null;
+    if(file){ file_path = `tests/${crypto.randomUUID()}_${file.name}`; await db.storage.from("content").upload(file_path, file); }
+    await db.from("tests").insert({ title, duration_minutes, file_path });
+    renderAdminContent(body);
+  };
+}
+
+/* ---------------- INIT ---------------- */
+(async function boot(){
+  const { data } = await db.auth.getSession();
+  session = data.session;
+  if(session) await afterLogin(); else renderAuth();
+  db.auth.onAuthStateChange((event, s) => { session = s; });
+})();
+</script>
+</body>
+</html>
