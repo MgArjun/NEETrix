@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>NEETrix</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -12,7 +12,7 @@
   --green:#3dd68c;--danger:#ef5a5a;--warn:#f0b429;--shadow:0 8px 32px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
 #app{min-height:100vh;padding-bottom:52px}
 input,textarea,select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit}
 input:focus,textarea:focus,select:focus{border-color:var(--accent)}
@@ -20,16 +20,16 @@ textarea{min-height:90px;resize:vertical}
 button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-highlight-color:transparent}
 .btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 4px 14px rgba(91,157,255,.25)}
 .btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,157,255,.35)}
-.btn:active{transform:scale(.97)}
+.btn:active{transform:scale(.96)}
 .btn:disabled{opacity:.45;pointer-events:none}
 .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:9px;font-size:13px}
 .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
-.btn-outline:active{transform:scale(.97)}
+.btn-outline:active{transform:scale(.96)}
 .btn-danger{background:var(--danger);border:none;color:#fff;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
 .btn-good{background:var(--green);border:none;color:#06281a;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
 .btn-warn{background:var(--warn);border:none;color:#3a2a00;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
 .btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:12px}
-.btn-small:active{transform:scale(.96)}
+.btn-small:active{transform:scale(.95)}
 
 .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 0%,#121a2e 0%,var(--bg) 70%)}
 .auth-card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:var(--shadow)}
@@ -46,14 +46,8 @@ button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-h
 .navbtn:active{transform:scale(.96)}
 .spacer{flex:1;min-width:8px}
 .profile-wrap{position:relative;flex-shrink:0}
-.profile-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
-.profile-btn:active{transform:scale(.93)}
-.profile-menu{position:absolute;right:0;top:42px;width:210px;background:var(--panel);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:8px;display:none;z-index:60}
-.profile-menu.open{display:block}
-.profile-menu .pm-email{padding:8px 10px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--border);margin-bottom:4px;word-break:break-all}
-.profile-menu button{width:100%;text-align:left;background:none;border:none;color:var(--text);padding:9px 10px;border-radius:8px;font-size:13px}
-.profile-menu button:hover{background:var(--panel2)}
-.profile-menu button.danger{color:var(--danger)}
+.profile-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(91,157,255,.3)}
+.profile-btn:active{transform:scale(.9)}
 
 .content{max-width:920px;margin:0 auto;padding:22px 16px 40px}
 .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
@@ -61,7 +55,7 @@ button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-h
 @media(max-width:560px){.grid2{grid-template-columns:1fr}}
 .subject-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px 18px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
 .subject-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.25)}
-.subject-card:active{transform:scale(.98)}
+.subject-card:active{transform:scale(.97)}
 .subject-card h3{margin:0;font-size:15.5px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .row-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
@@ -82,29 +76,35 @@ h3{font-size:15px;margin:16px 0 10px;font-weight:600}
 
 /* HOME */
 .home-hero{text-align:center;padding:28px 16px 24px;background:linear-gradient(180deg,rgba(91,157,255,.07) 0%,transparent 100%);border:1px solid var(--border);border-radius:18px;margin-bottom:18px;position:relative;overflow:hidden}
-.anim-row{display:flex;justify-content:center;align-items:center;gap:36px;margin-bottom:16px;flex-wrap:wrap;min-height:120px}
+.anim-row{display:flex;justify-content:center;align-items:center;gap:40px;margin-bottom:18px;flex-wrap:wrap;min-height:140px}
 
-/* Atom - improved */
-.atom-wrap{width:110px;height:110px;position:relative;flex-shrink:0}
-.atom-core{width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#a5d0ff,var(--accent));border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 20px var(--accent),0 0 8px #fff}
-.orbit{position:absolute;top:50%;left:50%;border:1px solid rgba(91,157,255,.25);border-radius:50%;transform:translate(-50%,-50%);animation:spin linear infinite}
-.orbit1{width:52px;height:34px;animation-duration:5s}
-.orbit2{width:78px;height:48px;animation-duration:7.5s;animation-direction:reverse}
-.orbit3{width:100px;height:62px;animation-duration:10s}
-.orbit4{width:110px;height:70px;animation-duration:13s;animation-direction:reverse;opacity:.6}
-.electron{width:7px;height:7px;background:#7dd3fc;border-radius:50%;position:absolute;top:-3.5px;left:50%;margin-left:-3.5px;box-shadow:0 0 10px #7dd3fc}
+/* Atom */
+.atom-wrap{width:120px;height:120px;position:relative;flex-shrink:0}
+.atom-core{width:18px;height:18px;background:radial-gradient(circle at 30% 30%,#a5d0ff,var(--accent));border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 24px var(--accent),0 0 10px #fff}
+.orbit{position:absolute;top:50%;left:50%;border:1px solid rgba(91,157,255,.28);border-radius:50%;transform:translate(-50%,-50%);animation:spin linear infinite}
+.orbit1{width:56px;height:36px;animation-duration:4.5s}
+.orbit2{width:82px;height:52px;animation-duration:7s;animation-direction:reverse}
+.orbit3{width:106px;height:66px;animation-duration:9.5s}
+.orbit4{width:118px;height:74px;animation-duration:12s;animation-direction:reverse;opacity:.55}
+.electron{width:8px;height:8px;background:#7dd3fc;border-radius:50%;position:absolute;top:-4px;left:50%;margin-left:-4px;box-shadow:0 0 12px #7dd3fc}
 @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-/* Nervous system */
-.nerve-wrap{width:90px;height:120px;position:relative;flex-shrink:0}
-.nerve-brain{width:36px;height:28px;background:radial-gradient(ellipse at 40% 40%,#8ec5ff,var(--accent));border-radius:50% 50% 45% 45%;position:absolute;top:4px;left:50%;transform:translateX(-50%);box-shadow:0 0 16px rgba(91,157,255,.5)}
-.nerve-spine{width:4px;height:78px;background:linear-gradient(180deg,var(--accent),rgba(91,157,255,.3));position:absolute;top:30px;left:50%;transform:translateX(-50%);border-radius:2px}
-.nerve-wave{position:absolute;left:50%;width:8px;height:8px;background:var(--green);border-radius:50%;transform:translateX(-50%);box-shadow:0 0 10px var(--green);animation:nerveDown 2.8s ease-in-out infinite}
-.nerve-wave:nth-child(3){animation-delay:.7s}
-.nerve-wave:nth-child(4){animation-delay:1.4s}
-.nerve-wave:nth-child(5){animation-delay:2.1s}
-.nerve-branch{position:absolute;height:2px;background:rgba(91,157,255,.35);border-radius:1px}
-@keyframes nerveDown{0%{top:32px;opacity:0;transform:translateX(-50%) scale(.6)}15%{opacity:1}85%{opacity:1}100%{top:105px;opacity:0;transform:translateX(-50%) scale(.4)}}
+/* Nervous system - improved */
+.nerve-wrap{width:110px;height:140px;position:relative;flex-shrink:0}
+.nerve-brain{width:40px;height:30px;background:radial-gradient(ellipse at 40% 40%,#8ec5ff,var(--accent));border-radius:50% 50% 45% 45%;position:absolute;top:2px;left:50%;transform:translateX(-50%);box-shadow:0 0 18px rgba(91,157,255,.55)}
+.nerve-spine{width:5px;height:85px;background:linear-gradient(180deg,var(--accent),rgba(91,157,255,.25));position:absolute;top:30px;left:50%;transform:translateX(-50%);border-radius:3px}
+.nerve-wave{position:absolute;left:50%;width:7px;height:7px;background:var(--green);border-radius:50%;transform:translateX(-50%);box-shadow:0 0 10px var(--green);animation:nerveDown 2.6s ease-in-out infinite}
+.nerve-wave:nth-child(3){animation-delay:.65s}
+.nerve-wave:nth-child(4){animation-delay:1.3s}
+.nerve-wave:nth-child(5){animation-delay:1.95s}
+.nerve-branch{position:absolute;height:2px;background:rgba(91,157,255,.4);border-radius:1px}
+.nerve-branch.arm-l{width:28px;top:48px;left:calc(50% - 28px);transform:rotate(-25deg)}
+.nerve-branch.arm-r{width:28px;top:48px;left:50%;transform:rotate(25deg)}
+.nerve-branch.leg-l{width:22px;top:95px;left:calc(50% - 18px);transform:rotate(-35deg)}
+.nerve-branch.leg-r{width:22px;top:95px;left:50%;transform:rotate(35deg)}
+.nerve-branch.org{width:16px;top:70px;left:calc(50% - 16px);transform:rotate(-12deg);opacity:.7}
+.nerve-dot{width:5px;height:5px;background:var(--accent);border-radius:50%;position:absolute;box-shadow:0 0 6px var(--accent)}
+@keyframes nerveDown{0%{top:34px;opacity:0;transform:translateX(-50%) scale(.5)}12%{opacity:1}88%{opacity:1}100%{top:112px;opacity:0;transform:translateX(-50%) scale(.3)}}
 
 .welcome{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.02em}
 .progress-box{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px}
@@ -119,11 +119,10 @@ h3{font-size:15px;margin:16px 0 10px;font-weight:600}
 @media(max-width:600px){.home-grid{grid-template-columns:1fr}}
 .home-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px 14px;text-align:center;cursor:pointer;transition:.22s}
 .home-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.28)}
-.home-card:active{transform:scale(.97)}
+.home-card:active{transform:scale(.96)}
 .home-card .icon{font-size:30px;margin-bottom:10px;filter:drop-shadow(0 4px 8px rgba(91,157,255,.25))}
 .home-card h3{margin:0 0 4px;font-size:15px}
 
-/* Footer premium */
 .powered{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;color:var(--muted);padding:11px 0;background:rgba(6,9,18,.94);backdrop-filter:blur(10px);border-top:1px solid rgba(36,48,73,.6);z-index:40;letter-spacing:.04em}
 .powered span{background:linear-gradient(90deg,var(--muted),var(--accent),var(--muted));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:500}
 
@@ -132,9 +131,14 @@ h3{font-size:15px;margin:16px 0 10px;font-weight:600}
 table{width:100%;border-collapse:collapse;font-size:12.5px}
 th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border)}
 th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:70;padding:16px}
-.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:920px;width:100%;max-height:90vh;overflow:auto;padding:18px}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:480px;width:100%;max-height:90vh;overflow:auto;padding:22px;animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal-close{background:none;border:none;color:var(--muted);float:right;font-size:24px;line-height:1;padding:0 4px}
+.modal-close:active{transform:scale(.9)}
+
 .timer{font-size:22px;font-weight:800;color:var(--warn);text-align:center;padding:12px;background:var(--panel2);border-radius:10px;margin-bottom:12px}
 .zoom-row{display:flex;gap:8px;justify-content:center;margin-top:10px}
 .zoom-row button{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px}
@@ -156,13 +160,16 @@ th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;
 .cbt-opt{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px}
 .cbt-opt:hover{border-color:var(--accent)}
 .cbt-opt.selected{border-color:var(--accent);background:rgba(91,157,255,.12)}
-.cbt-opt:active{transform:scale(.99)}
+.cbt-opt:active{transform:scale(.985)}
 .cbt-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .cbt-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--muted)}
 .cbt-legend span{display:flex;align-items:center;gap:4px}
 .cbt-dot{width:10px;height:10px;border-radius:3px}
 .score-card{text-align:center;padding:28px 16px}
 .score-num{font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.profile-field{margin-bottom:14px}
+.profile-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
 </style>
 </head>
 <body>
@@ -173,7 +180,7 @@ th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;
 const SUPABASE_URL = "https://qhggamgxfwlwtpmwxfwk.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_X9_aDiQcrKhYyPfuQdnKPA_K8F7RPjM";
 
-let db=null,session=null,profile=null,activeTab="home",selSubject=null,selChapter=null,selCategory="general",adminTab="users",profileMenuOpen=false;
+let db=null,session=null,profile=null,activeTab="home",selSubject=null,selChapter=null,selCategory="general",adminTab="users";
 let cbtTest=null,cbtQuestions=[],cbtAnswers={},cbtMarked=new Set(),cbtBookmarks=new Set(),cbtIndex=0,cbtTimerRef=null,cbtRemaining=0;
 
 const app=document.getElementById("app");
@@ -182,7 +189,6 @@ function el(h){const d=document.createElement("div");d.innerHTML=h.trim();return
 function fmtDate(iso){if(!iso)return"";const d=new Date(iso);if(Number.isNaN(d.getTime()))return"";return d.toLocaleString(undefined,{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})}
 function ytId(url){const m=(url||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);return m?m[1]:null}
 function showFatalError(m){document.body.innerHTML=`<div class="fatal-error"><div class="fatal-box"><h2 class="fatal-title">NEETrix Error</h2><div class="fatal-text">${escapeHtml(m)}</div></div></div>`}
-function closeProfileMenu(){profileMenuOpen=false;const m=document.getElementById("profileMenu");if(m)m.classList.remove("open")}
 function getLastScore(){try{return JSON.parse(localStorage.getItem("neetrix_last_score")||"null")}catch(e){return null}}
 function saveLastScore(obj){try{localStorage.setItem("neetrix_last_score",JSON.stringify(obj))}catch(e){}}
 
@@ -202,19 +208,69 @@ function renderStatusScreen(status){app.innerHTML="";const msgs={pending:["Reque
 
 async function afterLogin(){if(!session?.user){renderAuth();return}try{try{await db.from("login_events").insert({user_id:session.user.id,email:session.user.email})}catch(e){}const{data,error}=await db.from("profiles").select("*").eq("id",session.user.id).single();if(error){if(error.code==="PGRST116"){profile=null;renderStatusScreen("pending");return}throw error}profile=data;if(!profile||profile.status!=="active"){renderStatusScreen(profile?profile.status:"pending");return}activeTab="home";selSubject=null;selChapter=null;renderShell()}catch(e){showFatalError(e?.message||"Unable to load account")}}
 
-function renderShell(){app.innerHTML="";const isAdmin=profile?.role==="admin";const initial=(profile?.email||"U")[0].toUpperCase();app.appendChild(el(`<div><div class="topbar"><div class="brand">NEETrix</div><button class="navbtn" data-t="home">Home</button><button class="navbtn" data-t="content">Content</button><button class="navbtn" data-t="questions">Questions</button><button class="navbtn" data-t="bookmarks">Bookmarks</button><button class="navbtn" data-t="tests">Test</button>${isAdmin?`<button class="navbtn" data-t="admin">Admin</button>`:""}<div class="spacer"></div><div class="profile-wrap"><button class="profile-btn" id="profileBtn">${initial}</button><div class="profile-menu" id="profileMenu"><div class="pm-email">${escapeHtml(profile?.email||"")}</div><button id="pmLogout" class="danger">Log out</button></div></div></div><div class="content" id="content"></div></div>`));
-document.getElementById("profileBtn").onclick=e=>{e.stopPropagation();profileMenuOpen=!profileMenuOpen;document.getElementById("profileMenu").classList.toggle("open",profileMenuOpen)};
-document.getElementById("pmLogout").onclick=async()=>{closeProfileMenu();if(!confirm("Log out?"))return;try{await db.auth.signOut()}catch(e){}session=null;profile=null;activeTab="home";selSubject=null;selChapter=null;renderAuth()};
-document.addEventListener("click",()=>{if(profileMenuOpen)closeProfileMenu()});
+function renderShell(){app.innerHTML="";const isAdmin=profile?.role==="admin";const initial=(profile?.name||profile?.email||"U")[0].toUpperCase();app.appendChild(el(`<div><div class="topbar"><div class="brand">NEETrix</div><button class="navbtn" data-t="home">Home</button><button class="navbtn" data-t="content">Content</button><button class="navbtn" data-t="questions">Questions</button><button class="navbtn" data-t="bookmarks">Bookmarks</button><button class="navbtn" data-t="tests">Test</button>${isAdmin?`<button class="navbtn" data-t="admin">Admin</button>`:""}<div class="spacer"></div><div class="profile-wrap"><button class="profile-btn" id="profileBtn">${escapeHtml(initial)}</button></div></div><div class="content" id="content"></div></div>`));
+document.getElementById("profileBtn").onclick=()=>openProfileModal();
 document.querySelectorAll(".navbtn").forEach(btn=>{btn.onclick=()=>{activeTab=btn.dataset.t;selSubject=null;selChapter=null;if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}renderTabsUI();renderBody()}});
 renderTabsUI();renderBody()}
+
 function renderTabsUI(){document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.t===activeTab))}
 function renderBody(){const c=document.getElementById("content");if(!c)return;if(activeTab==="home")renderHome(c);else if(activeTab==="content")renderSubjectBrowser(c,"video");else if(activeTab==="questions")renderSubjectBrowser(c,"pdf");else if(activeTab==="tests")renderTests(c);else if(activeTab==="bookmarks")renderBookmarks(c);else if(activeTab==="admin"){if(profile?.role==="admin")renderAdmin(c);else{activeTab="home";renderTabsUI();renderHome(c)}}}
 
-function renderHome(c){const name=profile?.email?profile.email.split("@")[0]:"Student";const last=getLastScore();const pct=last?Math.min(100,Math.round((last.score/(last.total||1))*100)):0;
-c.innerHTML=`<div class="home-hero"><div class="anim-row">
+function openProfileModal(){
+  const modal=el(`<div class="modal-bg" id="profileModal"><div class="modal-box">
+    <button class="modal-close" id="pmClose">×</button>
+    <h2 style="margin-bottom:16px">My Profile</h2>
+    <div class="profile-field"><label>Name</label><input id="pfName" value="${escapeHtml(profile?.name||"")}" placeholder="Your name"/></div>
+    <div class="profile-field"><label>Phone</label><input id="pfPhone" value="${escapeHtml(profile?.phone||"")}" placeholder="Phone number"/></div>
+    <div class="profile-field"><label>Email</label><input id="pfEmail" value="${escapeHtml(profile?.email||"")}" disabled style="opacity:.7"/></div>
+    <button class="btn" style="width:100%;margin-top:6px" id="pfSave">Save Profile</button>
+    <button class="btn-outline" style="width:100%;margin-top:10px" id="pfReport">Report to Owner</button>
+    <button class="btn-danger" style="width:100%;margin-top:10px" id="pfLogout">Log out</button>
+  </div></div>`);
+  document.body.appendChild(modal);
+  document.getElementById("pmClose").onclick=()=>modal.remove();
+  modal.onclick=e=>{if(e.target===modal)modal.remove()};
+  document.getElementById("pfSave").onclick=async()=>{
+    const name=document.getElementById("pfName").value.trim();
+    const phone=document.getElementById("pfPhone").value.trim();
+    try{
+      const{error}=await db.from("profiles").update({name,phone}).eq("id",session.user.id);
+      if(error)throw error;
+      profile.name=name;profile.phone=phone;
+      alert("Profile saved");
+      modal.remove();
+      renderShell();
+    }catch(e){alert(e?.message||"Error saving")}
+  };
+  document.getElementById("pfReport").onclick=async()=>{
+    if(!confirm("Send report to owner?"))return;
+    try{
+      await db.from("reports").insert({user_id:session.user.id,email:profile?.email||session.user.email,message:"User reported from profile"});
+      alert("Report sent to owner");
+    }catch(e){alert(e?.message||"Could not send report")}
+  };
+  document.getElementById("pfLogout").onclick=async()=>{
+    if(!confirm("Log out?"))return;
+    modal.remove();
+    try{await db.auth.signOut()}catch(e){}
+    session=null;profile=null;activeTab="home";selSubject=null;selChapter=null;renderAuth();
+  };
+}
+
+function renderHome(c){
+  const name=profile?.name||(profile?.email?profile.email.split("@")[0]:"Student");
+  const last=getLastScore();
+  const pct=last?Math.min(100,Math.round((last.score/(last.total||1))*100)):0;
+  c.innerHTML=`<div class="home-hero"><div class="anim-row">
 <div class="atom-wrap"><div class="atom-core"></div><div class="orbit orbit1"><div class="electron"></div></div><div class="orbit orbit2"><div class="electron"></div></div><div class="orbit orbit3"><div class="electron"></div></div><div class="orbit orbit4"><div class="electron"></div></div></div>
-<div class="nerve-wrap"><div class="nerve-brain"></div><div class="nerve-spine"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div></div>
+<div class="nerve-wrap">
+  <div class="nerve-brain"></div>
+  <div class="nerve-spine"></div>
+  <div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div>
+  <div class="nerve-branch arm-l"></div><div class="nerve-branch arm-r"></div>
+  <div class="nerve-branch leg-l"></div><div class="nerve-branch leg-r"></div>
+  <div class="nerve-branch org"></div>
+</div>
 </div><div class="welcome">Hey ${escapeHtml(name)}</div><div class="muted">Ready to study today?</div></div>
 <div class="progress-box"><div class="progress-head"><div style="font-weight:600">Your Progress</div>${last?`<div class="muted">Last: ${last.score}/${last.total}</div>`:""}</div>
 <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
@@ -224,76 +280,419 @@ c.innerHTML=`<div class="home-hero"><div class="anim-row">
 <div class="home-card" data-go="questions"><div class="icon">📑</div><h3>Questions</h3><div class="muted">Practice & PYQs</div></div>
 <div class="home-card" data-go="tests"><div class="icon">📝</div><h3>Tests</h3><div class="muted">Mock tests</div></div>
 </div>`;
-c.querySelectorAll(".home-card").forEach(card=>{card.onclick=()=>{activeTab=card.dataset.go;renderTabsUI();renderBody()}})}
+  c.querySelectorAll(".home-card").forEach(card=>{card.onclick=()=>{activeTab=card.dataset.go;renderTabsUI();renderBody()}});
+}
 
-async function renderSubjectBrowser(c,mode){if(!selSubject){c.innerHTML=`<h2>${mode==="video"?"Video Lessons":"Question Bank"}</h2>${mode==="pdf"?`<div class="tabs2"><button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button><button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button><button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button></div>`:""}<div class="grid2" id="subjList"></div>`;if(mode==="pdf")c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{selCategory=b.dataset.c;renderBody()}});const{data,error}=await db.from("subjects").select("*").order("sort_order");const wrap=document.getElementById("subjList");if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}if(!data?.length){wrap.innerHTML=`<div class="empty">No subjects yet.</div>`;return}wrap.innerHTML="";data.forEach(s=>{const card=el(`<div class="subject-card"><h3>${escapeHtml(s.name)}</h3></div>`);card.onclick=()=>{selSubject=s;selChapter=null;renderBody()};wrap.appendChild(card)});return}
-if(!selChapter){c.innerHTML=`<button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button><h2>Chapters</h2><div id="chapList"></div>`;document.getElementById("b1").onclick=()=>{selSubject=null;renderBody()};const{data,error}=await db.from("chapters").select("*").eq("subject_id",selSubject.id).order("sort_order");const wrap=document.getElementById("chapList");if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}if(!data?.length){wrap.innerHTML=`<div class="empty">No chapters yet.</div>`;return}wrap.innerHTML="";data.forEach(ch=>{const row=el(`<div class="card row" style="cursor:pointer"><span>${escapeHtml(ch.name)}</span><span class="muted">→</span></div>`);row.onclick=()=>{selChapter=ch;renderBody()};wrap.appendChild(row)});return}
-c.innerHTML=`<button class="back" id="b2">← ${escapeHtml(selChapter.name)}</button>`;document.getElementById("b2").onclick=()=>{selChapter=null;renderBody()};
-if(mode==="video"){const box=el(`<div id="vidBox"></div>`);c.appendChild(box);const{data,error}=await db.from("videos").select("*").eq("chapter_id",selChapter.id).order("sort_order");if(error){box.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}if(!data?.length){box.innerHTML=`<div class="empty">No videos yet.</div>`;return}box.innerHTML=data.map(v=>`<h3>${escapeHtml(v.title)}</h3><div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(v.youtube_id)}?modestbranding=1&rel=0" title="${escapeHtml(v.title)}" allowfullscreen></iframe></div>`).join("")}
-else{const list=el(`<div id="pdfList"></div>`);c.appendChild(list);const{data,error}=await db.from("pdfs").select("*").eq("chapter_id",selChapter.id).eq("category",selCategory).order("created_at",{ascending:false});if(error){list.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}if(!data?.length){list.innerHTML=`<div class="empty">No content in this category yet.</div>`;return}let bmSet=new Set();try{const{data:bms}=await db.from("bookmarks").select("pdf_id").eq("user_id",session.user.id);if(bms)bmSet=new Set(bms.map(b=>b.pdf_id))}catch(e){}list.innerHTML="";data.forEach(pdf=>{const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="openPdf">${escapeHtml(pdf.title)}</span><button class="btn-small bmBtn">${bmSet.has(pdf.id)?"★ Saved":"☆ Save"}</button></div>`);row.querySelector(".openPdf").onclick=()=>openPdf(pdf);row.querySelector(".bmBtn").onclick=async e=>{e.stopPropagation();try{if(bmSet.has(pdf.id))await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",pdf.id);else await db.from("bookmarks").insert({user_id:session.user.id,pdf_id:pdf.id});renderBody()}catch(err){alert(err?.message||"Error")}};list.appendChild(row)})}}
+async function renderSubjectBrowser(c,mode){
+  if(!selSubject){
+    c.innerHTML=`<h2>${mode==="video"?"Video Lessons":"Question Bank"}</h2>${mode==="pdf"?`<div class="tabs2"><button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button><button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button><button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button></div>`:""}<div class="grid2" id="subjList"></div>`;
+    if(mode==="pdf")c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{selCategory=b.dataset.c;renderBody()}});
+    const{data,error}=await db.from("subjects").select("*").order("sort_order");
+    const wrap=document.getElementById("subjList");
+    if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
+    if(!data?.length){wrap.innerHTML=`<div class="empty">No subjects yet.</div>`;return}
+    wrap.innerHTML="";data.forEach(s=>{const card=el(`<div class="subject-card"><h3>${escapeHtml(s.name)}</h3></div>`);card.onclick=()=>{selSubject=s;selChapter=null;renderBody()};wrap.appendChild(card)});return;
+  }
+  if(!selChapter){
+    c.innerHTML=`<button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button><h2>Chapters</h2><div id="chapList"></div>`;
+    document.getElementById("b1").onclick=()=>{selSubject=null;renderBody()};
+    const{data,error}=await db.from("chapters").select("*").eq("subject_id",selSubject.id).order("sort_order");
+    const wrap=document.getElementById("chapList");
+    if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
+    if(!data?.length){wrap.innerHTML=`<div class="empty">No chapters yet.</div>`;return}
+    wrap.innerHTML="";data.forEach(ch=>{const row=el(`<div class="card row" style="cursor:pointer"><span>${escapeHtml(ch.name)}</span><span class="muted">→</span></div>`);row.onclick=()=>{selChapter=ch;renderBody()};wrap.appendChild(row)});return;
+  }
+  c.innerHTML=`<button class="back" id="b2">← ${escapeHtml(selChapter.name)}</button>`;
+  document.getElementById("b2").onclick=()=>{selChapter=null;renderBody()};
+  if(mode==="video"){
+    const box=el(`<div id="vidBox"></div>`);c.appendChild(box);
+    const{data,error}=await db.from("videos").select("*").eq("chapter_id",selChapter.id).order("sort_order");
+    if(error){box.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
+    if(!data?.length){box.innerHTML=`<div class="empty">No videos yet.</div>`;return}
+    box.innerHTML=data.map(v=>`<h3>${escapeHtml(v.title)}</h3><div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(v.youtube_id)}?modestbranding=1&rel=0" title="${escapeHtml(v.title)}" allowfullscreen></iframe></div>`).join("");
+  }else{
+    const list=el(`<div id="pdfList"></div>`);c.appendChild(list);
+    const{data,error}=await db.from("pdfs").select("*").eq("chapter_id",selChapter.id).eq("category",selCategory).order("created_at",{ascending:false});
+    if(error){list.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
+    if(!data?.length){list.innerHTML=`<div class="empty">No content in this category yet.</div>`;return}
+    let bmSet=new Set();
+    try{const{data:bms}=await db.from("bookmarks").select("pdf_id").eq("user_id",session.user.id);if(bms)bmSet=new Set(bms.map(b=>b.pdf_id))}catch(e){}
+    list.innerHTML="";data.forEach(pdf=>{
+      const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="openPdf">${escapeHtml(pdf.title)}</span><button class="btn-small bmBtn">${bmSet.has(pdf.id)?"★ Saved":"☆ Save"}</button></div>`);
+      row.querySelector(".openPdf").onclick=()=>openPdf(pdf);
+      row.querySelector(".bmBtn").onclick=async e=>{e.stopPropagation();try{if(bmSet.has(pdf.id))await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",pdf.id);else await db.from("bookmarks").insert({user_id:session.user.id,pdf_id:pdf.id});renderBody()}catch(err){alert(err?.message||"Error")}};
+      list.appendChild(row);
+    });
+  }
+}
 
 async function openPdf(pdf){try{const{data,error}=await db.storage.from("content").createSignedUrl(pdf.file_path,3600);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");await showPdfModal(data.signedUrl,pdf.title)}catch(e){alert(e?.message||"Unable to open PDF")}}
-async function showPdfModal(url,title){if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box"><button class="modal-close" id="mc">×</button><h3>${escapeHtml(title||"")}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div></div></div>`);document.body.appendChild(modal);document.getElementById("mc").onclick=()=>modal.remove();const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;try{const pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){modal.querySelector(".modal-box").innerHTML+=`<div class="empty">Unable to render<br>${escapeHtml(e?.message||"")}</div>`}}
+async function showPdfModal(url,title){if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:920px"><button class="modal-close" id="mc">×</button><h3>${escapeHtml(title||"")}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div></div></div>`);document.body.appendChild(modal);document.getElementById("mc").onclick=()=>modal.remove();const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;try{const pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){modal.querySelector(".modal-box").innerHTML+=`<div class="empty">Unable to render<br>${escapeHtml(e?.message||"")}</div>`}}
 
 async function renderBookmarks(c){c.innerHTML=`<h2>My Bookmarks</h2><div id="bmList"></div>`;const list=document.getElementById("bmList");try{const{data,error}=await db.from("bookmarks").select("pdf_id, pdfs(title, id, file_path)").eq("user_id",session.user.id);if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No bookmarks yet.</div>`;return}list.innerHTML="";data.forEach(bm=>{if(!bm.pdfs)return;const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="open">${escapeHtml(bm.pdfs.title)}</span><button class="btn-small rm">Remove</button></div>`);row.querySelector(".open").onclick=()=>openPdf(bm.pdfs);row.querySelector(".rm").onclick=async e=>{e.stopPropagation();try{await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",bm.pdfs.id);renderBookmarks(c)}catch(err){alert(err?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
 
 async function renderTests(c){c.innerHTML=`<h2>Tests</h2><div id="testList"></div>`;const list=document.getElementById("testList");try{const{data,error}=await db.from("tests").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No tests yet.</div>`;return}list.innerHTML="";data.forEach(test=>{const isCbt=test.type==="cbt"||!test.file_path;const row=el(`<div class="card row"><div><div style="font-weight:600">${escapeHtml(test.title)}</div><div class="muted">${test.duration_minutes||60} min · ${isCbt?"CBT Mode":"PDF Paper"}</div></div><button class="btn">Start</button></div>`);row.querySelector("button").onclick=()=>{if(isCbt)startCbtTest(test);else startPdfTest(test)};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
 
-async function startPdfTest(test){if(!test.file_path){alert("No paper uploaded");return}try{const{data,error}=await db.storage.from("content").createSignedUrl(test.file_path,7200);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box"><div class="timer" id="tmr"></div><h3>${escapeHtml(test.title)}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div><button class="btn" style="width:100%;margin-top:14px" id="submitTest">Submit Test</button></div></div>`);document.body.appendChild(modal);let remaining=(Number(test.duration_minutes)||60)*60;const timerEl=document.getElementById("tmr");let timerRef=null;const finish=()=>{if(timerRef)clearInterval(timerRef);modal.remove();alert("Test submitted")};const tick=()=>{const m=Math.floor(remaining/60),s=remaining%60;timerEl.textContent=`${m}:${s<10?"0":""}${s} remaining`;if(remaining<=0){finish();return}remaining--};tick();timerRef=setInterval(tick,1000);document.getElementById("submitTest").onclick=()=>{if(confirm("Submit now?"))finish()};const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;const pdfDoc=await pdfjsLib.getDocument({url:data.signedUrl,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){alert(e?.message||"Unable to start")}}
+async function startPdfTest(test){if(!test.file_path){alert("No paper uploaded");return}try{const{data,error}=await db.storage.from("content").createSignedUrl(test.file_path,7200);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:920px"><div class="timer" id="tmr"></div><h3>${escapeHtml(test.title)}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div><button class="btn" style="width:100%;margin-top:14px" id="submitTest">Submit Test</button></div></div>`);document.body.appendChild(modal);let remaining=(Number(test.duration_minutes)||60)*60;const timerEl=document.getElementById("tmr");let timerRef=null;const finish=()=>{if(timerRef)clearInterval(timerRef);modal.remove();alert("Test submitted")};const tick=()=>{const m=Math.floor(remaining/60),s=remaining%60;timerEl.textContent=`${m}:${s<10?"0":""}${s} remaining`;if(remaining<=0){finish();return}remaining--};tick();timerRef=setInterval(tick,1000);document.getElementById("submitTest").onclick=()=>{if(confirm("Submit now?"))finish()};const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;const pdfDoc=await pdfjsLib.getDocument({url:data.signedUrl,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){alert(e?.message||"Unable to start")}}
 
-async function startCbtTest(test){try{const{data,error}=await db.from("test_questions").select("*").eq("test_id",test.id).order("sort_order");if(error)throw error;if(!data?.length){alert("No questions for this CBT yet. Admin must add them.");return}cbtTest=test;cbtQuestions=data;cbtAnswers={};cbtMarked=new Set();cbtBookmarks=new Set();cbtIndex=0;cbtRemaining=(Number(test.duration_minutes)||60)*60;if(cbtTimerRef)clearInterval(cbtTimerRef);cbtTimerRef=setInterval(()=>{cbtRemaining--;const tEl=document.getElementById("cbtTimer");if(tEl){const m=Math.floor(cbtRemaining/60),s=cbtRemaining%60;tEl.textContent=`${m}:${s<10?"0":""}${s}`}if(cbtRemaining<=0){clearInterval(cbtTimerRef);cbtTimerRef=null;finishCbt(true)}},1000);renderCbtUI()}catch(e){alert(e?.message||"Unable to start CBT")}}
+async function startCbtTest(test){
+  try{
+    // Safe columns for normal users (no correct_option)
+    const isAdmin = profile?.role === "admin";
+    const cols = isAdmin ? "*" : "id, question_text, option_a, option_b, option_c, option_d, sort_order";
+    const{data,error}=await db.from("test_questions").select(cols).eq("test_id",test.id).order("sort_order");
+    if(error)throw error;
+    if(!data?.length){alert("No questions for this CBT yet. Admin must add them.");return}
+    cbtTest=test;cbtQuestions=data;cbtAnswers={};cbtMarked=new Set();cbtBookmarks=new Set();cbtIndex=0;
+    cbtRemaining=(Number(test.duration_minutes)||60)*60;
+    if(cbtTimerRef)clearInterval(cbtTimerRef);
+    cbtTimerRef=setInterval(()=>{
+      cbtRemaining--;
+      const tEl=document.getElementById("cbtTimer");
+      if(tEl){const m=Math.floor(cbtRemaining/60),s=cbtRemaining%60;tEl.textContent=`${m}:${s<10?"0":""}${s}`}
+      if(cbtRemaining<=0){clearInterval(cbtTimerRef);cbtTimerRef=null;finishCbt(true)}
+    },1000);
+    renderCbtUI();
+  }catch(e){alert(e?.message||"Unable to start CBT")}
+}
 
-function renderCbtUI(){const c=document.getElementById("content");if(!c||!cbtQuestions.length)return;const q=cbtQuestions[cbtIndex];const selected=cbtAnswers[q.id]||null;
-c.innerHTML=`<div class="timer" id="cbtTimer">${Math.floor(cbtRemaining/60)}:${(cbtRemaining%60)<10?"0":""}${cbtRemaining%60}</div><div class="cbt-layout"><div class="cbt-qbox"><div class="muted" style="margin-bottom:8px">Question ${cbtIndex+1} of ${cbtQuestions.length}</div><div style="font-size:15.5px;line-height:1.55;margin-bottom:16px">${escapeHtml(q.question_text)}</div>
-<button class="cbt-opt ${selected==="A"?"selected":""}" data-o="A">A. ${escapeHtml(q.option_a)}</button>
-<button class="cbt-opt ${selected==="B"?"selected":""}" data-o="B">B. ${escapeHtml(q.option_b)}</button>
-<button class="cbt-opt ${selected==="C"?"selected":""}" data-o="C">C. ${escapeHtml(q.option_c)}</button>
-<button class="cbt-opt ${selected==="D"?"selected":""}" data-o="D">D. ${escapeHtml(q.option_d)}</button>
-<div class="cbt-nav"><button class="btn-outline" id="cbtPrev" ${cbtIndex===0?"disabled":""}>← Previous</button><button class="btn-outline" id="cbtMark">${cbtMarked.has(q.id)?"Unmark":"Mark for Review"}</button><button class="btn-outline" id="cbtBm">${cbtBookmarks.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button><button class="btn" id="cbtNext">${cbtIndex===cbtQuestions.length-1?"Review":"Next →"}</button></div>
-<button class="btn-danger" style="width:100%;margin-top:14px" id="cbtSubmit">Submit Test</button></div>
-<div class="cbt-palette"><div style="font-weight:600;font-size:13px">Question Palette</div><div class="cbt-palette-grid" id="palette"></div><div class="cbt-legend"><span><div class="cbt-dot" style="background:rgba(91,157,255,.35);border:1px solid var(--accent)"></div> Answered</span><span><div class="cbt-dot" style="background:rgba(240,180,41,.35);border:1px solid var(--warn)"></div> Marked</span><span><div class="cbt-dot" style="background:var(--panel2);border:1px solid var(--border)"></div> Not visited</span></div></div></div>`;
-c.querySelectorAll(".cbt-opt").forEach(btn=>{btn.onclick=()=>{cbtAnswers[q.id]=btn.dataset.o;renderCbtUI()}});
-document.getElementById("cbtPrev").onclick=()=>{if(cbtIndex>0){cbtIndex--;renderCbtUI()}};
-document.getElementById("cbtNext").onclick=()=>{if(cbtIndex<cbtQuestions.length-1){cbtIndex++;renderCbtUI()}};
-document.getElementById("cbtMark").onclick=()=>{if(cbtMarked.has(q.id))cbtMarked.delete(q.id);else cbtMarked.add(q.id);renderCbtUI()};
-document.getElementById("cbtBm").onclick=()=>{if(cbtBookmarks.has(q.id))cbtBookmarks.delete(q.id);else cbtBookmarks.add(q.id);renderCbtUI()};
-document.getElementById("cbtSubmit").onclick=()=>{if(confirm("Submit test? Answers cannot be changed."))finishCbt(false)};
-const palette=document.getElementById("palette");cbtQuestions.forEach((qq,i)=>{const btn=el(`<button class="cbt-pbtn">${i+1}</button>`);if(cbtAnswers[qq.id])btn.classList.add("answered");if(cbtMarked.has(qq.id))btn.classList.add("marked");if(i===cbtIndex)btn.classList.add("current");btn.onclick=()=>{cbtIndex=i;renderCbtUI()};palette.appendChild(btn)})}
+function renderCbtUI(){
+  const c=document.getElementById("content");
+  if(!c||!cbtQuestions.length)return;
+  const q=cbtQuestions[cbtIndex];
+  const selected=cbtAnswers[q.id]||null;
+  c.innerHTML=`<div class="timer" id="cbtTimer">${Math.floor(cbtRemaining/60)}:${(cbtRemaining%60)<10?"0":""}${cbtRemaining%60}</div>
+  <div class="cbt-layout"><div class="cbt-qbox">
+    <div class="muted" style="margin-bottom:8px">Question ${cbtIndex+1} of ${cbtQuestions.length}</div>
+    <div style="font-size:15.5px;line-height:1.55;margin-bottom:16px">${escapeHtml(q.question_text)}</div>
+    <button class="cbt-opt ${selected==="A"?"selected":""}" data-o="A">A. ${escapeHtml(q.option_a)}</button>
+    <button class="cbt-opt ${selected==="B"?"selected":""}" data-o="B">B. ${escapeHtml(q.option_b)}</button>
+    <button class="cbt-opt ${selected==="C"?"selected":""}" data-o="C">C. ${escapeHtml(q.option_c)}</button>
+    <button class="cbt-opt ${selected==="D"?"selected":""}" data-o="D">D. ${escapeHtml(q.option_d)}</button>
+    <div class="cbt-nav">
+      <button class="btn-outline" id="cbtPrev" ${cbtIndex===0?"disabled":""}>← Previous</button>
+      <button class="btn-outline" id="cbtMark">${cbtMarked.has(q.id)?"Unmark":"Mark for Review"}</button>
+      <button class="btn-outline" id="cbtBm">${cbtBookmarks.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button>
+      <button class="btn" id="cbtNext">${cbtIndex===cbtQuestions.length-1?"Review":"Next →"}</button>
+    </div>
+    <button class="btn-danger" style="width:100%;margin-top:14px" id="cbtSubmit">Submit Test</button>
+  </div>
+  <div class="cbt-palette">
+    <div style="font-weight:600;font-size:13px">Question Palette</div>
+    <div class="cbt-palette-grid" id="palette"></div>
+    <div class="cbt-legend">
+      <span><div class="cbt-dot" style="background:rgba(91,157,255,.35);border:1px solid var(--accent)"></div> Answered</span>
+      <span><div class="cbt-dot" style="background:rgba(240,180,41,.35);border:1px solid var(--warn)"></div> Marked</span>
+      <span><div class="cbt-dot" style="background:var(--panel2);border:1px solid var(--border)"></div> Not visited</span>
+    </div>
+  </div></div>`;
+  c.querySelectorAll(".cbt-opt").forEach(btn=>{btn.onclick=()=>{cbtAnswers[q.id]=btn.dataset.o;renderCbtUI()}});
+  document.getElementById("cbtPrev").onclick=()=>{if(cbtIndex>0){cbtIndex--;renderCbtUI()}};
+  document.getElementById("cbtNext").onclick=()=>{if(cbtIndex<cbtQuestions.length-1){cbtIndex++;renderCbtUI()}};
+  document.getElementById("cbtMark").onclick=()=>{if(cbtMarked.has(q.id))cbtMarked.delete(q.id);else cbtMarked.add(q.id);renderCbtUI()};
+  document.getElementById("cbtBm").onclick=()=>{if(cbtBookmarks.has(q.id))cbtBookmarks.delete(q.id);else cbtBookmarks.add(q.id);renderCbtUI()};
+  document.getElementById("cbtSubmit").onclick=()=>{if(confirm("Submit test? Answers cannot be changed."))finishCbt(false)};
+  const palette=document.getElementById("palette");
+  cbtQuestions.forEach((qq,i)=>{
+    const btn=el(`<button class="cbt-pbtn">${i+1}</button>`);
+    if(cbtAnswers[qq.id])btn.classList.add("answered");
+    if(cbtMarked.has(qq.id))btn.classList.add("marked");
+    if(i===cbtIndex)btn.classList.add("current");
+    btn.onclick=()=>{cbtIndex=i;renderCbtUI()};
+    palette.appendChild(btn);
+  });
+}
 
-function finishCbt(auto){if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}let correct=0,wrong=0,unattempted=0;cbtQuestions.forEach(q=>{const ans=cbtAnswers[q.id];if(!ans){unattempted++;return}if(ans===(q.correct_option||"").toUpperCase())correct++;else wrong++});const score=(correct*4)+(wrong*-1);const total=cbtQuestions.length*4;saveLastScore({score,total,correct,wrong,unattempted,title:cbtTest?.title,at:Date.now()});
-const c=document.getElementById("content");c.innerHTML=`<div class="card score-card"><div class="muted" style="margin-bottom:6px">${auto?"Time's up!":"Test Submitted"}</div><h2 style="margin-bottom:4px">${escapeHtml(cbtTest?.title||"Test")}</h2><div class="score-num">${score}</div><div class="muted" style="margin-bottom:18px">out of ${total}</div>
-<div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left"><div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${correct}</div></div><div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${wrong}</div></div><div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${unattempted}</div></div><div class="card" style="margin:0"><div class="muted">Marking</div><div style="font-weight:700">+4 / −1</div></div></div>
-<button class="btn" id="backTests">Back to Tests</button></div>`;document.getElementById("backTests").onclick=()=>{cbtTest=null;cbtQuestions=[];renderTests(c)}}
+async function finishCbt(auto){
+  if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}
+  const c=document.getElementById("content");
+  c.innerHTML=`<div class="card score-card"><div class="muted">Calculating score...</div></div>`;
 
-async function renderAdmin(c){c.innerHTML=`<h2>Admin</h2><div class="tabs2"><button class="tab2 ${adminTab==="users"?"active":""}" data-a="users">Users</button><button class="tab2 ${adminTab==="logins"?"active":""}" data-a="logins">Login History</button><button class="tab2 ${adminTab==="settings"?"active":""}" data-a="settings">Settings</button><button class="tab2 ${adminTab==="content"?"active":""}" data-a="content">Content Manager</button><button class="tab2 ${adminTab==="cbt"?"active":""}" data-a="cbt">CBT Questions</button></div><div id="adminBody"></div>`;c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{adminTab=b.dataset.a;renderAdmin(c)}});const body=document.getElementById("adminBody");if(adminTab==="users")await renderAdminUsers(body);else if(adminTab==="logins")await renderAdminLogins(body);else if(adminTab==="settings")await renderAdminSettings(body);else if(adminTab==="content")await renderAdminContent(body);else if(adminTab==="cbt")await renderAdminCbt(body)}
+  try{
+    const answersPayload = {};
+    Object.keys(cbtAnswers).forEach(id => { answersPayload[id] = cbtAnswers[id]; });
 
-async function renderAdminUsers(body){try{const{data,error}=await db.from("profiles").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){body.innerHTML=`<div class="empty">No users yet.</div>`;return}body.innerHTML=`<table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;const rows=document.getElementById("uRows");data.forEach(user=>{const tr=el(`<tr><td>${escapeHtml(user.email)}</td><td><span class="badge ${user.role==="admin"?"admin":""}">${escapeHtml(user.role)}</span></td><td><span class="badge ${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td><td class="row-wrap" id="act-${escapeHtml(user.id)}"></td></tr>`);rows.appendChild(tr);const act=tr.querySelector(`#act-${CSS.escape(user.id)}`);if(user.role==="admin"){act.innerHTML=`<span class="muted">—</span>`;return}const setStatus=async st=>{try{await db.from("profiles").update({status:st}).eq("id",user.id);renderAdmin(document.getElementById("content"))}catch(e){alert(e?.message||"Error")}};if(user.status==="pending"){const a=el(`<button class="btn-good">Approve</button>`);a.onclick=()=>setStatus("active");act.appendChild(a);const r=el(`<button class="btn-danger">Reject</button>`);r.onclick=()=>setStatus("blocked");act.appendChild(r)}else{const p=el(`<button class="btn-warn">${user.status==="paused"?"Resume":"Pause"}</button>`);p.onclick=()=>setStatus(user.status==="paused"?"active":"paused");act.appendChild(p);const b=el(`<button class="btn-danger">${user.status==="blocked"?"Unblock":"Block"}</button>`);b.onclick=()=>setStatus(user.status==="blocked"?"active":"blocked");act.appendChild(b)}})}catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+    const { data, error } = await db.rpc("score_cbt_test", {
+      p_test_id: cbtTest.id,
+      p_answers: answersPayload
+    });
 
-async function renderAdminLogins(body){try{const{data,error}=await db.from("login_events").select("*").order("logged_in_at",{ascending:false}).limit(200);if(error)throw error;if(!data?.length){body.innerHTML=`<div class="empty">No login activity.</div>`;return}body.innerHTML=`<table><thead><tr><th>Email</th><th>Logged in at</th></tr></thead><tbody>${data.map(l=>`<tr><td>${escapeHtml(l.email)}</td><td>${escapeHtml(fmtDate(l.logged_in_at))}</td></tr>`).join("")}</tbody></table>`}catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+    if(error) throw error;
 
-async function renderAdminSettings(body){try{const{data,error}=await db.from("app_settings").select("*").eq("id",1).single();if(error&&error.code!=="PGRST116")throw error;const open=data?Boolean(data.registration_open):true;body.innerHTML=`<div class="card"><div class="row"><div><div>Accept new users</div><div class="muted">When off, new signups go pending.</div></div><button class="btn" id="toggleReg">${open?"Turn OFF":"Turn ON"}</button></div></div>`;document.getElementById("toggleReg").onclick=async()=>{try{await db.from("app_settings").update({registration_open:!open}).eq("id",1);renderAdminSettings(body)}catch(e){alert(e?.message||"Error")}}}catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+    const result = data || {};
+    const score = result.score ?? 0;
+    const total = result.total ?? (cbtQuestions.length * 4);
+    const correct = result.correct ?? 0;
+    const wrong = result.wrong ?? 0;
+    const unattempted = result.unattempted ?? 0;
 
-async function renderAdminContent(body){body.innerHTML=`<h3>Add Subject</h3><input id="newSubj" placeholder="Subject name"/><button class="btn" id="addSubj">Add Subject</button><h3>Add Chapter</h3><select id="chSubj"></select><input id="newChap" placeholder="Chapter name"/><button class="btn" id="addChap">Add Chapter</button><h3>Add Video</h3><select id="vidSubj"></select><select id="vidChap"></select><input id="vidTitle" placeholder="Video title"/><input id="vidUrl" placeholder="YouTube link"/><button class="btn" id="addVid">Add Video</button><h3>Add Question PDF</h3><select id="pdfSubj"></select><select id="pdfChap"></select><select id="pdfCat"><option value="general">Practice</option><option value="ncert">Important</option><option value="pyq">PYQs</option></select><input id="pdfTitle" placeholder="PDF title"/><input type="file" id="pdfFile" accept="application/pdf"/><button class="btn" id="addPdf">Upload PDF</button><h3>Add Test</h3><input id="testTitle" placeholder="Test title"/><input id="testDur" type="number" value="60" placeholder="Duration (min)"/><input type="file" id="testFile" accept="application/pdf"/><div class="muted" style="margin-bottom:8px">Leave file empty = CBT test</div><button class="btn" id="addTest">Create Test</button>`;
-try{const{data:subjects,error}=await db.from("subjects").select("*").order("sort_order");if(error)throw error;const opts=(subjects||[]).map(s=>`<option value="${escapeHtml(s.id)}">${escapeHtml(s.name)}</option>`).join("");["chSubj","vidSubj","pdfSubj"].forEach(id=>{const sel=document.getElementById(id);if(sel)sel.innerHTML=opts||`<option value="">No subjects</option>`});
-const loadChapters=async(subId,chapId)=>{const subSel=document.getElementById(subId),chapSel=document.getElementById(chapId);if(!subSel||!chapSel)return;const sid=subSel.value;if(!sid){chapSel.innerHTML=`<option value="">No chapters</option>`;return}const{data:chs}=await db.from("chapters").select("*").eq("subject_id",sid).order("sort_order");chapSel.innerHTML=(chs||[]).map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("")||`<option value="">No chapters</option>`};
-if(subjects?.length){await loadChapters("vidSubj","vidChap");await loadChapters("pdfSubj","pdfChap")}
-document.getElementById("vidSubj").onchange=()=>loadChapters("vidSubj","vidChap");document.getElementById("pdfSubj").onchange=()=>loadChapters("pdfSubj","pdfChap");
-document.getElementById("addSubj").onclick=async()=>{const name=document.getElementById("newSubj").value.trim();if(!name)return;try{await db.from("subjects").insert({name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-document.getElementById("addChap").onclick=async()=>{const subject_id=document.getElementById("chSubj").value,name=document.getElementById("newChap").value.trim();if(!subject_id||!name)return;try{await db.from("chapters").insert({subject_id,name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-document.getElementById("addVid").onclick=async()=>{const chapter_id=document.getElementById("vidChap").value,title=document.getElementById("vidTitle").value.trim(),url=document.getElementById("vidUrl").value.trim(),youtubeId=ytId(url);if(!chapter_id||!title||!youtubeId){alert("Check fields + valid YouTube link");return}try{await db.from("videos").insert({chapter_id,title,youtube_id:youtubeId});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-document.getElementById("addPdf").onclick=async()=>{const chapter_id=document.getElementById("pdfChap").value,category=document.getElementById("pdfCat").value,title=document.getElementById("pdfTitle").value.trim(),file=document.getElementById("pdfFile").files[0];if(!chapter_id||!title||!file){alert("Fill all");return}if(file.type!=="application/pdf"){alert("PDF only");return}try{const path=`pdfs/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{error:insErr}=await db.from("pdfs").insert({chapter_id,category,title,file_path:path});if(insErr){try{await db.storage.from("content").remove([path])}catch(e){}throw insErr}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-document.getElementById("addTest").onclick=async()=>{const title=document.getElementById("testTitle").value.trim(),duration_minutes=parseInt(document.getElementById("testDur").value)||60,file=document.getElementById("testFile").files[0];if(!title){alert("Enter title");return}try{let file_path=null,type="cbt";if(file){if(file.type!=="application/pdf"){alert("PDF only");return}file_path=`tests/${crypto.randomUUID()}_${file.name}`;type="pdf";const{error:upErr}=await db.storage.from("content").upload(file_path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr}const payload={title,duration_minutes,file_path};try{const{error}=await db.from("tests").insert({...payload,type});if(error)throw error}catch(e){const{error}=await db.from("tests").insert(payload);if(error){if(file_path)try{await db.storage.from("content").remove([file_path])}catch(x){}throw error}}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}}}catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+    saveLastScore({score, total, correct, wrong, unattempted, title: cbtTest?.title, at: Date.now()});
 
-async function renderAdminCbt(body){body.innerHTML=`<h3>Add Single Question</h3><select id="cbtTestSel"><option value="">Select test…</option></select><textarea id="cbtQ" placeholder="Question text"></textarea><input id="cbtA" placeholder="Option A"/><input id="cbtB" placeholder="Option B"/><input id="cbtC" placeholder="Option C"/><input id="cbtD" placeholder="Option D"/><select id="cbtCorrect"><option value="A">Correct: A</option><option value="B">Correct: B</option><option value="C">Correct: C</option><option value="D">Correct: D</option></select><button class="btn" id="addCbtQ">Add Question</button>
-<h3 style="margin-top:22px">Bulk Add (time saver)</h3><div class="muted" style="margin-bottom:8px">Format (one question per block, separate by blank line):<br>Question text<br>A) option<br>B) option<br>C) option<br>D) option<br>Answer: A</div><textarea id="bulkText" style="min-height:160px" placeholder="Paste multiple questions here..."></textarea><button class="btn" id="bulkAdd">Add All</button>
-<h3 style="margin-top:22px">Existing Questions</h3><div id="cbtQList" class="muted">Select a test</div>`;
-try{const{data:tests}=await db.from("tests").select("id,title,file_path").order("created_at",{ascending:false});const sel=document.getElementById("cbtTestSel");(tests||[]).forEach(t=>{const o=document.createElement("option");o.value=t.id;o.textContent=t.title+(t.file_path?" (PDF)":" (CBT)");sel.appendChild(o)});
-const loadQs=async()=>{const testId=sel.value;const list=document.getElementById("cbtQList");if(!testId){list.innerHTML=`<div class="muted">Select a test</div>`;return}try{const{data,error}=await db.from("test_questions").select("*").eq("test_id",testId).order("sort_order");if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No questions yet</div>`;return}list.innerHTML="";data.forEach((q,i)=>{const row=el(`<div class="card"><div class="row"><div style="flex:1"><div class="muted">Q${i+1} · Correct: ${escapeHtml(q.correct_option)}</div><div style="margin-top:4px">${escapeHtml(q.question_text)}</div></div><button class="btn-danger delQ">Delete</button></div></div>`);row.querySelector(".delQ").onclick=async()=>{if(!confirm("Delete?"))return;try{await db.from("test_questions").delete().eq("id",q.id);loadQs()}catch(e){alert(e?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}};
-sel.onchange=loadQs;
-document.getElementById("addCbtQ").onclick=async()=>{const test_id=sel.value,question_text=document.getElementById("cbtQ").value.trim(),option_a=document.getElementById("cbtA").value.trim(),option_b=document.getElementById("cbtB").value.trim(),option_c=document.getElementById("cbtC").value.trim(),option_d=document.getElementById("cbtD").value.trim(),correct_option=document.getElementById("cbtCorrect").value;if(!test_id||!question_text||!option_a||!option_b||!option_c||!option_d){alert("Fill all");return}try{await db.from("test_questions").insert({test_id,question_text,option_a,option_b,option_c,option_d,correct_option});document.getElementById("cbtQ").value="";document.getElementById("cbtA").value="";document.getElementById("cbtB").value="";document.getElementById("cbtC").value="";document.getElementById("cbtD").value="";loadQs()}catch(e){alert(e?.message||"Error")}};
-document.getElementById("bulkAdd").onclick=async()=>{const test_id=sel.value,raw=document.getElementById("bulkText").value.trim();if(!test_id){alert("Select test first");return}if(!raw){alert("Paste questions");return}const blocks=raw.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);const rows=[];for(const block of blocks){const lines=block.split("\n").map(l=>l.trim()).filter(Boolean);if(lines.length<6)continue;const question_text=lines[0].replace(/^\d+[\.\)]\s*/,"");const getOpt=l=>{const m=l.match(/^[A-Da-d][\.\)\]]\s*(.+)/);return m?m[1]:l};const option_a=getOpt(lines[1]),option_b=getOpt(lines[2]),option_c=getOpt(lines[3]),option_d=getOpt(lines[4]);let correct_option="A";const ansLine=lines.find(l=>/answer\s*[:=]/i.test(l))||lines[lines.length-1];const am=ansLine.match(/[A-Da-d]/);if(am)correct_option=am[0].toUpperCase();rows.push({test_id,question_text,option_a,option_b,option_c,option_d,correct_option})}if(!rows.length){alert("No valid questions found. Check format.");return}try{const{error}=await db.from("test_questions").insert(rows);if(error)throw error;document.getElementById("bulkText").value="";alert(`${rows.length} questions added`);loadQs()}catch(e){alert(e?.message||"Bulk add failed")}}}catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+    c.innerHTML=`<div class="card score-card">
+      <div class="muted" style="margin-bottom:6px">${auto?"Time's up!":"Test Submitted"}</div>
+      <h2 style="margin-bottom:4px">${escapeHtml(cbtTest?.title||"Test")}</h2>
+      <div class="score-num">${score}</div>
+      <div class="muted" style="margin-bottom:18px">out of ${total}</div>
+      <div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left">
+        <div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${correct}</div></div>
+        <div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${wrong}</div></div>
+        <div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${unattempted}</div></div>
+        <div class="card" style="margin:0"><div class="muted">Marking</div><div style="font-weight:700">+4 / −1</div></div>
+      </div>
+      <button class="btn" id="backTests">Back to Tests</button>
+    </div>`;
+    document.getElementById("backTests").onclick=()=>{cbtTest=null;cbtQuestions=[];renderTests(c)};
+  }catch(e){
+    console.error(e);
+    c.innerHTML=`<div class="card score-card">
+      <div class="muted" style="margin-bottom:10px">${auto?"Time's up!":"Test Submitted"}</div>
+      <h2>${escapeHtml(cbtTest?.title||"Test")}</h2>
+      <p class="muted" style="margin:16px 0">Score will be available once admin sets the correct answers.</p>
+      <button class="btn" id="backTests">Back to Tests</button>
+    </div>`;
+    document.getElementById("backTests").onclick=()=>{cbtTest=null;cbtQuestions=[];renderTests(c)};
+  }
+}
 
-async function boot(){if(!db)throw new Error("Supabase not init");try{const{data,error}=await db.auth.getSession();if(error)throw error;session=data?.session||null;if(session)await afterLogin();else renderAuth();db.auth.onAuthStateChange((e,ns)=>{session=ns||null})}catch(e){throw e}}
+async function renderAdmin(c){
+  c.innerHTML=`<h2>Admin</h2><div class="tabs2">
+    <button class="tab2 ${adminTab==="users"?"active":""}" data-a="users">Users</button>
+    <button class="tab2 ${adminTab==="logins"?"active":""}" data-a="logins">Login History</button>
+    <button class="tab2 ${adminTab==="settings"?"active":""}" data-a="settings">Settings</button>
+    <button class="tab2 ${adminTab==="content"?"active":""}" data-a="content">Content Manager</button>
+    <button class="tab2 ${adminTab==="cbt"?"active":""}" data-a="cbt">CBT Questions</button>
+  </div><div id="adminBody"></div>`;
+  c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{adminTab=b.dataset.a;renderAdmin(c)}});
+  const body=document.getElementById("adminBody");
+  if(adminTab==="users")await renderAdminUsers(body);
+  else if(adminTab==="logins")await renderAdminLogins(body);
+  else if(adminTab==="settings")await renderAdminSettings(body);
+  else if(adminTab==="content")await renderAdminContent(body);
+  else if(adminTab==="cbt")await renderAdminCbt(body);
+}
+
+async function renderAdminUsers(body){
+  try{
+    const{data,error}=await db.from("profiles").select("*").order("created_at",{ascending:false});
+    if(error)throw error;
+    if(!data?.length){body.innerHTML=`<div class="empty">No users yet.</div>`;return}
+    body.innerHTML=`<table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;
+    const rows=document.getElementById("uRows");
+    data.forEach(user=>{
+      const tr=el(`<tr><td>${escapeHtml(user.email)}</td><td><span class="badge ${user.role==="admin"?"admin":""}">${escapeHtml(user.role)}</span></td><td><span class="badge ${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td><td class="row-wrap" id="act-${escapeHtml(user.id)}"></td></tr>`);
+      rows.appendChild(tr);
+      const act=tr.querySelector(`#act-${CSS.escape(user.id)}`);
+      if(user.role==="admin"){act.innerHTML=`<span class="muted">—</span>`;return}
+      const setStatus=async st=>{try{await db.from("profiles").update({status:st}).eq("id",user.id);renderAdmin(document.getElementById("content"))}catch(e){alert(e?.message||"Error")}};
+      if(user.status==="pending"){
+        const a=el(`<button class="btn-good">Approve</button>`);a.onclick=()=>setStatus("active");act.appendChild(a);
+        const r=el(`<button class="btn-danger">Reject</button>`);r.onclick=()=>setStatus("blocked");act.appendChild(r);
+      }else{
+        const p=el(`<button class="btn-warn">${user.status==="paused"?"Resume":"Pause"}</button>`);p.onclick=()=>setStatus(user.status==="paused"?"active":"paused");act.appendChild(p);
+        const b=el(`<button class="btn-danger">${user.status==="blocked"?"Unblock":"Block"}</button>`);b.onclick=()=>setStatus(user.status==="blocked"?"active":"blocked");act.appendChild(b);
+      }
+    });
+  }catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+}
+
+async function renderAdminLogins(body){
+  try{
+    const{data,error}=await db.from("login_events").select("*").order("logged_in_at",{ascending:false}).limit(200);
+    if(error)throw error;
+    if(!data?.length){body.innerHTML=`<div class="empty">No login activity.</div>`;return}
+    body.innerHTML=`<table><thead><tr><th>Email</th><th>Logged in at</th></tr></thead><tbody>${data.map(l=>`<tr><td>${escapeHtml(l.email)}</td><td>${escapeHtml(fmtDate(l.logged_in_at))}</td></tr>`).join("")}</tbody></table>`;
+  }catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+}
+
+async function renderAdminSettings(body){
+  try{
+    const{data,error}=await db.from("app_settings").select("*").eq("id",1).single();
+    if(error&&error.code!=="PGRST116")throw error;
+    const open=data?Boolean(data.registration_open):true;
+    body.innerHTML=`<div class="card"><div class="row"><div><div>Accept new users</div><div class="muted">When off, new signups go pending.</div></div><button class="btn" id="toggleReg">${open?"Turn OFF":"Turn ON"}</button></div></div>`;
+    document.getElementById("toggleReg").onclick=async()=>{try{await db.from("app_settings").update({registration_open:!open}).eq("id",1);renderAdminSettings(body)}catch(e){alert(e?.message||"Error")}};
+  }catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+}
+
+async function renderAdminContent(body){
+  body.innerHTML=`<h3>Add Subject</h3><input id="newSubj" placeholder="Subject name"/><button class="btn" id="addSubj">Add Subject</button>
+  <h3>Add Chapter</h3><select id="chSubj"></select><input id="newChap" placeholder="Chapter name"/><button class="btn" id="addChap">Add Chapter</button>
+  <h3>Add Video</h3><select id="vidSubj"></select><select id="vidChap"></select><input id="vidTitle" placeholder="Video title"/><input id="vidUrl" placeholder="YouTube link"/><button class="btn" id="addVid">Add Video</button>
+  <h3>Add Question PDF</h3><select id="pdfSubj"></select><select id="pdfChap"></select><select id="pdfCat"><option value="general">Practice</option><option value="ncert">Important</option><option value="pyq">PYQs</option></select><input id="pdfTitle" placeholder="PDF title"/><input type="file" id="pdfFile" accept="application/pdf"/><button class="btn" id="addPdf">Upload PDF</button>
+  <h3>Add Test</h3><input id="testTitle" placeholder="Test title"/><input id="testDur" type="number" value="60" placeholder="Duration (min)"/><input type="file" id="testFile" accept="application/pdf"/><div class="muted" style="margin-bottom:8px">Leave file empty = CBT test</div><button class="btn" id="addTest">Create Test</button>`;
+  try{
+    const{data:subjects,error}=await db.from("subjects").select("*").order("sort_order");
+    if(error)throw error;
+    const opts=(subjects||[]).map(s=>`<option value="${escapeHtml(s.id)}">${escapeHtml(s.name)}</option>`).join("");
+    ["chSubj","vidSubj","pdfSubj"].forEach(id=>{const sel=document.getElementById(id);if(sel)sel.innerHTML=opts||`<option value="">No subjects</option>`});
+    const loadChapters=async(subId,chapId)=>{const subSel=document.getElementById(subId),chapSel=document.getElementById(chapId);if(!subSel||!chapSel)return;const sid=subSel.value;if(!sid){chapSel.innerHTML=`<option value="">No chapters</option>`;return}const{data:chs}=await db.from("chapters").select("*").eq("subject_id",sid).order("sort_order");chapSel.innerHTML=(chs||[]).map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("")||`<option value="">No chapters</option>`};
+    if(subjects?.length){await loadChapters("vidSubj","vidChap");await loadChapters("pdfSubj","pdfChap")}
+    document.getElementById("vidSubj").onchange=()=>loadChapters("vidSubj","vidChap");
+    document.getElementById("pdfSubj").onchange=()=>loadChapters("pdfSubj","pdfChap");
+    document.getElementById("addSubj").onclick=async()=>{const name=document.getElementById("newSubj").value.trim();if(!name)return;try{await db.from("subjects").insert({name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+    document.getElementById("addChap").onclick=async()=>{const subject_id=document.getElementById("chSubj").value,name=document.getElementById("newChap").value.trim();if(!subject_id||!name)return;try{await db.from("chapters").insert({subject_id,name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+    document.getElementById("addVid").onclick=async()=>{const chapter_id=document.getElementById("vidChap").value,title=document.getElementById("vidTitle").value.trim(),url=document.getElementById("vidUrl").value.trim(),youtubeId=ytId(url);if(!chapter_id||!title||!youtubeId){alert("Check fields + valid YouTube link");return}try{await db.from("videos").insert({chapter_id,title,youtube_id:youtubeId});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+    document.getElementById("addPdf").onclick=async()=>{const chapter_id=document.getElementById("pdfChap").value,category=document.getElementById("pdfCat").value,title=document.getElementById("pdfTitle").value.trim(),file=document.getElementById("pdfFile").files[0];if(!chapter_id||!title||!file){alert("Fill all");return}if(file.type!=="application/pdf"){alert("PDF only");return}try{const path=`pdfs/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{error:insErr}=await db.from("pdfs").insert({chapter_id,category,title,file_path:path});if(insErr){try{await db.storage.from("content").remove([path])}catch(e){}throw insErr}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+    document.getElementById("addTest").onclick=async()=>{const title=document.getElementById("testTitle").value.trim(),duration_minutes=parseInt(document.getElementById("testDur").value)||60,file=document.getElementById("testFile").files[0];if(!title){alert("Enter title");return}try{let file_path=null,type="cbt";if(file){if(file.type!=="application/pdf"){alert("PDF only");return}file_path=`tests/${crypto.randomUUID()}_${file.name}`;type="pdf";const{error:upErr}=await db.storage.from("content").upload(file_path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr}const payload={title,duration_minutes,file_path};try{const{error}=await db.from("tests").insert({...payload,type});if(error)throw error}catch(e){const{error}=await db.from("tests").insert(payload);if(error){if(file_path)try{await db.storage.from("content").remove([file_path])}catch(x){}throw error}}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+  }catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+}
+
+async function renderAdminCbt(body){
+  body.innerHTML=`
+    <h3>1. Select Test</h3>
+    <select id="cbtTestSel"><option value="">Select test…</option></select>
+
+    <h3 style="margin-top:20px">2. Bulk Add Questions</h3>
+    <div class="muted" style="margin-bottom:8px">Format (blank line se alag questions):<br>
+    Question text<br>A) option<br>B) option<br>C) option<br>D) option<br><br>
+    (Answer line optional hai)</div>
+    <textarea id="bulkText" style="min-height:150px" placeholder="Paste multiple questions here..."></textarea>
+    <button class="btn" id="bulkAdd">Add All Questions</button>
+
+    <h3 style="margin-top:22px">3. Set Correct Answers (Number-wise)</h3>
+    <div class="muted" style="margin-bottom:8px">Example:<br>1. B<br>2. A<br>3. D<br>4. C</div>
+    <textarea id="ansText" style="min-height:100px" placeholder="1. A&#10;2. B&#10;3. C..."></textarea>
+    <button class="btn" id="setAnswers">Update Answers</button>
+
+    <h3 style="margin-top:22px">4. Existing Questions</h3>
+    <div id="cbtQList" class="muted">Select a test first</div>
+  `;
+
+  try{
+    const{data:tests}=await db.from("tests").select("id,title,file_path").order("created_at",{ascending:false});
+    const sel=document.getElementById("cbtTestSel");
+    (tests||[]).forEach(t=>{
+      const o=document.createElement("option");
+      o.value=t.id;
+      o.textContent=t.title+(t.file_path?" (PDF)":" (CBT)");
+      sel.appendChild(o);
+    });
+
+    const loadQs=async()=>{
+      const testId=sel.value;
+      const list=document.getElementById("cbtQList");
+      if(!testId){list.innerHTML=`<div class="muted">Select a test</div>`;return}
+      try{
+        const{data,error}=await db.from("test_questions").select("*").eq("test_id",testId).order("sort_order");
+        if(error)throw error;
+        if(!data?.length){list.innerHTML=`<div class="empty">No questions yet</div>`;return}
+        list.innerHTML="";
+        data.forEach((q,i)=>{
+          const row=el(`<div class="card">
+            <div class="row">
+              <div style="flex:1">
+                <div class="muted">Q${i+1} · Correct: 
+                  <select class="corrSel" data-id="${q.id}" style="width:auto;display:inline;padding:4px 8px;margin:0">
+                    <option value="A" ${q.correct_option==="A"?"selected":""}>A</option>
+                    <option value="B" ${q.correct_option==="B"?"selected":""}>B</option>
+                    <option value="C" ${q.correct_option==="C"?"selected":""}>C</option>
+                    <option value="D" ${q.correct_option==="D"?"selected":""}>D</option>
+                  </select>
+                </div>
+                <div style="margin-top:6px">${escapeHtml(q.question_text)}</div>
+              </div>
+              <button class="btn-danger delQ">Delete</button>
+            </div>
+          </div>`);
+          row.querySelector(".delQ").onclick=async()=>{
+            if(!confirm("Delete this question?"))return;
+            try{await db.from("test_questions").delete().eq("id",q.id);loadQs()}catch(e){alert(e?.message||"Error")}
+          };
+          row.querySelector(".corrSel").onchange=async(e)=>{
+            try{
+              await db.from("test_questions").update({correct_option:e.target.value}).eq("id",q.id);
+            }catch(err){alert(err?.message||"Error")}
+          };
+          list.appendChild(row);
+        });
+      }catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+    };
+
+    sel.onchange=loadQs;
+
+    // Bulk Add Questions
+    document.getElementById("bulkAdd").onclick=async()=>{
+      const test_id=sel.value;
+      const raw=document.getElementById("bulkText").value.trim();
+      if(!test_id){alert("Select test first");return}
+      if(!raw){alert("Paste questions");return}
+
+      const blocks=raw.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);
+      const rows=[];
+      for(const block of blocks){
+        const lines=block.split("\n").map(l=>l.trim()).filter(Boolean);
+        if(lines.length<5)continue;
+        const question_text=lines[0].replace(/^\d+[\.\)]\s*/,"");
+        const getOpt=l=>{
+          const m=l.match(/^[A-Da-d][\.\)\]]\s*(.+)/);
+          return m?m[1]:l;
+        };
+        const option_a=getOpt(lines[1]);
+        const option_b=getOpt(lines[2]);
+        const option_c=getOpt(lines[3]);
+        const option_d=getOpt(lines[4]);
+        let correct_option=null;
+        const ansLine=lines.find(l=>/answer\s*[:=]/i.test(l));
+        if(ansLine){
+          const am=ansLine.match(/[A-Da-d]/);
+          if(am)correct_option=am[0].toUpperCase();
+        }
+        rows.push({test_id,question_text,option_a,option_b,option_c,option_d,correct_option:correct_option||"A"});
+      }
+      if(!rows.length){alert("No valid questions found. Check format.");return}
+      try{
+        const{error}=await db.from("test_questions").insert(rows);
+        if(error)throw error;
+        document.getElementById("bulkText").value="";
+        alert(`${rows.length} questions added`);
+        loadQs();
+      }catch(e){alert(e?.message||"Bulk add failed")}
+    };
+
+    // Set Answers by Number
+    document.getElementById("setAnswers").onclick=async()=>{
+      const test_id=sel.value;
+      const raw=document.getElementById("ansText").value.trim();
+      if(!test_id){alert("Select test first");return}
+      if(!raw){alert("Paste answers");return}
+
+      const{data:qs,error}=await db.from("test_questions").select("id,sort_order").eq("test_id",test_id).order("sort_order");
+      if(error)throw error;
+      if(!qs?.length){alert("No questions found for this test");return}
+
+      const lines=raw.split("\n").map(l=>l.trim()).filter(Boolean);
+      let updated=0;
+      for(const line of lines){
+        const m=line.match(/^(\d+)\s*[\.\)\-\:]?\s*([A-Da-d])/i);
+        if(!m)continue;
+        const num=parseInt(m[1]);
+        const ans=m[2].toUpperCase();
+        if(num<1||num>qs.length)continue;
+        const q=qs[num-1];
+        try{
+          await db.from("test_questions").update({correct_option:ans}).eq("id",q.id);
+          updated++;
+        }catch(e){}
+      }
+      alert(`${updated} answers updated`);
+      document.getElementById("ansText").value="";
+      loadQs();
+    };
+
+  }catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+}
+
+async function boot(){
+  if(!db)throw new Error("Supabase not init");
+  try{
+    const{data,error}=await db.auth.getSession();
+    if(error)throw error;
+    session=data?.session||null;
+    if(session)await afterLogin();
+    else renderAuth();
+    db.auth.onAuthStateChange((e,ns)=>{session=ns||null});
+  }catch(e){throw e}
+}
 initializeApp();
 </script>
 </body>
