@@ -6,1647 +6,294 @@
 <title>NEETrix</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#060912;
-    --panel:#0f1524;
-    --panel2:#151d30;
-    --panel3:#1a2438;
-    --border:#243049;
-    --text:#eef2fb;
-    --muted:#8b97b3;
-    --accent:#5b9dff;
-    --accent2:#6b7cff;
-    --green:#3dd68c;
-    --green-dim:rgba(61,214,140,0.15);
-    --danger:#ef5a5a;
-    --warn:#f0b429;
-    --radius:14px;
-    --shadow:0 8px 32px rgba(0,0,0,0.35);
-  }
+:root{
+  --bg:#060912;--panel:#0f1524;--panel2:#151d30;--border:#243049;
+  --text:#eef2fb;--muted:#8b97b3;--accent:#5b9dff;--accent2:#6b7cff;
+  --green:#3dd68c;--danger:#ef5a5a;--warn:#f0b429;--shadow:0 8px 32px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+#app{min-height:100vh;padding-bottom:52px}
+input,textarea,select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{min-height:90px;resize:vertical}
+button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-highlight-color:transparent}
+.btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 4px 14px rgba(91,157,255,.25)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,157,255,.35)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.45;pointer-events:none}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:9px;font-size:13px}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-outline:active{transform:scale(.97)}
+.btn-danger{background:var(--danger);border:none;color:#fff;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
+.btn-good{background:var(--green);border:none;color:#06281a;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
+.btn-warn{background:var(--warn);border:none;color:#3a2a00;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
+.btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:12px}
+.btn-small:active{transform:scale(.96)}
 
-  *{box-sizing:border-box;margin:0;padding:0;}
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 0%,#121a2e 0%,var(--bg) 70%)}
+.auth-card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:var(--shadow)}
+.brand{font-size:26px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.03em}
+.sub{color:var(--muted);font-size:13.5px;margin:8px 0 22px}
+.msg{font-size:12.5px;margin:-4px 0 12px;min-height:16px}
+.link{color:var(--accent);background:none;border:none;font-size:13px;text-align:center;width:100%;margin-top:10px}
 
-  body{
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
-    letter-spacing:-0.01em;
-  }
+.topbar{display:flex;align-items:center;gap:4px;padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(15,21,36,.92);backdrop-filter:blur(12px);overflow-x:auto;position:sticky;top:0;z-index:50}
+.topbar .brand{font-size:17px;margin:0;flex-shrink:0;margin-right:6px}
+.navbtn{background:none;border:1px solid transparent;color:var(--muted);padding:7px 12px;border-radius:8px;font-size:12.5px;white-space:nowrap;flex-shrink:0}
+.navbtn:hover{color:var(--text)}
+.navbtn.active{background:var(--panel2);color:var(--text);border-color:var(--border)}
+.navbtn:active{transform:scale(.96)}
+.spacer{flex:1;min-width:8px}
+.profile-wrap{position:relative;flex-shrink:0}
+.profile-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.profile-btn:active{transform:scale(.93)}
+.profile-menu{position:absolute;right:0;top:42px;width:210px;background:var(--panel);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:8px;display:none;z-index:60}
+.profile-menu.open{display:block}
+.profile-menu .pm-email{padding:8px 10px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--border);margin-bottom:4px;word-break:break-all}
+.profile-menu button{width:100%;text-align:left;background:none;border:none;color:var(--text);padding:9px 10px;border-radius:8px;font-size:13px}
+.profile-menu button:hover{background:var(--panel2)}
+.profile-menu button.danger{color:var(--danger)}
 
-  #app{min-height:100vh;padding-bottom:48px;}
+.content{max-width:920px;margin:0 auto;padding:22px 16px 40px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+.subject-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px 18px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.subject-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.25)}
+.subject-card:active{transform:scale(.98)}
+.subject-card h3{margin:0;font-size:15.5px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.row-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.muted{color:var(--muted);font-size:12.5px}
+.badge{font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
+.badge.admin{color:var(--accent);border-color:var(--accent)}
+.badge.active{color:var(--green);border-color:var(--green)}
+.badge.paused{color:var(--warn);border-color:var(--warn)}
+.badge.blocked{color:var(--danger);border-color:var(--danger)}
+.back{background:none;border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:8px;font-size:12.5px;margin-bottom:16px}
+.back:hover{border-color:var(--accent);color:var(--accent)}
+.tabs2{display:flex;gap:6px;margin:12px 0 16px;flex-wrap:wrap}
+.tab2{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 15px;border-radius:9px;font-size:12.5px;font-weight:500}
+.tab2.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
+h2{font-size:20px;margin:2px 0 10px;font-weight:700;letter-spacing:-.02em}
+h3{font-size:15px;margin:16px 0 10px;font-weight:600}
+.empty{color:var(--muted);font-size:13.5px;padding:32px 0;text-align:center}
 
-  input,textarea,select{
-    width:100%;
-    background:var(--panel2);
-    border:1px solid var(--border);
-    color:var(--text);
-    border-radius:10px;
-    padding:12px 14px;
-    font-size:14px;
-    margin-bottom:10px;
-    outline:none;
-    font-family:inherit;
-    transition:border-color 0.2s;
-  }
-  input:focus,textarea:focus,select:focus{border-color:var(--accent);}
-  textarea{min-height:90px;resize:vertical;}
+/* HOME */
+.home-hero{text-align:center;padding:28px 16px 24px;background:linear-gradient(180deg,rgba(91,157,255,.07) 0%,transparent 100%);border:1px solid var(--border);border-radius:18px;margin-bottom:18px;position:relative;overflow:hidden}
+.anim-row{display:flex;justify-content:center;align-items:center;gap:36px;margin-bottom:16px;flex-wrap:wrap;min-height:120px}
 
-  button{cursor:pointer;font-family:inherit;transition:all 0.18s ease;}
+/* Atom - improved */
+.atom-wrap{width:110px;height:110px;position:relative;flex-shrink:0}
+.atom-core{width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#a5d0ff,var(--accent));border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 20px var(--accent),0 0 8px #fff}
+.orbit{position:absolute;top:50%;left:50%;border:1px solid rgba(91,157,255,.25);border-radius:50%;transform:translate(-50%,-50%);animation:spin linear infinite}
+.orbit1{width:52px;height:34px;animation-duration:5s}
+.orbit2{width:78px;height:48px;animation-duration:7.5s;animation-direction:reverse}
+.orbit3{width:100px;height:62px;animation-duration:10s}
+.orbit4{width:110px;height:70px;animation-duration:13s;animation-direction:reverse;opacity:.6}
+.electron{width:7px;height:7px;background:#7dd3fc;border-radius:50%;position:absolute;top:-3.5px;left:50%;margin-left:-3.5px;box-shadow:0 0 10px #7dd3fc}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-  .btn{
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    border:none;color:#fff;
-    padding:11px 18px;border-radius:10px;
-    font-size:13.5px;font-weight:600;
-    box-shadow:0 4px 14px rgba(91,157,255,0.25);
-  }
-  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,157,255,0.35);}
-  .btn:active{transform:translateY(0);}
-  .btn:disabled{opacity:.45;pointer-events:none;}
+/* Nervous system */
+.nerve-wrap{width:90px;height:120px;position:relative;flex-shrink:0}
+.nerve-brain{width:36px;height:28px;background:radial-gradient(ellipse at 40% 40%,#8ec5ff,var(--accent));border-radius:50% 50% 45% 45%;position:absolute;top:4px;left:50%;transform:translateX(-50%);box-shadow:0 0 16px rgba(91,157,255,.5)}
+.nerve-spine{width:4px;height:78px;background:linear-gradient(180deg,var(--accent),rgba(91,157,255,.3));position:absolute;top:30px;left:50%;transform:translateX(-50%);border-radius:2px}
+.nerve-wave{position:absolute;left:50%;width:8px;height:8px;background:var(--green);border-radius:50%;transform:translateX(-50%);box-shadow:0 0 10px var(--green);animation:nerveDown 2.8s ease-in-out infinite}
+.nerve-wave:nth-child(3){animation-delay:.7s}
+.nerve-wave:nth-child(4){animation-delay:1.4s}
+.nerve-wave:nth-child(5){animation-delay:2.1s}
+.nerve-branch{position:absolute;height:2px;background:rgba(91,157,255,.35);border-radius:1px}
+@keyframes nerveDown{0%{top:32px;opacity:0;transform:translateX(-50%) scale(.6)}15%{opacity:1}85%{opacity:1}100%{top:105px;opacity:0;transform:translateX(-50%) scale(.4)}}
 
-  .btn-outline{
-    background:transparent;border:1px solid var(--border);
-    color:var(--text);padding:9px 14px;border-radius:9px;font-size:13px;
-  }
-  .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.welcome{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.02em}
+.progress-box{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px}
+.progress-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.progress-bar-bg{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:4px;transition:width .6s ease}
+.progress-stats{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px}
+.progress-stats span{color:var(--muted)}
+.progress-stats b{color:var(--text);font-weight:600}
 
-  .btn-danger{background:var(--danger);border:none;color:#fff;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;}
-  .btn-good{background:var(--green);border:none;color:#06281a;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;}
-  .btn-warn{background:var(--warn);border:none;color:#3a2a00;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;}
-  .btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:12px;}
-  .btn-small:hover{border-color:var(--accent);color:var(--accent);}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:600px){.home-grid{grid-template-columns:1fr}}
+.home-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px 14px;text-align:center;cursor:pointer;transition:.22s}
+.home-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.28)}
+.home-card:active{transform:scale(.97)}
+.home-card .icon{font-size:30px;margin-bottom:10px;filter:drop-shadow(0 4px 8px rgba(91,157,255,.25))}
+.home-card h3{margin:0 0 4px;font-size:15px}
 
-  /* AUTH */
-  .auth-wrap{
-    min-height:100vh;display:flex;align-items:center;justify-content:center;
-    padding:20px;background:radial-gradient(ellipse at 50% 0%,#121a2e 0%,var(--bg) 70%);
-  }
-  .auth-card{
-    background:var(--panel);border:1px solid var(--border);
-    border-radius:20px;padding:36px 32px;width:100%;max-width:400px;
-    box-shadow:var(--shadow);
-  }
-  .brand{
-    font-size:26px;font-weight:800;
-    background:linear-gradient(135deg,var(--accent),var(--green));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    letter-spacing:-0.03em;
-  }
-  .sub{color:var(--muted);font-size:13.5px;margin:8px 0 22px;}
-  .msg{font-size:12.5px;margin:-4px 0 12px;min-height:16px;}
-  .link{color:var(--accent);background:none;border:none;font-size:13px;text-align:center;width:100%;margin-top:10px;cursor:pointer;}
-  .link:hover{text-decoration:underline;}
+/* Footer premium */
+.powered{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;color:var(--muted);padding:11px 0;background:rgba(6,9,18,.94);backdrop-filter:blur(10px);border-top:1px solid rgba(36,48,73,.6);z-index:40;letter-spacing:.04em}
+.powered span{background:linear-gradient(90deg,var(--muted),var(--accent),var(--muted));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:500}
 
-  /* TOPBAR */
-  .topbar{
-    display:flex;align-items:center;gap:4px;
-    padding:10px 14px;border-bottom:1px solid var(--border);
-    background:rgba(15,21,36,0.92);backdrop-filter:blur(12px);
-    overflow-x:auto;position:sticky;top:0;z-index:50;
-  }
-  .topbar .brand{font-size:17px;margin:0;flex-shrink:0;margin-right:6px;}
-  .navbtn{
-    background:none;border:1px solid transparent;color:var(--muted);
-    padding:7px 12px;border-radius:8px;font-size:12.5px;white-space:nowrap;flex-shrink:0;
-  }
-  .navbtn:hover{color:var(--text);}
-  .navbtn.active{background:var(--panel2);color:var(--text);border-color:var(--border);}
-  .spacer{flex:1;min-width:8px;}
+.yt-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;background:#000;margin-bottom:14px;border:1px solid var(--border)}
+.yt-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:70;padding:16px}
+.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:920px;width:100%;max-height:90vh;overflow:auto;padding:18px}
+.modal-close{background:none;border:none;color:var(--muted);float:right;font-size:24px;line-height:1;padding:0 4px}
+.timer{font-size:22px;font-weight:800;color:var(--warn);text-align:center;padding:12px;background:var(--panel2);border-radius:10px;margin-bottom:12px}
+.zoom-row{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.zoom-row button{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px}
+.fatal-error{min-height:100vh;background:var(--bg);color:#fff;padding:24px}
+.fatal-box{max-width:700px;margin:40px auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:24px}
+.fatal-title{color:var(--danger);margin-top:0}
+.fatal-text{color:#c5cada;line-height:1.6;white-space:pre-wrap}
 
-  .profile-wrap{position:relative;flex-shrink:0;}
-  .profile-btn{
-    width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));
-    border:none;color:#fff;font-weight:700;font-size:13px;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .profile-menu{
-    position:absolute;right:0;top:42px;width:210px;
-    background:var(--panel);border:1px solid var(--border);border-radius:12px;
-    box-shadow:var(--shadow);padding:8px;display:none;z-index:60;
-  }
-  .profile-menu.open{display:block;animation:fadeIn 0.15s ease;}
-  .profile-menu .pm-email{padding:8px 10px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--border);margin-bottom:4px;word-break:break-all;}
-  .profile-menu button{
-    width:100%;text-align:left;background:none;border:none;color:var(--text);
-    padding:9px 10px;border-radius:8px;font-size:13px;
-  }
-  .profile-menu button:hover{background:var(--panel2);}
-  .profile-menu button.danger{color:var(--danger);}
-
-  .content{max-width:920px;margin:0 auto;padding:22px 16px 40px;}
-
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  @media(max-width:560px){.grid2{grid-template-columns:1fr;}}
-
-  .subject-card{
-    background:var(--panel);border:1px solid var(--border);
-    border-radius:14px;padding:20px 18px;cursor:pointer;transition:0.2s;
-    position:relative;overflow:hidden;
-  }
-  .subject-card::before{
-    content:"";position:absolute;inset:0;
-    background:linear-gradient(135deg,rgba(91,157,255,0.06),transparent);
-    opacity:0;transition:0.2s;
-  }
-  .subject-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.25);}
-  .subject-card:hover::before{opacity:1;}
-  .subject-card h3{margin:0;font-size:15.5px;position:relative;}
-
-  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .row-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:8px;}
-  .muted{color:var(--muted);font-size:12.5px;}
-  .badge{font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted);}
-  .badge.admin{color:var(--accent);border-color:var(--accent);}
-  .badge.active{color:var(--green);border-color:var(--green);}
-  .badge.paused{color:var(--warn);border-color:var(--warn);}
-  .badge.blocked{color:var(--danger);border-color:var(--danger);}
-  .badge.pending{color:var(--muted);}
-
-  .back{background:none;border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:8px;font-size:12.5px;margin-bottom:16px;}
-  .back:hover{border-color:var(--accent);color:var(--accent);}
-
-  .tabs2{display:flex;gap:6px;margin:12px 0 16px;flex-wrap:wrap;}
-  .tab2{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 15px;border-radius:9px;font-size:12.5px;font-weight:500;}
-  .tab2:hover{color:var(--text);}
-  .tab2.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;}
-
-  h2{font-size:20px;margin:2px 0 10px;font-weight:700;letter-spacing:-0.02em;}
-  h3{font-size:15px;margin:16px 0 10px;font-weight:600;}
-  .empty{color:var(--muted);font-size:13.5px;padding:32px 0;text-align:center;}
-
-  /* HOME */
-  .home-hero{
-    text-align:center;padding:32px 16px 26px;
-    background:linear-gradient(180deg,rgba(91,157,255,0.08) 0%,transparent 100%);
-    border:1px solid var(--border);border-radius:18px;margin-bottom:20px;
-    position:relative;overflow:hidden;
-  }
-  .anim-row{
-    display:flex;justify-content:center;align-items:center;gap:28px;
-    margin-bottom:18px;flex-wrap:wrap;
-  }
-
-  /* Atom */
-  .atom-wrap{width:100px;height:100px;position:relative;flex-shrink:0;}
-  .atom-core{
-    width:14px;height:14px;background:var(--accent);border-radius:50%;
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    box-shadow:0 0 18px var(--accent),0 0 6px #fff;
-  }
-  .orbit{
-    position:absolute;top:50%;left:50%;border:1px solid rgba(91,157,255,0.28);
-    border-radius:50%;transform:translate(-50%,-50%);
-    animation:spin 7s linear infinite;
-  }
-  .orbit1{width:48px;height:32px;animation-duration:5.5s;}
-  .orbit2{width:72px;height:44px;animation-duration:8s;animation-direction:reverse;}
-  .orbit3{width:92px;height:58px;animation-duration:11s;}
-  .electron{width:6px;height:6px;background:#7dd3fc;border-radius:50%;position:absolute;top:-3px;left:50%;margin-left:-3px;box-shadow:0 0 8px #7dd3fc;}
-  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
-
-  /* DNA */
-  .dna-wrap{width:70px;height:100px;position:relative;flex-shrink:0;}
-  .dna-helix{
-    width:100%;height:100%;position:relative;
-    animation:dnaSpin 9s linear infinite;
-  }
-  .dna-strand{
-    position:absolute;width:8px;height:8px;border-radius:50%;
-    left:50%;margin-left:-4px;
-  }
-  .dna-strand.a{background:var(--accent);box-shadow:0 0 6px var(--accent);}
-  .dna-strand.b{background:var(--green);box-shadow:0 0 6px var(--green);}
-  @keyframes dnaSpin{to{transform:rotateY(360deg);}}
-
-  /* Spark */
-  .spark-wrap{width:90px;height:70px;position:relative;flex-shrink:0;}
-  .wire{
-    position:absolute;top:50%;height:2px;background:linear-gradient(90deg,transparent,var(--muted),transparent);
-    width:28px;
-  }
-  .wire.l{left:0;}
-  .wire.r{right:0;}
-  .spark{
-    position:absolute;top:50%;left:50%;width:4px;height:4px;
-    background:var(--accent);border-radius:50%;
-    transform:translate(-50%,-50%);
-    box-shadow:0 0 12px var(--accent),0 0 4px #fff;
-    animation:sparkPulse 1.4s ease-in-out infinite;
-  }
-  .spark-line{
-    position:absolute;top:50%;left:50%;height:2px;width:18px;
-    background:linear-gradient(90deg,transparent,var(--accent),transparent);
-    transform-origin:center;opacity:0.7;
-    animation:sparkFlash 1.4s ease-in-out infinite;
-  }
-  .spark-line:nth-child(2){transform:translate(-50%,-50%) rotate(35deg);animation-delay:0.15s;}
-  .spark-line:nth-child(3){transform:translate(-50%,-50%) rotate(-40deg);animation-delay:0.3s;}
-  @keyframes sparkPulse{
-    0%,100%{transform:translate(-50%,-50%) scale(0.7);opacity:0.5;}
-    50%{transform:translate(-50%,-50%) scale(1.4);opacity:1;}
-  }
-  @keyframes sparkFlash{
-    0%,100%{opacity:0.2;}
-    50%{opacity:0.9;}
-  }
-
-  .welcome{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-0.02em;}
-  .progress-box{
-    background:var(--panel);border:1px solid var(--border);
-    border-radius:14px;padding:18px;margin-bottom:20px;text-align:center;
-  }
-  .home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-  @media(max-width:600px){.home-grid{grid-template-columns:1fr;}}
-  .home-card{
-    background:var(--panel);border:1px solid var(--border);
-    border-radius:14px;padding:22px 14px;text-align:center;cursor:pointer;transition:0.22s;
-  }
-  .home-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,0.28);}
-  .home-card .icon{font-size:28px;margin-bottom:10px;}
-  .home-card h3{margin:0 0 4px;font-size:15px;}
-
-  /* FIXED FOOTER */
-  .powered{
-    position:fixed;bottom:0;left:0;right:0;
-    text-align:center;font-size:11px;color:var(--muted);
-    padding:10px 0;background:rgba(6,9,18,0.92);backdrop-filter:blur(8px);
-    border-top:1px solid var(--border);z-index:40;opacity:0.85;
-  }
-
-  .yt-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;background:#000;margin-bottom:14px;border:1px solid var(--border);}
-  .yt-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
-
-  table{width:100%;border-collapse:collapse;font-size:12.5px;}
-  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);}
-  th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:0.03em;}
-
-  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:70;padding:16px;}
-  .modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:920px;width:100%;max-height:90vh;overflow:auto;padding:18px;}
-  .modal-close{background:none;border:none;color:var(--muted);float:right;font-size:24px;line-height:1;padding:0 4px;}
-  .modal-close:hover{color:var(--text);}
-  .timer{font-size:22px;font-weight:800;color:var(--warn);text-align:center;padding:12px;background:var(--panel2);border-radius:10px;margin-bottom:12px;letter-spacing:0.02em;}
-  .zoom-row{display:flex;gap:8px;justify-content:center;margin-top:10px;}
-  .zoom-row button{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px;}
-
-  .fatal-error{min-height:100vh;background:var(--bg);color:#fff;padding:24px;}
-  .fatal-box{max-width:700px;margin:40px auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:24px;}
-  .fatal-title{color:var(--danger);margin-top:0;}
-  .fatal-text{color:#c5cada;line-height:1.6;white-space:pre-wrap;word-break:break-word;}
-
-  /* CBT */
-  .cbt-layout{display:grid;grid-template-columns:1fr 220px;gap:16px;}
-  @media(max-width:720px){.cbt-layout{grid-template-columns:1fr;}}
-  .cbt-qbox{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;}
-  .cbt-palette{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px;height:fit-content;position:sticky;top:70px;}
-  .cbt-palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px;}
-  .cbt-pbtn{
-    width:100%;aspect-ratio:1;border-radius:8px;border:1px solid var(--border);
-    background:var(--panel2);color:var(--text);font-size:12px;font-weight:600;
-  }
-  .cbt-pbtn.answered{background:rgba(91,157,255,0.2);border-color:var(--accent);color:var(--accent);}
-  .cbt-pbtn.marked{background:rgba(240,180,41,0.2);border-color:var(--warn);color:var(--warn);}
-  .cbt-pbtn.current{outline:2px solid var(--green);outline-offset:1px;}
-  .cbt-opt{
-    display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;
-    background:var(--panel2);border:1px solid var(--border);border-radius:10px;
-    color:var(--text);font-size:14px;
-  }
-  .cbt-opt:hover{border-color:var(--accent);}
-  .cbt-opt.selected{border-color:var(--accent);background:rgba(91,157,255,0.12);}
-  .cbt-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
-  .cbt-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--muted);}
-  .cbt-legend span{display:flex;align-items:center;gap:4px;}
-  .cbt-dot{width:10px;height:10px;border-radius:3px;}
-
-  .score-card{text-align:center;padding:28px 16px;}
-  .score-num{font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent;}
-
-  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
-  @keyframes softFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-  .float{animation:softFloat 4s ease-in-out infinite;}
+/* CBT */
+.cbt-layout{display:grid;grid-template-columns:1fr 220px;gap:16px}
+@media(max-width:720px){.cbt-layout{grid-template-columns:1fr}}
+.cbt-qbox{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px}
+.cbt-palette{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px;height:fit-content;position:sticky;top:70px}
+.cbt-palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.cbt-pbtn{width:100%;aspect-ratio:1;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:12px;font-weight:600}
+.cbt-pbtn.answered{background:rgba(91,157,255,.2);border-color:var(--accent);color:var(--accent)}
+.cbt-pbtn.marked{background:rgba(240,180,41,.2);border-color:var(--warn);color:var(--warn)}
+.cbt-pbtn.current{outline:2px solid var(--green);outline-offset:1px}
+.cbt-opt{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px}
+.cbt-opt:hover{border-color:var(--accent)}
+.cbt-opt.selected{border-color:var(--accent);background:rgba(91,157,255,.12)}
+.cbt-opt:active{transform:scale(.99)}
+.cbt-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.cbt-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--muted)}
+.cbt-legend span{display:flex;align-items:center;gap:4px}
+.cbt-dot{width:10px;height:10px;border-radius:3px}
+.score-card{text-align:center;padding:28px 16px}
+.score-num{font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
 </style>
 </head>
 <body>
 <div id="app"></div>
-<div class="powered">Powered by Suraj Kumar</div>
+<div class="powered"><span>Powered by Suraj Kumar</span></div>
 
 <script>
-/* =========================================================
-   CONFIG
-   ========================================================= */
 const SUPABASE_URL = "https://qhggamgxfwlwtpmwxfwk.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_X9_aDiQcrKhYyPfuQdnKPA_K8F7RPjM";
 
-/* =========================================================
-   GLOBALS
-   ========================================================= */
-let db = null;
-let pdfjsReady = false;
-let session = null;
-let profile = null;
-let activeTab = "home";
-let selSubject = null;
-let selChapter = null;
-let selCategory = "general";
-let adminTab = "users";
-let profileMenuOpen = false;
-
-/* CBT state */
-let cbtTest = null;
-let cbtQuestions = [];
-let cbtAnswers = {};
-let cbtMarked = new Set();
-let cbtBookmarks = new Set();
-let cbtIndex = 0;
-let cbtTimerRef = null;
-let cbtRemaining = 0;
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-const app = document.getElementById("app");
-
-function escapeHtml(value){
-  return (value ?? "").toString().replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[m]));
-}
-function el(html){
-  const d = document.createElement("div");
-  d.innerHTML = html.trim();
-  return d.firstElementChild;
-}
-function fmtDate(iso){
-  if(!iso) return "";
-  const d = new Date(iso);
-  if(Number.isNaN(d.getTime())) return "";
-  return d.toLocaleString(undefined,{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
-}
-function ytId(url){
-  const m = (url||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-  return m ? m[1] : null;
-}
-function showFatalError(message){
-  document.body.innerHTML = `
-    <div class="fatal-error">
-      <div class="fatal-box">
-        <h2 class="fatal-title">NEETrix Error</h2>
-        <div class="fatal-text">${escapeHtml(message)}</div>
-      </div>
-    </div>`;
-}
-function closeProfileMenu(){
-  profileMenuOpen = false;
-  const m = document.getElementById("profileMenu");
-  if(m) m.classList.remove("open");
-}
-
-/* =========================================================
-   LOADERS
-   ========================================================= */
-function loadScript(src){
-  return new Promise((resolve,reject)=>{
-    const s = document.createElement("script");
-    s.src = src; s.async = true;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error("Failed to load: "+src));
-    document.head.appendChild(s);
-  });
-}
-async function loadSupabase(){
-  if(window.supabase) return true;
-  const sources = [
-    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2",
-    "https://unpkg.com/@supabase/supabase-js@2"
-  ];
-  let lastError = null;
-  for(const src of sources){
-    try{
-      await loadScript(src);
-      if(window.supabase) return true;
-    }catch(e){ lastError = e; }
-  }
-  throw lastError || new Error("Supabase library could not be loaded.");
-}
-async function loadPdfJs(){
-  if(window.pdfjsLib){ pdfjsReady = true; return true; }
-  const sources = [
-    "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js",
-    "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"
-  ];
-  for(const src of sources){
-    try{
-      await loadScript(src);
-      if(window.pdfjsLib){ pdfjsReady = true; return true; }
-    }catch(e){}
-  }
-  return false;
-}
-
-/* =========================================================
-   INIT
-   ========================================================= */
-async function initializeApp(){
-  try{
-    await loadSupabase();
-    if(!SUPABASE_URL || !SUPABASE_ANON_KEY ||
-       SUPABASE_URL === "YOUR_SUPABASE_URL" ||
-       SUPABASE_ANON_KEY === "YOUR_SUPABASE_ANON_KEY"){
-      throw new Error("Supabase is not configured.\\n\\nAdd your existing Supabase Project URL and public/anon key in the CONFIG section.");
-    }
-    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    loadPdfJs().catch(()=>{});
-    await boot();
-  }catch(error){
-    console.error(error);
-    showFatalError(error?.message || "NEETrix could not start.");
-  }
-}
-
-/* =========================================================
-   AUTH
-   ========================================================= */
-function renderAuth(mode){
-  mode = mode || "login";
-  app.innerHTML = "";
-  app.appendChild(el(`
-    <div class="auth-wrap">
-      <div class="auth-card">
-        <div class="brand">NEETrix</div>
-        <div class="sub">The focused way to prepare.</div>
-        <div class="msg" id="msg"></div>
-        <div id="fields"></div>
-        <button class="btn" style="width:100%" id="mainBtn"></button>
-        <button class="link" id="link1"></button>
-        <button class="link" id="link2" style="display:none"></button>
-      </div>
-    </div>
-  `));
-
-  const fields = document.getElementById("fields");
-  const mainBtn = document.getElementById("mainBtn");
-  const link1 = document.getElementById("link1");
-  const link2 = document.getElementById("link2");
-  const msg = document.getElementById("msg");
-
-  if(mode === "login" || mode === "signup"){
-    fields.innerHTML = `
-      <input id="email" type="email" placeholder="Email address" autocomplete="email" />
-      <input id="pass" type="password" placeholder="Password (8+ characters)" autocomplete="${mode==="login"?"current-password":"new-password"}" />
-    `;
-    mainBtn.textContent = mode === "login" ? "Log in" : "Create account";
-    link1.textContent = mode === "login" ? "New here? Create an account" : "Already have an account? Log in";
-    link1.onclick = () => renderAuth(mode === "login" ? "signup" : "login");
-    link2.style.display = mode === "login" ? "block" : "none";
-    link2.textContent = "Forgot password?";
-    link2.onclick = () => renderAuth("forgot");
-
-    mainBtn.onclick = async () => {
-      msg.textContent = "";
-      mainBtn.disabled = true;
-      const email = document.getElementById("email").value.trim();
-      const pass = document.getElementById("pass").value;
-      if(!email || !pass){
-        msg.style.color = "var(--muted)";
-        msg.textContent = "Enter both fields.";
-        mainBtn.disabled = false;
-        return;
-      }
-      try{
-        if(mode === "signup"){
-          const {error} = await db.auth.signUp({email, password:pass});
-          if(error) throw error;
-          msg.style.color = "var(--good)";
-          msg.textContent = "Account created! Check your email if confirmation is required, then log in.";
-          setTimeout(() => renderAuth("login"), 1800);
-        }else{
-          const {data, error} = await db.auth.signInWithPassword({email, password:pass});
-          if(error) throw error;
-          session = data.session;
-          await afterLogin();
-        }
-      }catch(error){
-        msg.style.color = "var(--danger)";
-        msg.textContent = error?.message || "Something went wrong.";
-      }finally{
-        mainBtn.disabled = false;
-      }
-    };
-  }else if(mode === "forgot"){
-    fields.innerHTML = `<input id="email" type="email" placeholder="Email address" autocomplete="email" />`;
-    mainBtn.textContent = "Send reset link";
-    link1.textContent = "Back to log in";
-    link1.onclick = () => renderAuth("login");
-    mainBtn.onclick = async () => {
-      msg.textContent = "";
-      mainBtn.disabled = true;
-      const email = document.getElementById("email").value.trim();
-      if(!email){
-        msg.style.color = "var(--muted)";
-        msg.textContent = "Enter your email address.";
-        mainBtn.disabled = false;
-        return;
-      }
-      try{
-        const {error} = await db.auth.resetPasswordForEmail(email);
-        if(error) throw error;
-        msg.style.color = "var(--good)";
-        msg.textContent = "Reset link sent — check your email.";
-      }catch(error){
-        msg.style.color = "var(--danger)";
-        msg.textContent = error?.message || "Something went wrong.";
-      }finally{
-        mainBtn.disabled = false;
-      }
-    };
-  }
-}
-
-/* =========================================================
-   STATUS SCREEN
-   ========================================================= */
-function renderStatusScreen(status){
-  app.innerHTML = "";
-  const msgs = {
-    pending:["Request sent","Your access request has been sent to the admin. You'll be able to log in once approved."],
-    paused:["Account paused","Your account has been paused by the admin. Please check back later."],
-    blocked:["Account blocked","Your account access has been blocked by the admin."]
-  };
-  const [title,body] = msgs[status] || ["Access unavailable","Please contact the admin."];
-  app.appendChild(el(`
-    <div class="auth-wrap">
-      <div class="auth-card">
-        <div class="brand">NEETrix</div>
-        <h2 style="margin-top:14px;">${escapeHtml(title)}</h2>
-        <p class="muted" style="line-height:1.6;margin:10px 0 16px;">${escapeHtml(body)}</p>
-        <button class="btn-outline" style="width:100%;" id="out">Log out</button>
-      </div>
-    </div>
-  `));
-  document.getElementById("out").onclick = async () => {
-    try{ await db.auth.signOut(); }catch(e){}
-    session = null; profile = null;
-    renderAuth();
-  };
-}
-
-/* =========================================================
-   AFTER LOGIN
-   ========================================================= */
-async function afterLogin(){
-  if(!session || !session.user){ renderAuth(); return; }
-  try{
-    try{
-      await db.from("login_events").insert({user_id:session.user.id, email:session.user.email});
-    }catch(e){}
-    const {data, error} = await db.from("profiles").select("*").eq("id",session.user.id).single();
-    if(error){
-      if(error.code === "PGRST116"){
-        profile = null;
-        renderStatusScreen("pending");
-        return;
-      }
-      throw error;
-    }
-    profile = data;
-    if(!profile || profile.status !== "active"){
-      renderStatusScreen(profile ? profile.status : "pending");
-      return;
-    }
-    activeTab = "home";
-    selSubject = null;
-    selChapter = null;
-    renderShell();
-  }catch(error){
-    showFatalError(error?.message || "Unable to load your account.");
-  }
-}
-
-/* =========================================================
-   SHELL
-   ========================================================= */
-function renderShell(){
-  app.innerHTML = "";
-  const isAdmin = profile && profile.role === "admin";
-  const initial = (profile?.email || "U")[0].toUpperCase();
-
-  app.appendChild(el(`
-    <div>
-      <div class="topbar">
-        <div class="brand">NEETrix</div>
-        <button class="navbtn" data-t="home">Home</button>
-        <button class="navbtn" data-t="content">Content</button>
-        <button class="navbtn" data-t="questions">Questions</button>
-        <button class="navbtn" data-t="bookmarks">Bookmarks</button>
-        <button class="navbtn" data-t="tests">Test</button>
-        ${isAdmin ? `<button class="navbtn" data-t="admin">Admin</button>` : ""}
-        <div class="spacer"></div>
-        <div class="profile-wrap">
-          <button class="profile-btn" id="profileBtn">${initial}</button>
-          <div class="profile-menu" id="profileMenu">
-            <div class="pm-email">${escapeHtml(profile?.email || "")}</div>
-            <button id="pmLogout" class="danger">Log out</button>
-          </div>
-        </div>
-      </div>
-      <div class="content" id="content"></div>
-    </div>
-  `));
-
-  document.getElementById("profileBtn").onclick = (e) => {
-    e.stopPropagation();
-    profileMenuOpen = !profileMenuOpen;
-    document.getElementById("profileMenu").classList.toggle("open", profileMenuOpen);
-  };
-  document.getElementById("pmLogout").onclick = async () => {
-    closeProfileMenu();
-    if(!confirm("Log out?")) return;
-    try{ await db.auth.signOut(); }catch(e){}
-    session = null; profile = null;
-    activeTab = "home"; selSubject = null; selChapter = null;
-    renderAuth();
-  };
-  document.addEventListener("click", () => { if(profileMenuOpen) closeProfileMenu(); });
-
-  document.querySelectorAll(".navbtn").forEach(btn => {
-    btn.onclick = () => {
-      activeTab = btn.dataset.t;
-      selSubject = null;
-      selChapter = null;
-      if(cbtTimerRef){ clearInterval(cbtTimerRef); cbtTimerRef = null; }
-      renderTabsUI();
-      renderBody();
-    };
-  });
-
-  renderTabsUI();
-  renderBody();
-}
-
-function renderTabsUI(){
-  document.querySelectorAll(".navbtn").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.t === activeTab);
-  });
-}
-
-function renderBody(){
-  const c = document.getElementById("content");
-  if(!c) return;
-  if(activeTab === "home") renderHome(c);
-  else if(activeTab === "content") renderSubjectBrowser(c, "video");
-  else if(activeTab === "questions") renderSubjectBrowser(c, "pdf");
-  else if(activeTab === "tests") renderTests(c);
-  else if(activeTab === "bookmarks") renderBookmarks(c);
-  else if(activeTab === "admin"){
-    if(profile?.role === "admin") renderAdmin(c);
-    else { activeTab = "home"; renderTabsUI(); renderHome(c); }
-  }
-}
-
-/* =========================================================
-   HOME
-   ========================================================= */
-function renderHome(c){
-  const name = profile?.email ? profile.email.split("@")[0] : "Student";
-  c.innerHTML = `
-    <div class="home-hero">
-      <div class="anim-row">
-        <div class="atom-wrap float">
-          <div class="atom-core"></div>
-          <div class="orbit orbit1"><div class="electron"></div></div>
-          <div class="orbit orbit2"><div class="electron"></div></div>
-          <div class="orbit orbit3"><div class="electron"></div></div>
-        </div>
-        <div class="dna-wrap float" style="animation-delay:0.6s">
-          <div class="dna-helix" id="dnaHelix"></div>
-        </div>
-        <div class="spark-wrap float" style="animation-delay:1.2s">
-          <div class="wire l"></div>
-          <div class="wire r"></div>
-          <div class="spark-line"></div>
-          <div class="spark-line"></div>
-          <div class="spark-line"></div>
-          <div class="spark"></div>
-        </div>
-      </div>
-      <div class="welcome">Hey ${escapeHtml(name)}</div>
-      <div class="muted">Ready to study today?</div>
-    </div>
-    <div class="progress-box">
-      <div style="font-weight:600;margin-bottom:6px;">Your Progress</div>
-      <div class="muted">Attempt questions & tests to see your progress here.</div>
-    </div>
-    <div class="home-grid">
-      <div class="home-card" data-go="content">
-        <div class="icon">▶️</div>
-        <h3>Content</h3>
-        <div class="muted">Video lessons</div>
-      </div>
-      <div class="home-card" data-go="questions">
-        <div class="icon">📄</div>
-        <h3>Questions</h3>
-        <div class="muted">Practice & PYQs</div>
-      </div>
-      <div class="home-card" data-go="tests">
-        <div class="icon">📝</div>
-        <h3>Tests</h3>
-        <div class="muted">Mock tests</div>
-      </div>
-    </div>
-  `;
-
-  // Build DNA strands
-  const helix = document.getElementById("dnaHelix");
-  if(helix){
-    for(let i=0;i<10;i++){
-      const y = 6 + i * 9;
-      const offset = Math.sin(i * 0.9) * 18;
-      const a = document.createElement("div");
-      a.className = "dna-strand a";
-      a.style.top = y + "px";
-      a.style.transform = `translateX(${offset}px)`;
-      helix.appendChild(a);
-      const b = document.createElement("div");
-      b.className = "dna-strand b";
-      b.style.top = y + "px";
-      b.style.transform = `translateX(${-offset}px)`;
-      helix.appendChild(b);
-    }
-  }
-
-  c.querySelectorAll(".home-card").forEach(card => {
-    card.onclick = () => {
-      activeTab = card.dataset.go;
-      renderTabsUI();
-      renderBody();
-    };
-  });
-}
-
-/* =========================================================
-   CONTENT / QUESTIONS
-   ========================================================= */
-async function renderSubjectBrowser(c, mode){
-  if(!selSubject){
-    c.innerHTML = `
-      <h2>${mode === "video" ? "Video Lessons" : "Question Bank"}</h2>
-      ${mode === "pdf" ? `
-        <div class="tabs2">
-          <button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button>
-          <button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button>
-          <button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button>
-        </div>
-      ` : ""}
-      <div class="grid2" id="subjList"></div>
-    `;
-    if(mode === "pdf"){
-      c.querySelectorAll(".tab2").forEach(btn => {
-        btn.onclick = () => { selCategory = btn.dataset.c; renderBody(); };
-      });
-    }
-    const {data, error} = await db.from("subjects").select("*").order("sort_order");
-    const wrap = document.getElementById("subjList");
-    if(error){ wrap.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
-    if(!data || !data.length){ wrap.innerHTML = `<div class="empty">No subjects yet. Admin can add them.</div>`; return; }
-    wrap.innerHTML = "";
-    data.forEach(subject => {
-      const card = el(`<div class="subject-card"><h3>${escapeHtml(subject.name)}</h3></div>`);
-      card.onclick = () => { selSubject = subject; selChapter = null; renderBody(); };
-      wrap.appendChild(card);
-    });
-    return;
-  }
-
-  if(!selChapter){
-    c.innerHTML = `
-      <button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button>
-      <h2>Chapters</h2>
-      <div id="chapList"></div>
-    `;
-    document.getElementById("b1").onclick = () => { selSubject = null; renderBody(); };
-    const {data, error} = await db.from("chapters").select("*").eq("subject_id", selSubject.id).order("sort_order");
-    const wrap = document.getElementById("chapList");
-    if(error){ wrap.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
-    if(!data || !data.length){ wrap.innerHTML = `<div class="empty">No chapters yet.</div>`; return; }
-    wrap.innerHTML = "";
-    data.forEach(chapter => {
-      const row = el(`<div class="card row" style="cursor:pointer;"><span>${escapeHtml(chapter.name)}</span><span class="muted">→</span></div>`);
-      row.onclick = () => { selChapter = chapter; renderBody(); };
-      wrap.appendChild(row);
-    });
-    return;
-  }
-
-  c.innerHTML = `<button class="back" id="b2">← ${escapeHtml(selChapter.name)}</button>`;
-  document.getElementById("b2").onclick = () => { selChapter = null; renderBody(); };
-
-  if(mode === "video"){
-    const box = el(`<div id="vidBox"></div>`);
-    c.appendChild(box);
-    const {data, error} = await db.from("videos").select("*").eq("chapter_id", selChapter.id).order("sort_order");
-    if(error){ box.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
-    if(!data || !data.length){ box.innerHTML = `<div class="empty">No videos yet.</div>`; return; }
-    box.innerHTML = data.map(v => `
-      <h3>${escapeHtml(v.title)}</h3>
-      <div class="yt-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(v.youtube_id)}?modestbranding=1&rel=0"
-          title="${escapeHtml(v.title)}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-      </div>
-    `).join("");
-  }else{
-    const list = el(`<div id="pdfList"></div>`);
-    c.appendChild(list);
-    const {data, error} = await db.from("pdfs").select("*")
-      .eq("chapter_id", selChapter.id).eq("category", selCategory)
-      .order("created_at", {ascending:false});
-    if(error){ list.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
-    if(!data || !data.length){ list.innerHTML = `<div class="empty">No content in this category yet.</div>`; return; }
-
-    let bmSet = new Set();
-    try{
-      const {data:bms} = await db.from("bookmarks").select("pdf_id").eq("user_id", session.user.id);
-      if(bms) bmSet = new Set(bms.map(b => b.pdf_id));
-    }catch(e){}
-
-    list.innerHTML = "";
-    data.forEach(pdf => {
-      const row = el(`
-        <div class="card row">
-          <span style="cursor:pointer;flex:1;" class="openPdf">${escapeHtml(pdf.title)}</span>
-          <button class="btn-small bmBtn">${bmSet.has(pdf.id) ? "★ Saved" : "☆ Save"}</button>
-        </div>
-      `);
-      row.querySelector(".openPdf").onclick = () => openPdf(pdf);
-      row.querySelector(".bmBtn").onclick = async (e) => {
-        e.stopPropagation();
-        try{
-          if(bmSet.has(pdf.id)){
-            await db.from("bookmarks").delete().eq("user_id", session.user.id).eq("pdf_id", pdf.id);
-          }else{
-            await db.from("bookmarks").insert({user_id:session.user.id, pdf_id:pdf.id});
-          }
-          renderBody();
-        }catch(err){
-          alert(err?.message || "Could not update bookmark.");
-        }
-      };
-      list.appendChild(row);
-    });
-  }
-}
-
-/* =========================================================
-   PDF
-   ========================================================= */
-async function openPdf(pdf){
-  try{
-    const {data, error} = await db.storage.from("content").createSignedUrl(pdf.file_path, 3600);
-    if(error) throw error;
-    if(!data?.signedUrl) throw new Error("Could not create PDF link.");
-    await showPdfModal(data.signedUrl, pdf.title);
-  }catch(error){
-    alert(error?.message || "Unable to open PDF.");
-  }
-}
-async function showPdfModal(url, title){
-  if(!window.pdfjsLib) await loadPdfJs();
-  if(!window.pdfjsLib){ alert("PDF viewer could not be loaded."); return; }
-  const modal = el(`
-    <div class="modal-bg">
-      <div class="modal-box">
-        <button class="modal-close" id="mc">×</button>
-        <h3>${escapeHtml(title||"")}</h3>
-        <div style="overflow:auto;text-align:center;"><canvas id="pc"></canvas></div>
-        <div class="zoom-row">
-          <button id="zo">−</button>
-          <span id="zl">100%</span>
-          <button id="zi">+</button>
-        </div>
-      </div>
-    </div>
-  `);
-  document.body.appendChild(modal);
-  document.getElementById("mc").onclick = () => modal.remove();
-
-  const pdfjsLib = window.pdfjsLib;
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-  let scale = 1.2;
-  try{
-    const pdfDoc = await pdfjsLib.getDocument({url, withCredentials:false}).promise;
-    const page = await pdfDoc.getPage(1);
-    const render = async () => {
-      const viewport = page.getViewport({scale});
-      const canvas = document.getElementById("pc");
-      if(!canvas) return;
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      await page.render({canvasContext:canvas.getContext("2d"), viewport}).promise;
-      const zl = document.getElementById("zl");
-      if(zl) zl.textContent = Math.round(scale/1.2*100) + "%";
-    };
-    await render();
-    document.getElementById("zi").onclick = () => { scale += 0.3; render().catch(console.error); };
-    document.getElementById("zo").onclick = () => { scale = Math.max(0.5, scale-0.3); render().catch(console.error); };
-  }catch(error){
-    modal.querySelector(".modal-box").innerHTML += `<div class="empty">Unable to render this PDF.<br>${escapeHtml(error?.message||"")}</div>`;
-  }
-}
-
-/* =========================================================
-   BOOKMARKS
-   ========================================================= */
-async function renderBookmarks(c){
-  c.innerHTML = `<h2>My Bookmarks</h2><div id="bmList"></div>`;
-  const list = document.getElementById("bmList");
-  try{
-    const {data, error} = await db.from("bookmarks")
-      .select("pdf_id, pdfs(title, id, file_path)")
-      .eq("user_id", session.user.id);
-    if(error) throw error;
-    if(!data || !data.length){
-      list.innerHTML = `<div class="empty">No bookmarks yet. Save PDFs from the Questions section.</div>`;
-      return;
-    }
-    list.innerHTML = "";
-    data.forEach(bm => {
-      if(!bm.pdfs) return;
-      const row = el(`
-        <div class="card row">
-          <span style="cursor:pointer;flex:1;" class="open">${escapeHtml(bm.pdfs.title)}</span>
-          <button class="btn-small rm">Remove</button>
-        </div>
-      `);
-      row.querySelector(".open").onclick = () => openPdf(bm.pdfs);
-      row.querySelector(".rm").onclick = async (e) => {
-        e.stopPropagation();
-        try{
-          await db.from("bookmarks").delete().eq("user_id", session.user.id).eq("pdf_id", bm.pdfs.id);
-          renderBookmarks(c);
-        }catch(err){ alert(err?.message || "Could not remove."); }
-      };
-      list.appendChild(row);
-    });
-  }catch(error){
-    list.innerHTML = `<div class="empty">${escapeHtml(error?.message || "Unable to load bookmarks.")}</div>`;
-  }
-}
-
-/* =========================================================
-   TESTS
-   ========================================================= */
-async function renderTests(c){
-  c.innerHTML = `<h2>Tests</h2><div id="testList"></div>`;
-  const list = document.getElementById("testList");
-  try{
-    const {data, error} = await db.from("tests").select("*").order("created_at",{ascending:false});
-    if(error) throw error;
-    if(!data || !data.length){
-      list.innerHTML = `<div class="empty">No tests available yet.</div>`;
-      return;
-    }
-    list.innerHTML = "";
-    data.forEach(test => {
-      const isCbt = test.type === "cbt" || !test.file_path;
-      const row = el(`
-        <div class="card row">
-          <div>
-            <div style="font-weight:600;">${escapeHtml(test.title)}</div>
-            <div class="muted">${test.duration_minutes || 60} min · ${isCbt ? "CBT Mode" : "PDF Paper"}</div>
-          </div>
-          <button class="btn">Start</button>
-        </div>
-      `);
-      row.querySelector("button").onclick = () => {
-        if(isCbt) startCbtTest(test);
-        else startPdfTest(test);
-      };
-      list.appendChild(row);
-    });
-  }catch(error){
-    list.innerHTML = `<div class="empty">${escapeHtml(error?.message || "Unable to load tests.")}</div>`;
-  }
-}
-
-async function startPdfTest(test){
-  if(!test.file_path){
-    alert("No question paper uploaded for this test yet.");
-    return;
-  }
-  try{
-    const {data, error} = await db.storage.from("content").createSignedUrl(test.file_path, 7200);
-    if(error) throw error;
-    if(!data?.signedUrl) throw new Error("Could not create test PDF link.");
-    if(!window.pdfjsLib) await loadPdfJs();
-    if(!window.pdfjsLib){ alert("PDF viewer could not be loaded."); return; }
-
-    const modal = el(`
-      <div class="modal-bg">
-        <div class="modal-box">
-          <div class="timer" id="tmr"></div>
-          <h3>${escapeHtml(test.title)}</h3>
-          <div style="overflow:auto;text-align:center;"><canvas id="pc"></canvas></div>
-          <div class="zoom-row">
-            <button id="zo">−</button>
-            <span id="zl">100%</span>
-            <button id="zi">+</button>
-          </div>
-          <button class="btn" style="width:100%;margin-top:14px;" id="submitTest">Submit Test</button>
-        </div>
-      </div>
-    `);
-    document.body.appendChild(modal);
-
-    let remaining = (Number(test.duration_minutes) || 60) * 60;
-    const timerEl = document.getElementById("tmr");
-    let timerRef = null;
-    const finish = () => {
-      if(timerRef) clearInterval(timerRef);
-      modal.remove();
-      alert("Test submitted.");
-    };
-    const tick = () => {
-      const m = Math.floor(remaining/60);
-      const s = remaining % 60;
-      timerEl.textContent = `${m}:${s<10?"0":""}${s} remaining`;
-      if(remaining <= 0){ finish(); return; }
-      remaining--;
-    };
-    tick();
-    timerRef = setInterval(tick, 1000);
-    document.getElementById("submitTest").onclick = () => {
-      if(confirm("Submit the test now?")) finish();
-    };
-
-    const pdfjsLib = window.pdfjsLib;
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-    let scale = 1.2;
-    const pdfDoc = await pdfjsLib.getDocument({url:data.signedUrl, withCredentials:false}).promise;
-    const page = await pdfDoc.getPage(1);
-    const render = async () => {
-      const viewport = page.getViewport({scale});
-      const canvas = document.getElementById("pc");
-      if(!canvas) return;
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      await page.render({canvasContext:canvas.getContext("2d"), viewport}).promise;
-      const zl = document.getElementById("zl");
-      if(zl) zl.textContent = Math.round(scale/1.2*100) + "%";
-    };
-    await render();
-    document.getElementById("zi").onclick = () => { scale += 0.3; render().catch(console.error); };
-    document.getElementById("zo").onclick = () => { scale = Math.max(0.5, scale-0.3); render().catch(console.error); };
-  }catch(error){
-    alert(error?.message || "Unable to start test.");
-  }
-}
-
-/* =========================================================
-   CBT TEST
-   ========================================================= */
-async function startCbtTest(test){
-  try{
-    const {data, error} = await db.from("test_questions")
-      .select("*")
-      .eq("test_id", test.id)
-      .order("sort_order");
-    if(error) throw error;
-    if(!data || !data.length){
-      alert("No questions added for this CBT test yet. Ask admin to add questions.");
-      return;
-    }
-
-    cbtTest = test;
-    cbtQuestions = data;
-    cbtAnswers = {};
-    cbtMarked = new Set();
-    cbtBookmarks = new Set();
-    cbtIndex = 0;
-    cbtRemaining = (Number(test.duration_minutes) || 60) * 60;
-
-    if(cbtTimerRef) clearInterval(cbtTimerRef);
-    cbtTimerRef = setInterval(() => {
-      cbtRemaining--;
-      const tEl = document.getElementById("cbtTimer");
-      if(tEl){
-        const m = Math.floor(cbtRemaining/60);
-        const s = cbtRemaining % 60;
-        tEl.textContent = `${m}:${s<10?"0":""}${s}`;
-      }
-      if(cbtRemaining <= 0){
-        clearInterval(cbtTimerRef);
-        cbtTimerRef = null;
-        finishCbt(true);
-      }
-    }, 1000);
-
-    renderCbtUI();
-  }catch(error){
-    alert(error?.message || "Unable to start CBT test. Make sure test_questions table exists.");
-  }
-}
-
-function renderCbtUI(){
-  const c = document.getElementById("content");
-  if(!c || !cbtQuestions.length) return;
-
-  const q = cbtQuestions[cbtIndex];
-  const selected = cbtAnswers[q.id] || null;
-
-  c.innerHTML = `
-    <div class="timer" id="cbtTimer">${Math.floor(cbtRemaining/60)}:${(cbtRemaining%60)<10?"0":""}${cbtRemaining%60}</div>
-    <div class="cbt-layout">
-      <div class="cbt-qbox">
-        <div class="muted" style="margin-bottom:8px;">Question ${cbtIndex+1} of ${cbtQuestions.length}</div>
-        <div style="font-size:15.5px;line-height:1.55;margin-bottom:16px;">${escapeHtml(q.question_text)}</div>
-        <button class="cbt-opt ${selected==="A"?"selected":""}" data-o="A">A. ${escapeHtml(q.option_a)}</button>
-        <button class="cbt-opt ${selected==="B"?"selected":""}" data-o="B">B. ${escapeHtml(q.option_b)}</button>
-        <button class="cbt-opt ${selected==="C"?"selected":""}" data-o="C">C. ${escapeHtml(q.option_c)}</button>
-        <button class="cbt-opt ${selected==="D"?"selected":""}" data-o="D">D. ${escapeHtml(q.option_d)}</button>
-        <div class="cbt-nav">
-          <button class="btn-outline" id="cbtPrev" ${cbtIndex===0?"disabled":""}>← Previous</button>
-          <button class="btn-outline" id="cbtMark">${cbtMarked.has(q.id)?"Unmark":"Mark for Review"}</button>
-          <button class="btn-outline" id="cbtBm">${cbtBookmarks.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button>
-          <button class="btn" id="cbtNext">${cbtIndex===cbtQuestions.length-1?"Review":"Next →"}</button>
-        </div>
-        <button class="btn-danger" style="width:100%;margin-top:14px;" id="cbtSubmit">Submit Test</button>
-      </div>
-      <div class="cbt-palette">
-        <div style="font-weight:600;font-size:13px;">Question Palette</div>
-        <div class="cbt-palette-grid" id="palette"></div>
-        <div class="cbt-legend">
-          <span><div class="cbt-dot" style="background:rgba(91,157,255,0.35);border:1px solid var(--accent);"></div> Answered</span>
-          <span><div class="cbt-dot" style="background:rgba(240,180,41,0.35);border:1px solid var(--warn);"></div> Marked</span>
-          <span><div class="cbt-dot" style="background:var(--panel2);border:1px solid var(--border);"></div> Not visited</span>
-        </div>
-      </div>
-    </div>
-  `;
-
-  c.querySelectorAll(".cbt-opt").forEach(btn => {
-    btn.onclick = () => {
-      cbtAnswers[q.id] = btn.dataset.o;
-      renderCbtUI();
-    };
-  });
-
-  document.getElementById("cbtPrev").onclick = () => {
-    if(cbtIndex > 0){ cbtIndex--; renderCbtUI(); }
-  };
-  document.getElementById("cbtNext").onclick = () => {
-    if(cbtIndex < cbtQuestions.length-1){ cbtIndex++; renderCbtUI(); }
-  };
-  document.getElementById("cbtMark").onclick = () => {
-    if(cbtMarked.has(q.id)) cbtMarked.delete(q.id);
-    else cbtMarked.add(q.id);
-    renderCbtUI();
-  };
-  document.getElementById("cbtBm").onclick = () => {
-    if(cbtBookmarks.has(q.id)) cbtBookmarks.delete(q.id);
-    else cbtBookmarks.add(q.id);
-    renderCbtUI();
-  };
-  document.getElementById("cbtSubmit").onclick = () => {
-    if(confirm("Submit the test? You cannot change answers after this.")) finishCbt(false);
-  };
-
-  const palette = document.getElementById("palette");
-  cbtQuestions.forEach((qq, i) => {
-    const btn = el(`<button class="cbt-pbtn">${i+1}</button>`);
-    if(cbtAnswers[qq.id]) btn.classList.add("answered");
-    if(cbtMarked.has(qq.id)) btn.classList.add("marked");
-    if(i === cbtIndex) btn.classList.add("current");
-    btn.onclick = () => { cbtIndex = i; renderCbtUI(); };
-    palette.appendChild(btn);
-  });
-}
-
-function finishCbt(auto){
-  if(cbtTimerRef){ clearInterval(cbtTimerRef); cbtTimerRef = null; }
-
-  let correct = 0, wrong = 0, unattempted = 0;
-  cbtQuestions.forEach(q => {
-    const ans = cbtAnswers[q.id];
-    if(!ans){ unattempted++; return; }
-    if(ans === (q.correct_option || "").toUpperCase()) correct++;
-    else wrong++;
-  });
-  const score = (correct * 4) + (wrong * -1);
-  const total = cbtQuestions.length * 4;
-
-  const c = document.getElementById("content");
-  c.innerHTML = `
-    <div class="card score-card">
-      <div class="muted" style="margin-bottom:6px;">${auto ? "Time's up!" : "Test Submitted"}</div>
-      <h2 style="margin-bottom:4px;">${escapeHtml(cbtTest?.title || "Test")}</h2>
-      <div class="score-num">${score}</div>
-      <div class="muted" style="margin-bottom:18px;">out of ${total}</div>
-      <div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left;">
-        <div class="card" style="margin:0;"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green);">${correct}</div></div>
-        <div class="card" style="margin:0;"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger);">${wrong}</div></div>
-        <div class="card" style="margin:0;"><div class="muted">Unattempted</div><div style="font-weight:700;">${unattempted}</div></div>
-        <div class="card" style="margin:0;"><div class="muted">Marking</div><div style="font-weight:700;">+4 / −1</div></div>
-      </div>
-      <button class="btn" id="backTests">Back to Tests</button>
-    </div>
-  `;
-  document.getElementById("backTests").onclick = () => {
-    cbtTest = null; cbtQuestions = [];
-    renderTests(c);
-  };
-}
-
-/* =========================================================
-   ADMIN
-   ========================================================= */
-async function renderAdmin(c){
-  c.innerHTML = `
-    <h2>Admin</h2>
-    <div class="tabs2">
-      <button class="tab2 ${adminTab==="users"?"active":""}" data-a="users">Users</button>
-      <button class="tab2 ${adminTab==="logins"?"active":""}" data-a="logins">Login History</button>
-      <button class="tab2 ${adminTab==="settings"?"active":""}" data-a="settings">Settings</button>
-      <button class="tab2 ${adminTab==="content"?"active":""}" data-a="content">Content Manager</button>
-      <button class="tab2 ${adminTab==="cbt"?"active":""}" data-a="cbt">CBT Questions</button>
-    </div>
-    <div id="adminBody"></div>
-  `;
-  c.querySelectorAll(".tab2").forEach(btn => {
-    btn.onclick = () => { adminTab = btn.dataset.a; renderAdmin(c); };
-  });
-  const body = document.getElementById("adminBody");
-  if(adminTab === "users") await renderAdminUsers(body);
-  else if(adminTab === "logins") await renderAdminLogins(body);
-  else if(adminTab === "settings") await renderAdminSettings(body);
-  else if(adminTab === "content") await renderAdminContent(body);
-  else if(adminTab === "cbt") await renderAdminCbt(body);
-}
-
-async function renderAdminUsers(body){
-  try{
-    const {data, error} = await db.from("profiles").select("*").order("created_at",{ascending:false});
-    if(error) throw error;
-    if(!data || !data.length){ body.innerHTML = `<div class="empty">No users yet.</div>`; return; }
-    body.innerHTML = `<table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;
-    const rows = document.getElementById("uRows");
-    data.forEach(user => {
-      const tr = el(`
-        <tr>
-          <td>${escapeHtml(user.email)}</td>
-          <td><span class="badge ${user.role==="admin"?"admin":""}">${escapeHtml(user.role)}</span></td>
-          <td><span class="badge ${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td>
-          <td class="row-wrap" id="act-${escapeHtml(user.id)}"></td>
-        </tr>
-      `);
-      rows.appendChild(tr);
-      const actBox = tr.querySelector(`#act-${CSS.escape(user.id)}`);
-      if(user.role === "admin"){ actBox.innerHTML = `<span class="muted">—</span>`; return; }
-      const setStatus = async (status) => {
-        try{
-          await db.from("profiles").update({status}).eq("id", user.id);
-          renderAdmin(document.getElementById("content"));
-        }catch(e){ alert(e?.message || "Could not update user."); }
-      };
-      if(user.status === "pending"){
-        const approve = el(`<button class="btn-good">Approve</button>`);
-        approve.onclick = () => setStatus("active");
-        actBox.appendChild(approve);
-        const reject = el(`<button class="btn-danger">Reject</button>`);
-        reject.onclick = () => setStatus("blocked");
-        actBox.appendChild(reject);
-      }else{
-        const pauseBtn = el(`<button class="btn-warn">${user.status==="paused"?"Resume":"Pause"}</button>`);
-        pauseBtn.onclick = () => setStatus(user.status==="paused"?"active":"paused");
-        actBox.appendChild(pauseBtn);
-        const blockBtn = el(`<button class="btn-danger">${user.status==="blocked"?"Unblock":"Block"}</button>`);
-        blockBtn.onclick = () => setStatus(user.status==="blocked"?"active":"blocked");
-        actBox.appendChild(blockBtn);
-      }
-    });
-  }catch(error){
-    body.innerHTML = `<div class="empty">${escapeHtml(error?.message || "Unable to load users.")}</div>`;
-  }
-}
-
-async function renderAdminLogins(body){
-  try{
-    const {data, error} = await db.from("login_events").select("*").order("logged_in_at",{ascending:false}).limit(200);
-    if(error) throw error;
-    if(!data || !data.length){ body.innerHTML = `<div class="empty">No login activity yet.</div>`; return; }
-    body.innerHTML = `
-      <table>
-        <thead><tr><th>Email</th><th>Logged in at</th></tr></thead>
-        <tbody>
-          ${data.map(l => `<tr><td>${escapeHtml(l.email)}</td><td>${escapeHtml(fmtDate(l.logged_in_at))}</td></tr>`).join("")}
-        </tbody>
-      </table>
-    `;
-  }catch(error){
-    body.innerHTML = `<div class="empty">${escapeHtml(error?.message || "Unable to load login history.")}</div>`;
-  }
-}
-
-async function renderAdminSettings(body){
-  try{
-    const {data, error} = await db.from("app_settings").select("*").eq("id",1).single();
-    if(error && error.code !== "PGRST116") throw error;
-    const open = data ? Boolean(data.registration_open) : true;
-    body.innerHTML = `
-      <div class="card">
-        <div class="row">
-          <div>
-            <div>Accept new users</div>
-            <div class="muted">When off, new signups go into pending.</div>
-          </div>
-          <button class="btn" id="toggleReg">${open ? "Turn OFF" : "Turn ON"}</button>
-        </div>
-      </div>
-    `;
-    document.getElementById("toggleReg").onclick = async () => {
-      try{
-        await db.from("app_settings").update({registration_open:!open}).eq("id",1);
-        renderAdminSettings(body);
-      }catch(e){ alert(e?.message || "Could not update settings."); }
-    };
-  }catch(error){
-    body.innerHTML = `<div class="empty">${escapeHtml(error?.message || "Unable to load settings.")}</div>`;
-  }
-}
-
-async function renderAdminContent(body){
-  body.innerHTML = `
-    <h3>Add Subject</h3>
-    <input id="newSubj" placeholder="Subject name (e.g. Physics)" />
-    <button class="btn" id="addSubj">Add Subject</button>
-
-    <h3>Add Chapter</h3>
-    <select id="chSubj"></select>
-    <input id="newChap" placeholder="Chapter name" />
-    <button class="btn" id="addChap">Add Chapter</button>
-
-    <h3>Add Video (YouTube link)</h3>
-    <select id="vidSubj"></select>
-    <select id="vidChap"></select>
-    <input id="vidTitle" placeholder="Video title" />
-    <input id="vidUrl" placeholder="Paste YouTube link" />
-    <button class="btn" id="addVid">Add Video</button>
-
-    <h3>Add Question PDF</h3>
-    <select id="pdfSubj"></select>
-    <select id="pdfChap"></select>
-    <select id="pdfCat">
-      <option value="general">Practice</option>
-      <option value="ncert">Important</option>
-      <option value="pyq">PYQs</option>
-    </select>
-    <input id="pdfTitle" placeholder="PDF title" />
-    <input type="file" id="pdfFile" accept="application/pdf" />
-    <button class="btn" id="addPdf">Upload PDF</button>
-
-    <h3>Add Test (PDF or empty for CBT)</h3>
-    <input id="testTitle" placeholder="Test title" />
-    <input id="testDur" type="number" placeholder="Duration (minutes)" value="60" />
-    <input type="file" id="testFile" accept="application/pdf" />
-    <div class="muted" style="margin-bottom:8px;">Leave file empty to create a CBT test (add questions in CBT Questions tab).</div>
-    <button class="btn" id="addTest">Create Test</button>
-  `;
-
-  try{
-    const {data:subjects, error} = await db.from("subjects").select("*").order("sort_order");
-    if(error) throw error;
-    const subjectOptions = (subjects||[]).map(s => `<option value="${escapeHtml(s.id)}">${escapeHtml(s.name)}</option>`).join("");
-    ["chSubj","vidSubj","pdfSubj"].forEach(id => {
-      const sel = document.getElementById(id);
-      if(sel) sel.innerHTML = subjectOptions || `<option value="">No subjects yet</option>`;
-    });
-
-    const loadChapters = async (subId, chapId) => {
-      const subSel = document.getElementById(subId);
-      const chapSel = document.getElementById(chapId);
-      if(!subSel || !chapSel) return;
-      const subjectId = subSel.value;
-      if(!subjectId){ chapSel.innerHTML = `<option value="">No chapters</option>`; return; }
-      const {data:chapters} = await db.from("chapters").select("*").eq("subject_id", subjectId).order("sort_order");
-      chapSel.innerHTML = (chapters||[]).map(c => `<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("") || `<option value="">No chapters</option>`;
-    };
-
-    if(subjects && subjects.length){
-      await loadChapters("vidSubj","vidChap");
-      await loadChapters("pdfSubj","pdfChap");
-    }
-    document.getElementById("vidSubj").onchange = () => loadChapters("vidSubj","vidChap");
-    document.getElementById("pdfSubj").onchange = () => loadChapters("pdfSubj","pdfChap");
-
-    document.getElementById("addSubj").onclick = async () => {
-      const name = document.getElementById("newSubj").value.trim();
-      if(!name) return;
-      try{
-        await db.from("subjects").insert({name});
-        renderAdminContent(body);
-      }catch(e){ alert(e?.message || "Could not add subject."); }
-    };
-
-    document.getElementById("addChap").onclick = async () => {
-      const subject_id = document.getElementById("chSubj").value;
-      const name = document.getElementById("newChap").value.trim();
-      if(!subject_id || !name) return;
-      try{
-        await db.from("chapters").insert({subject_id, name});
-        renderAdminContent(body);
-      }catch(e){ alert(e?.message || "Could not add chapter."); }
-    };
-
-    document.getElementById("addVid").onclick = async () => {
-      const chapter_id = document.getElementById("vidChap").value;
-      const title = document.getElementById("vidTitle").value.trim();
-      const url = document.getElementById("vidUrl").value.trim();
-      const youtubeId = ytId(url);
-      if(!chapter_id || !title || !youtubeId){
-        alert("Check chapter, title and valid YouTube link.");
-        return;
-      }
-      try{
-        await db.from("videos").insert({chapter_id, title, youtube_id:youtubeId});
-        renderAdminContent(body);
-      }catch(e){ alert(e?.message || "Could not add video."); }
-    };
-
-    document.getElementById("addPdf").onclick = async () => {
-      const chapter_id = document.getElementById("pdfChap").value;
-      const category = document.getElementById("pdfCat").value;
-      const title = document.getElementById("pdfTitle").value.trim();
-      const file = document.getElementById("pdfFile").files[0];
-      if(!chapter_id || !title || !file){
-        alert("Select chapter, title and PDF.");
-        return;
-      }
-      if(file.type !== "application/pdf"){ alert("Please select a PDF."); return; }
-      try{
-        const path = `pdfs/${crypto.randomUUID()}_${file.name}`;
-        const {error:upErr} = await db.storage.from("content").upload(path, file, {cacheControl:"3600", upsert:false});
-        if(upErr) throw upErr;
-        const {error:insErr} = await db.from("pdfs").insert({chapter_id, category, title, file_path:path});
-        if(insErr){
-          try{ await db.storage.from("content").remove([path]); }catch(e){}
-          throw insErr;
-        }
-        renderAdminContent(body);
-      }catch(e){ alert(e?.message || "Could not upload PDF."); }
-    };
-
-    document.getElementById("addTest").onclick = async () => {
-      const title = document.getElementById("testTitle").value.trim();
-      const duration_minutes = parseInt(document.getElementById("testDur").value) || 60;
-      const file = document.getElementById("testFile").files[0];
-      if(!title){ alert("Enter a test title."); return; }
-      try{
-        let file_path = null;
-        let type = "cbt";
-        if(file){
-          if(file.type !== "application/pdf"){ alert("Test file must be PDF."); return; }
-          file_path = `tests/${crypto.randomUUID()}_${file.name}`;
-          type = "pdf";
-          const {error:upErr} = await db.storage.from("content").upload(file_path, file, {cacheControl:"3600", upsert:false});
-          if(upErr) throw upErr;
-        }
-        const payload = {title, duration_minutes, file_path};
-        try{
-          const {error} = await db.from("tests").insert({...payload, type});
-          if(error) throw error;
-        }catch(e){
-          const {error} = await db.from("tests").insert(payload);
-          if(error){
-            if(file_path) try{ await db.storage.from("content").remove([file_path]); }catch(x){}
-            throw error;
-          }
-        }
-        renderAdminContent(body);
-      }catch(e){ alert(e?.message || "Could not create test."); }
-    };
-  }catch(error){
-    body.innerHTML += `<div class="empty">${escapeHtml(error?.message || "Unable to load admin content.")}</div>`;
-  }
-}
-
-async function renderAdminCbt(body){
-  body.innerHTML = `
-    <h3>Add CBT Question</h3>
-    <select id="cbtTestSel"><option value="">Select test…</option></select>
-    <textarea id="cbtQ" placeholder="Question text"></textarea>
-    <input id="cbtA" placeholder="Option A" />
-    <input id="cbtB" placeholder="Option B" />
-    <input id="cbtC" placeholder="Option C" />
-    <input id="cbtD" placeholder="Option D" />
-    <select id="cbtCorrect">
-      <option value="A">Correct: A</option>
-      <option value="B">Correct: B</option>
-      <option value="C">Correct: C</option>
-      <option value="D">Correct: D</option>
-    </select>
-    <button class="btn" id="addCbtQ">Add Question</button>
-    <h3 style="margin-top:24px;">Existing Questions</h3>
-    <div id="cbtQList" class="muted">Select a test to view questions.</div>
-  `;
-
-  try{
-    const {data:tests} = await db.from("tests").select("id, title, file_path").order("created_at",{ascending:false});
-    const sel = document.getElementById("cbtTestSel");
-    (tests||[]).forEach(t => {
-      const opt = document.createElement("option");
-      opt.value = t.id;
-      opt.textContent = t.title + (t.file_path ? " (PDF)" : " (CBT)");
-      sel.appendChild(opt);
-    });
-
-    const loadQs = async () => {
-      const testId = sel.value;
-      const list = document.getElementById("cbtQList");
-      if(!testId){ list.innerHTML = `<div class="muted">Select a test.</div>`; return; }
-      try{
-        const {data, error} = await db.from("test_questions").select("*").eq("test_id", testId).order("sort_order");
-        if(error) throw error;
-        if(!data || !data.length){ list.innerHTML = `<div class="empty">No questions yet.</div>`; return; }
-        list.innerHTML = "";
-        data.forEach((q,i) => {
-          const row = el(`
-            <div class="card">
-              <div class="row">
-                <div style="flex:1;">
-                  <div class="muted">Q${i+1} · Correct: ${escapeHtml(q.correct_option)}</div>
-                  <div style="margin-top:4px;">${escapeHtml(q.question_text)}</div>
-                </div>
-                <button class="btn-danger delQ">Delete</button>
-              </div>
-            </div>
-          `);
-          row.querySelector(".delQ").onclick = async () => {
-            if(!confirm("Delete this question?")) return;
-            try{
-              await db.from("test_questions").delete().eq("id", q.id);
-              loadQs();
-            }catch(e){ alert(e?.message || "Could not delete."); }
-          };
-          list.appendChild(row);
-        });
-      }catch(e){
-        list.innerHTML = `<div class="empty">${escapeHtml(e?.message || "Could not load questions. Create table test_questions first.")}</div>`;
-      }
-    };
-
-    sel.onchange = loadQs;
-
-    document.getElementById("addCbtQ").onclick = async () => {
-      const test_id = sel.value;
-      const question_text = document.getElementById("cbtQ").value.trim();
-      const option_a = document.getElementById("cbtA").value.trim();
-      const option_b = document.getElementById("cbtB").value.trim();
-      const option_c = document.getElementById("cbtC").value.trim();
-      const option_d = document.getElementById("cbtD").value.trim();
-      const correct_option = document.getElementById("cbtCorrect").value;
-      if(!test_id || !question_text || !option_a || !option_b || !option_c || !option_d){
-        alert("Fill all fields.");
-        return;
-      }
-      try{
-        await db.from("test_questions").insert({
-          test_id, question_text, option_a, option_b, option_c, option_d, correct_option
-        });
-        document.getElementById("cbtQ").value = "";
-        document.getElementById("cbtA").value = "";
-        document.getElementById("cbtB").value = "";
-        document.getElementById("cbtC").value = "";
-        document.getElementById("cbtD").value = "";
-        loadQs();
-      }catch(e){
-        alert(e?.message || "Could not add question. Ensure test_questions table exists with correct columns.");
-      }
-    };
-  }catch(error){
-    body.innerHTML += `<div class="empty">${escapeHtml(error?.message || "Unable to load CBT admin.")}</div>`;
-  }
-}
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-async function boot(){
-  if(!db) throw new Error("Supabase is not initialized.");
-  try{
-    const {data, error} = await db.auth.getSession();
-    if(error) throw error;
-    session = data?.session || null;
-    if(session) await afterLogin();
-    else renderAuth();
-    db.auth.onAuthStateChange((event, newSession) => {
-      session = newSession || null;
-    });
-  }catch(error){
-    throw error;
-  }
-}
-
+let db=null,session=null,profile=null,activeTab="home",selSubject=null,selChapter=null,selCategory="general",adminTab="users",profileMenuOpen=false;
+let cbtTest=null,cbtQuestions=[],cbtAnswers={},cbtMarked=new Set(),cbtBookmarks=new Set(),cbtIndex=0,cbtTimerRef=null,cbtRemaining=0;
+
+const app=document.getElementById("app");
+function escapeHtml(v){return(v??"").toString().replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function el(h){const d=document.createElement("div");d.innerHTML=h.trim();return d.firstElementChild}
+function fmtDate(iso){if(!iso)return"";const d=new Date(iso);if(Number.isNaN(d.getTime()))return"";return d.toLocaleString(undefined,{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})}
+function ytId(url){const m=(url||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);return m?m[1]:null}
+function showFatalError(m){document.body.innerHTML=`<div class="fatal-error"><div class="fatal-box"><h2 class="fatal-title">NEETrix Error</h2><div class="fatal-text">${escapeHtml(m)}</div></div></div>`}
+function closeProfileMenu(){profileMenuOpen=false;const m=document.getElementById("profileMenu");if(m)m.classList.remove("open")}
+function getLastScore(){try{return JSON.parse(localStorage.getItem("neetrix_last_score")||"null")}catch(e){return null}}
+function saveLastScore(obj){try{localStorage.setItem("neetrix_last_score",JSON.stringify(obj))}catch(e){}}
+
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.async=true;s.onload=()=>res();s.onerror=()=>rej(new Error("Failed: "+src));document.head.appendChild(s)})}
+async function loadSupabase(){if(window.supabase)return true;const srcs=["https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2","https://unpkg.com/@supabase/supabase-js@2"];let last=null;for(const s of srcs){try{await loadScript(s);if(window.supabase)return true}catch(e){last=e}}throw last||new Error("Supabase load failed")}
+async function loadPdfJs(){if(window.pdfjsLib)return true;const srcs=["https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js","https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"];for(const s of srcs){try{await loadScript(s);if(window.pdfjsLib)return true}catch(e){}}return false}
+
+async function initializeApp(){try{await loadSupabase();if(!SUPABASE_URL||!SUPABASE_ANON_KEY)throw new Error("Supabase not configured");db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);loadPdfJs().catch(()=>{});await boot()}catch(e){console.error(e);showFatalError(e?.message||"Could not start")}}
+
+function renderAuth(mode){mode=mode||"login";app.innerHTML="";app.appendChild(el(`<div class="auth-wrap"><div class="auth-card"><div class="brand">NEETrix</div><div class="sub">The focused way to prepare.</div><div class="msg" id="msg"></div><div id="fields"></div><button class="btn" style="width:100%" id="mainBtn"></button><button class="link" id="link1"></button><button class="link" id="link2" style="display:none"></button></div></div>`));
+const fields=document.getElementById("fields"),mainBtn=document.getElementById("mainBtn"),link1=document.getElementById("link1"),link2=document.getElementById("link2"),msg=document.getElementById("msg");
+if(mode==="login"||mode==="signup"){fields.innerHTML=`<input id="email" type="email" placeholder="Email address" autocomplete="email"/><input id="pass" type="password" placeholder="Password (8+ characters)" autocomplete="${mode==="login"?"current-password":"new-password"}"/>`;mainBtn.textContent=mode==="login"?"Log in":"Create account";link1.textContent=mode==="login"?"New here? Create an account":"Already have an account? Log in";link1.onclick=()=>renderAuth(mode==="login"?"signup":"login");link2.style.display=mode==="login"?"block":"none";link2.textContent="Forgot password?";link2.onclick=()=>renderAuth("forgot");
+mainBtn.onclick=async()=>{msg.textContent="";mainBtn.disabled=true;const email=document.getElementById("email").value.trim(),pass=document.getElementById("pass").value;if(!email||!pass){msg.style.color="var(--muted)";msg.textContent="Enter both fields.";mainBtn.disabled=false;return}try{if(mode==="signup"){const{error}=await db.auth.signUp({email,password:pass});if(error)throw error;msg.style.color="var(--green)";msg.textContent="Account created! Check email if needed, then log in.";setTimeout(()=>renderAuth("login"),1800)}else{const{data,error}=await db.auth.signInWithPassword({email,password:pass});if(error)throw error;session=data.session;await afterLogin()}}catch(e){msg.style.color="var(--danger)";msg.textContent=e?.message||"Something went wrong"}finally{mainBtn.disabled=false}}}
+else if(mode==="forgot"){fields.innerHTML=`<input id="email" type="email" placeholder="Email address"/>`;mainBtn.textContent="Send reset link";link1.textContent="Back to log in";link1.onclick=()=>renderAuth("login");mainBtn.onclick=async()=>{msg.textContent="";mainBtn.disabled=true;const email=document.getElementById("email").value.trim();if(!email){msg.style.color="var(--muted)";msg.textContent="Enter email";mainBtn.disabled=false;return}try{const{error}=await db.auth.resetPasswordForEmail(email);if(error)throw error;msg.style.color="var(--green)";msg.textContent="Reset link sent"}catch(e){msg.style.color="var(--danger)";msg.textContent=e?.message||"Error"}finally{mainBtn.disabled=false}}}}
+
+function renderStatusScreen(status){app.innerHTML="";const msgs={pending:["Request sent","Your access request has been sent. Wait for admin approval."],paused:["Account paused","Your account is paused by admin."],blocked:["Account blocked","Access blocked by admin."]};const[t,b]=msgs[status]||["Access unavailable","Contact admin."];app.appendChild(el(`<div class="auth-wrap"><div class="auth-card"><div class="brand">NEETrix</div><h2 style="margin-top:14px">${escapeHtml(t)}</h2><p class="muted" style="line-height:1.6;margin:10px 0 16px">${escapeHtml(b)}</p><button class="btn-outline" style="width:100%" id="out">Log out</button></div></div>`));document.getElementById("out").onclick=async()=>{try{await db.auth.signOut()}catch(e){}session=null;profile=null;renderAuth()}}
+
+async function afterLogin(){if(!session?.user){renderAuth();return}try{try{await db.from("login_events").insert({user_id:session.user.id,email:session.user.email})}catch(e){}const{data,error}=await db.from("profiles").select("*").eq("id",session.user.id).single();if(error){if(error.code==="PGRST116"){profile=null;renderStatusScreen("pending");return}throw error}profile=data;if(!profile||profile.status!=="active"){renderStatusScreen(profile?profile.status:"pending");return}activeTab="home";selSubject=null;selChapter=null;renderShell()}catch(e){showFatalError(e?.message||"Unable to load account")}}
+
+function renderShell(){app.innerHTML="";const isAdmin=profile?.role==="admin";const initial=(profile?.email||"U")[0].toUpperCase();app.appendChild(el(`<div><div class="topbar"><div class="brand">NEETrix</div><button class="navbtn" data-t="home">Home</button><button class="navbtn" data-t="content">Content</button><button class="navbtn" data-t="questions">Questions</button><button class="navbtn" data-t="bookmarks">Bookmarks</button><button class="navbtn" data-t="tests">Test</button>${isAdmin?`<button class="navbtn" data-t="admin">Admin</button>`:""}<div class="spacer"></div><div class="profile-wrap"><button class="profile-btn" id="profileBtn">${initial}</button><div class="profile-menu" id="profileMenu"><div class="pm-email">${escapeHtml(profile?.email||"")}</div><button id="pmLogout" class="danger">Log out</button></div></div></div><div class="content" id="content"></div></div>`));
+document.getElementById("profileBtn").onclick=e=>{e.stopPropagation();profileMenuOpen=!profileMenuOpen;document.getElementById("profileMenu").classList.toggle("open",profileMenuOpen)};
+document.getElementById("pmLogout").onclick=async()=>{closeProfileMenu();if(!confirm("Log out?"))return;try{await db.auth.signOut()}catch(e){}session=null;profile=null;activeTab="home";selSubject=null;selChapter=null;renderAuth()};
+document.addEventListener("click",()=>{if(profileMenuOpen)closeProfileMenu()});
+document.querySelectorAll(".navbtn").forEach(btn=>{btn.onclick=()=>{activeTab=btn.dataset.t;selSubject=null;selChapter=null;if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}renderTabsUI();renderBody()}});
+renderTabsUI();renderBody()}
+function renderTabsUI(){document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.t===activeTab))}
+function renderBody(){const c=document.getElementById("content");if(!c)return;if(activeTab==="home")renderHome(c);else if(activeTab==="content")renderSubjectBrowser(c,"video");else if(activeTab==="questions")renderSubjectBrowser(c,"pdf");else if(activeTab==="tests")renderTests(c);else if(activeTab==="bookmarks")renderBookmarks(c);else if(activeTab==="admin"){if(profile?.role==="admin")renderAdmin(c);else{activeTab="home";renderTabsUI();renderHome(c)}}}
+
+function renderHome(c){const name=profile?.email?profile.email.split("@")[0]:"Student";const last=getLastScore();const pct=last?Math.min(100,Math.round((last.score/(last.total||1))*100)):0;
+c.innerHTML=`<div class="home-hero"><div class="anim-row">
+<div class="atom-wrap"><div class="atom-core"></div><div class="orbit orbit1"><div class="electron"></div></div><div class="orbit orbit2"><div class="electron"></div></div><div class="orbit orbit3"><div class="electron"></div></div><div class="orbit orbit4"><div class="electron"></div></div></div>
+<div class="nerve-wrap"><div class="nerve-brain"></div><div class="nerve-spine"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div></div>
+</div><div class="welcome">Hey ${escapeHtml(name)}</div><div class="muted">Ready to study today?</div></div>
+<div class="progress-box"><div class="progress-head"><div style="font-weight:600">Your Progress</div>${last?`<div class="muted">Last: ${last.score}/${last.total}</div>`:""}</div>
+<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+<div class="progress-stats">${last?`<span>Last score <b>${last.score}</b></span><span>Correct <b>${last.correct||0}</b></span><span>Accuracy <b>${pct}%</b></span>`:`<span>Attempt tests to see progress here</span>`}</div></div>
+<div class="home-grid">
+<div class="home-card" data-go="content"><div class="icon">▶️</div><h3>Content</h3><div class="muted">Video lessons</div></div>
+<div class="home-card" data-go="questions"><div class="icon">📑</div><h3>Questions</h3><div class="muted">Practice & PYQs</div></div>
+<div class="home-card" data-go="tests"><div class="icon">📝</div><h3>Tests</h3><div class="muted">Mock tests</div></div>
+</div>`;
+c.querySelectorAll(".home-card").forEach(card=>{card.onclick=()=>{activeTab=card.dataset.go;renderTabsUI();renderBody()}})}
+
+async function renderSubjectBrowser(c,mode){if(!selSubject){c.innerHTML=`<h2>${mode==="video"?"Video Lessons":"Question Bank"}</h2>${mode==="pdf"?`<div class="tabs2"><button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button><button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button><button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button></div>`:""}<div class="grid2" id="subjList"></div>`;if(mode==="pdf")c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{selCategory=b.dataset.c;renderBody()}});const{data,error}=await db.from("subjects").select("*").order("sort_order");const wrap=document.getElementById("subjList");if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}if(!data?.length){wrap.innerHTML=`<div class="empty">No subjects yet.</div>`;return}wrap.innerHTML="";data.forEach(s=>{const card=el(`<div class="subject-card"><h3>${escapeHtml(s.name)}</h3></div>`);card.onclick=()=>{selSubject=s;selChapter=null;renderBody()};wrap.appendChild(card)});return}
+if(!selChapter){c.innerHTML=`<button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button><h2>Chapters</h2><div id="chapList"></div>`;document.getElementById("b1").onclick=()=>{selSubject=null;renderBody()};const{data,error}=await db.from("chapters").select("*").eq("subject_id",selSubject.id).order("sort_order");const wrap=document.getElementById("chapList");if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}if(!data?.length){wrap.innerHTML=`<div class="empty">No chapters yet.</div>`;return}wrap.innerHTML="";data.forEach(ch=>{const row=el(`<div class="card row" style="cursor:pointer"><span>${escapeHtml(ch.name)}</span><span class="muted">→</span></div>`);row.onclick=()=>{selChapter=ch;renderBody()};wrap.appendChild(row)});return}
+c.innerHTML=`<button class="back" id="b2">← ${escapeHtml(selChapter.name)}</button>`;document.getElementById("b2").onclick=()=>{selChapter=null;renderBody()};
+if(mode==="video"){const box=el(`<div id="vidBox"></div>`);c.appendChild(box);const{data,error}=await db.from("videos").select("*").eq("chapter_id",selChapter.id).order("sort_order");if(error){box.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}if(!data?.length){box.innerHTML=`<div class="empty">No videos yet.</div>`;return}box.innerHTML=data.map(v=>`<h3>${escapeHtml(v.title)}</h3><div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(v.youtube_id)}?modestbranding=1&rel=0" title="${escapeHtml(v.title)}" allowfullscreen></iframe></div>`).join("")}
+else{const list=el(`<div id="pdfList"></div>`);c.appendChild(list);const{data,error}=await db.from("pdfs").select("*").eq("chapter_id",selChapter.id).eq("category",selCategory).order("created_at",{ascending:false});if(error){list.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}if(!data?.length){list.innerHTML=`<div class="empty">No content in this category yet.</div>`;return}let bmSet=new Set();try{const{data:bms}=await db.from("bookmarks").select("pdf_id").eq("user_id",session.user.id);if(bms)bmSet=new Set(bms.map(b=>b.pdf_id))}catch(e){}list.innerHTML="";data.forEach(pdf=>{const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="openPdf">${escapeHtml(pdf.title)}</span><button class="btn-small bmBtn">${bmSet.has(pdf.id)?"★ Saved":"☆ Save"}</button></div>`);row.querySelector(".openPdf").onclick=()=>openPdf(pdf);row.querySelector(".bmBtn").onclick=async e=>{e.stopPropagation();try{if(bmSet.has(pdf.id))await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",pdf.id);else await db.from("bookmarks").insert({user_id:session.user.id,pdf_id:pdf.id});renderBody()}catch(err){alert(err?.message||"Error")}};list.appendChild(row)})}}
+
+async function openPdf(pdf){try{const{data,error}=await db.storage.from("content").createSignedUrl(pdf.file_path,3600);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");await showPdfModal(data.signedUrl,pdf.title)}catch(e){alert(e?.message||"Unable to open PDF")}}
+async function showPdfModal(url,title){if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box"><button class="modal-close" id="mc">×</button><h3>${escapeHtml(title||"")}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div></div></div>`);document.body.appendChild(modal);document.getElementById("mc").onclick=()=>modal.remove();const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;try{const pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){modal.querySelector(".modal-box").innerHTML+=`<div class="empty">Unable to render<br>${escapeHtml(e?.message||"")}</div>`}}
+
+async function renderBookmarks(c){c.innerHTML=`<h2>My Bookmarks</h2><div id="bmList"></div>`;const list=document.getElementById("bmList");try{const{data,error}=await db.from("bookmarks").select("pdf_id, pdfs(title, id, file_path)").eq("user_id",session.user.id);if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No bookmarks yet.</div>`;return}list.innerHTML="";data.forEach(bm=>{if(!bm.pdfs)return;const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="open">${escapeHtml(bm.pdfs.title)}</span><button class="btn-small rm">Remove</button></div>`);row.querySelector(".open").onclick=()=>openPdf(bm.pdfs);row.querySelector(".rm").onclick=async e=>{e.stopPropagation();try{await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",bm.pdfs.id);renderBookmarks(c)}catch(err){alert(err?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function renderTests(c){c.innerHTML=`<h2>Tests</h2><div id="testList"></div>`;const list=document.getElementById("testList");try{const{data,error}=await db.from("tests").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No tests yet.</div>`;return}list.innerHTML="";data.forEach(test=>{const isCbt=test.type==="cbt"||!test.file_path;const row=el(`<div class="card row"><div><div style="font-weight:600">${escapeHtml(test.title)}</div><div class="muted">${test.duration_minutes||60} min · ${isCbt?"CBT Mode":"PDF Paper"}</div></div><button class="btn">Start</button></div>`);row.querySelector("button").onclick=()=>{if(isCbt)startCbtTest(test);else startPdfTest(test)};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function startPdfTest(test){if(!test.file_path){alert("No paper uploaded");return}try{const{data,error}=await db.storage.from("content").createSignedUrl(test.file_path,7200);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box"><div class="timer" id="tmr"></div><h3>${escapeHtml(test.title)}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div><button class="btn" style="width:100%;margin-top:14px" id="submitTest">Submit Test</button></div></div>`);document.body.appendChild(modal);let remaining=(Number(test.duration_minutes)||60)*60;const timerEl=document.getElementById("tmr");let timerRef=null;const finish=()=>{if(timerRef)clearInterval(timerRef);modal.remove();alert("Test submitted")};const tick=()=>{const m=Math.floor(remaining/60),s=remaining%60;timerEl.textContent=`${m}:${s<10?"0":""}${s} remaining`;if(remaining<=0){finish();return}remaining--};tick();timerRef=setInterval(tick,1000);document.getElementById("submitTest").onclick=()=>{if(confirm("Submit now?"))finish()};const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;const pdfDoc=await pdfjsLib.getDocument({url:data.signedUrl,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){alert(e?.message||"Unable to start")}}
+
+async function startCbtTest(test){try{const{data,error}=await db.from("test_questions").select("*").eq("test_id",test.id).order("sort_order");if(error)throw error;if(!data?.length){alert("No questions for this CBT yet. Admin must add them.");return}cbtTest=test;cbtQuestions=data;cbtAnswers={};cbtMarked=new Set();cbtBookmarks=new Set();cbtIndex=0;cbtRemaining=(Number(test.duration_minutes)||60)*60;if(cbtTimerRef)clearInterval(cbtTimerRef);cbtTimerRef=setInterval(()=>{cbtRemaining--;const tEl=document.getElementById("cbtTimer");if(tEl){const m=Math.floor(cbtRemaining/60),s=cbtRemaining%60;tEl.textContent=`${m}:${s<10?"0":""}${s}`}if(cbtRemaining<=0){clearInterval(cbtTimerRef);cbtTimerRef=null;finishCbt(true)}},1000);renderCbtUI()}catch(e){alert(e?.message||"Unable to start CBT")}}
+
+function renderCbtUI(){const c=document.getElementById("content");if(!c||!cbtQuestions.length)return;const q=cbtQuestions[cbtIndex];const selected=cbtAnswers[q.id]||null;
+c.innerHTML=`<div class="timer" id="cbtTimer">${Math.floor(cbtRemaining/60)}:${(cbtRemaining%60)<10?"0":""}${cbtRemaining%60}</div><div class="cbt-layout"><div class="cbt-qbox"><div class="muted" style="margin-bottom:8px">Question ${cbtIndex+1} of ${cbtQuestions.length}</div><div style="font-size:15.5px;line-height:1.55;margin-bottom:16px">${escapeHtml(q.question_text)}</div>
+<button class="cbt-opt ${selected==="A"?"selected":""}" data-o="A">A. ${escapeHtml(q.option_a)}</button>
+<button class="cbt-opt ${selected==="B"?"selected":""}" data-o="B">B. ${escapeHtml(q.option_b)}</button>
+<button class="cbt-opt ${selected==="C"?"selected":""}" data-o="C">C. ${escapeHtml(q.option_c)}</button>
+<button class="cbt-opt ${selected==="D"?"selected":""}" data-o="D">D. ${escapeHtml(q.option_d)}</button>
+<div class="cbt-nav"><button class="btn-outline" id="cbtPrev" ${cbtIndex===0?"disabled":""}>← Previous</button><button class="btn-outline" id="cbtMark">${cbtMarked.has(q.id)?"Unmark":"Mark for Review"}</button><button class="btn-outline" id="cbtBm">${cbtBookmarks.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button><button class="btn" id="cbtNext">${cbtIndex===cbtQuestions.length-1?"Review":"Next →"}</button></div>
+<button class="btn-danger" style="width:100%;margin-top:14px" id="cbtSubmit">Submit Test</button></div>
+<div class="cbt-palette"><div style="font-weight:600;font-size:13px">Question Palette</div><div class="cbt-palette-grid" id="palette"></div><div class="cbt-legend"><span><div class="cbt-dot" style="background:rgba(91,157,255,.35);border:1px solid var(--accent)"></div> Answered</span><span><div class="cbt-dot" style="background:rgba(240,180,41,.35);border:1px solid var(--warn)"></div> Marked</span><span><div class="cbt-dot" style="background:var(--panel2);border:1px solid var(--border)"></div> Not visited</span></div></div></div>`;
+c.querySelectorAll(".cbt-opt").forEach(btn=>{btn.onclick=()=>{cbtAnswers[q.id]=btn.dataset.o;renderCbtUI()}});
+document.getElementById("cbtPrev").onclick=()=>{if(cbtIndex>0){cbtIndex--;renderCbtUI()}};
+document.getElementById("cbtNext").onclick=()=>{if(cbtIndex<cbtQuestions.length-1){cbtIndex++;renderCbtUI()}};
+document.getElementById("cbtMark").onclick=()=>{if(cbtMarked.has(q.id))cbtMarked.delete(q.id);else cbtMarked.add(q.id);renderCbtUI()};
+document.getElementById("cbtBm").onclick=()=>{if(cbtBookmarks.has(q.id))cbtBookmarks.delete(q.id);else cbtBookmarks.add(q.id);renderCbtUI()};
+document.getElementById("cbtSubmit").onclick=()=>{if(confirm("Submit test? Answers cannot be changed."))finishCbt(false)};
+const palette=document.getElementById("palette");cbtQuestions.forEach((qq,i)=>{const btn=el(`<button class="cbt-pbtn">${i+1}</button>`);if(cbtAnswers[qq.id])btn.classList.add("answered");if(cbtMarked.has(qq.id))btn.classList.add("marked");if(i===cbtIndex)btn.classList.add("current");btn.onclick=()=>{cbtIndex=i;renderCbtUI()};palette.appendChild(btn)})}
+
+function finishCbt(auto){if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}let correct=0,wrong=0,unattempted=0;cbtQuestions.forEach(q=>{const ans=cbtAnswers[q.id];if(!ans){unattempted++;return}if(ans===(q.correct_option||"").toUpperCase())correct++;else wrong++});const score=(correct*4)+(wrong*-1);const total=cbtQuestions.length*4;saveLastScore({score,total,correct,wrong,unattempted,title:cbtTest?.title,at:Date.now()});
+const c=document.getElementById("content");c.innerHTML=`<div class="card score-card"><div class="muted" style="margin-bottom:6px">${auto?"Time's up!":"Test Submitted"}</div><h2 style="margin-bottom:4px">${escapeHtml(cbtTest?.title||"Test")}</h2><div class="score-num">${score}</div><div class="muted" style="margin-bottom:18px">out of ${total}</div>
+<div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left"><div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${correct}</div></div><div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${wrong}</div></div><div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${unattempted}</div></div><div class="card" style="margin:0"><div class="muted">Marking</div><div style="font-weight:700">+4 / −1</div></div></div>
+<button class="btn" id="backTests">Back to Tests</button></div>`;document.getElementById("backTests").onclick=()=>{cbtTest=null;cbtQuestions=[];renderTests(c)}}
+
+async function renderAdmin(c){c.innerHTML=`<h2>Admin</h2><div class="tabs2"><button class="tab2 ${adminTab==="users"?"active":""}" data-a="users">Users</button><button class="tab2 ${adminTab==="logins"?"active":""}" data-a="logins">Login History</button><button class="tab2 ${adminTab==="settings"?"active":""}" data-a="settings">Settings</button><button class="tab2 ${adminTab==="content"?"active":""}" data-a="content">Content Manager</button><button class="tab2 ${adminTab==="cbt"?"active":""}" data-a="cbt">CBT Questions</button></div><div id="adminBody"></div>`;c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{adminTab=b.dataset.a;renderAdmin(c)}});const body=document.getElementById("adminBody");if(adminTab==="users")await renderAdminUsers(body);else if(adminTab==="logins")await renderAdminLogins(body);else if(adminTab==="settings")await renderAdminSettings(body);else if(adminTab==="content")await renderAdminContent(body);else if(adminTab==="cbt")await renderAdminCbt(body)}
+
+async function renderAdminUsers(body){try{const{data,error}=await db.from("profiles").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){body.innerHTML=`<div class="empty">No users yet.</div>`;return}body.innerHTML=`<table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;const rows=document.getElementById("uRows");data.forEach(user=>{const tr=el(`<tr><td>${escapeHtml(user.email)}</td><td><span class="badge ${user.role==="admin"?"admin":""}">${escapeHtml(user.role)}</span></td><td><span class="badge ${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td><td class="row-wrap" id="act-${escapeHtml(user.id)}"></td></tr>`);rows.appendChild(tr);const act=tr.querySelector(`#act-${CSS.escape(user.id)}`);if(user.role==="admin"){act.innerHTML=`<span class="muted">—</span>`;return}const setStatus=async st=>{try{await db.from("profiles").update({status:st}).eq("id",user.id);renderAdmin(document.getElementById("content"))}catch(e){alert(e?.message||"Error")}};if(user.status==="pending"){const a=el(`<button class="btn-good">Approve</button>`);a.onclick=()=>setStatus("active");act.appendChild(a);const r=el(`<button class="btn-danger">Reject</button>`);r.onclick=()=>setStatus("blocked");act.appendChild(r)}else{const p=el(`<button class="btn-warn">${user.status==="paused"?"Resume":"Pause"}</button>`);p.onclick=()=>setStatus(user.status==="paused"?"active":"paused");act.appendChild(p);const b=el(`<button class="btn-danger">${user.status==="blocked"?"Unblock":"Block"}</button>`);b.onclick=()=>setStatus(user.status==="blocked"?"active":"blocked");act.appendChild(b)}})}catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function renderAdminLogins(body){try{const{data,error}=await db.from("login_events").select("*").order("logged_in_at",{ascending:false}).limit(200);if(error)throw error;if(!data?.length){body.innerHTML=`<div class="empty">No login activity.</div>`;return}body.innerHTML=`<table><thead><tr><th>Email</th><th>Logged in at</th></tr></thead><tbody>${data.map(l=>`<tr><td>${escapeHtml(l.email)}</td><td>${escapeHtml(fmtDate(l.logged_in_at))}</td></tr>`).join("")}</tbody></table>`}catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function renderAdminSettings(body){try{const{data,error}=await db.from("app_settings").select("*").eq("id",1).single();if(error&&error.code!=="PGRST116")throw error;const open=data?Boolean(data.registration_open):true;body.innerHTML=`<div class="card"><div class="row"><div><div>Accept new users</div><div class="muted">When off, new signups go pending.</div></div><button class="btn" id="toggleReg">${open?"Turn OFF":"Turn ON"}</button></div></div>`;document.getElementById("toggleReg").onclick=async()=>{try{await db.from("app_settings").update({registration_open:!open}).eq("id",1);renderAdminSettings(body)}catch(e){alert(e?.message||"Error")}}}catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function renderAdminContent(body){body.innerHTML=`<h3>Add Subject</h3><input id="newSubj" placeholder="Subject name"/><button class="btn" id="addSubj">Add Subject</button><h3>Add Chapter</h3><select id="chSubj"></select><input id="newChap" placeholder="Chapter name"/><button class="btn" id="addChap">Add Chapter</button><h3>Add Video</h3><select id="vidSubj"></select><select id="vidChap"></select><input id="vidTitle" placeholder="Video title"/><input id="vidUrl" placeholder="YouTube link"/><button class="btn" id="addVid">Add Video</button><h3>Add Question PDF</h3><select id="pdfSubj"></select><select id="pdfChap"></select><select id="pdfCat"><option value="general">Practice</option><option value="ncert">Important</option><option value="pyq">PYQs</option></select><input id="pdfTitle" placeholder="PDF title"/><input type="file" id="pdfFile" accept="application/pdf"/><button class="btn" id="addPdf">Upload PDF</button><h3>Add Test</h3><input id="testTitle" placeholder="Test title"/><input id="testDur" type="number" value="60" placeholder="Duration (min)"/><input type="file" id="testFile" accept="application/pdf"/><div class="muted" style="margin-bottom:8px">Leave file empty = CBT test</div><button class="btn" id="addTest">Create Test</button>`;
+try{const{data:subjects,error}=await db.from("subjects").select("*").order("sort_order");if(error)throw error;const opts=(subjects||[]).map(s=>`<option value="${escapeHtml(s.id)}">${escapeHtml(s.name)}</option>`).join("");["chSubj","vidSubj","pdfSubj"].forEach(id=>{const sel=document.getElementById(id);if(sel)sel.innerHTML=opts||`<option value="">No subjects</option>`});
+const loadChapters=async(subId,chapId)=>{const subSel=document.getElementById(subId),chapSel=document.getElementById(chapId);if(!subSel||!chapSel)return;const sid=subSel.value;if(!sid){chapSel.innerHTML=`<option value="">No chapters</option>`;return}const{data:chs}=await db.from("chapters").select("*").eq("subject_id",sid).order("sort_order");chapSel.innerHTML=(chs||[]).map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("")||`<option value="">No chapters</option>`};
+if(subjects?.length){await loadChapters("vidSubj","vidChap");await loadChapters("pdfSubj","pdfChap")}
+document.getElementById("vidSubj").onchange=()=>loadChapters("vidSubj","vidChap");document.getElementById("pdfSubj").onchange=()=>loadChapters("pdfSubj","pdfChap");
+document.getElementById("addSubj").onclick=async()=>{const name=document.getElementById("newSubj").value.trim();if(!name)return;try{await db.from("subjects").insert({name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+document.getElementById("addChap").onclick=async()=>{const subject_id=document.getElementById("chSubj").value,name=document.getElementById("newChap").value.trim();if(!subject_id||!name)return;try{await db.from("chapters").insert({subject_id,name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+document.getElementById("addVid").onclick=async()=>{const chapter_id=document.getElementById("vidChap").value,title=document.getElementById("vidTitle").value.trim(),url=document.getElementById("vidUrl").value.trim(),youtubeId=ytId(url);if(!chapter_id||!title||!youtubeId){alert("Check fields + valid YouTube link");return}try{await db.from("videos").insert({chapter_id,title,youtube_id:youtubeId});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+document.getElementById("addPdf").onclick=async()=>{const chapter_id=document.getElementById("pdfChap").value,category=document.getElementById("pdfCat").value,title=document.getElementById("pdfTitle").value.trim(),file=document.getElementById("pdfFile").files[0];if(!chapter_id||!title||!file){alert("Fill all");return}if(file.type!=="application/pdf"){alert("PDF only");return}try{const path=`pdfs/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{error:insErr}=await db.from("pdfs").insert({chapter_id,category,title,file_path:path});if(insErr){try{await db.storage.from("content").remove([path])}catch(e){}throw insErr}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+document.getElementById("addTest").onclick=async()=>{const title=document.getElementById("testTitle").value.trim(),duration_minutes=parseInt(document.getElementById("testDur").value)||60,file=document.getElementById("testFile").files[0];if(!title){alert("Enter title");return}try{let file_path=null,type="cbt";if(file){if(file.type!=="application/pdf"){alert("PDF only");return}file_path=`tests/${crypto.randomUUID()}_${file.name}`;type="pdf";const{error:upErr}=await db.storage.from("content").upload(file_path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr}const payload={title,duration_minutes,file_path};try{const{error}=await db.from("tests").insert({...payload,type});if(error)throw error}catch(e){const{error}=await db.from("tests").insert(payload);if(error){if(file_path)try{await db.storage.from("content").remove([file_path])}catch(x){}throw error}}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}}}catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function renderAdminCbt(body){body.innerHTML=`<h3>Add Single Question</h3><select id="cbtTestSel"><option value="">Select test…</option></select><textarea id="cbtQ" placeholder="Question text"></textarea><input id="cbtA" placeholder="Option A"/><input id="cbtB" placeholder="Option B"/><input id="cbtC" placeholder="Option C"/><input id="cbtD" placeholder="Option D"/><select id="cbtCorrect"><option value="A">Correct: A</option><option value="B">Correct: B</option><option value="C">Correct: C</option><option value="D">Correct: D</option></select><button class="btn" id="addCbtQ">Add Question</button>
+<h3 style="margin-top:22px">Bulk Add (time saver)</h3><div class="muted" style="margin-bottom:8px">Format (one question per block, separate by blank line):<br>Question text<br>A) option<br>B) option<br>C) option<br>D) option<br>Answer: A</div><textarea id="bulkText" style="min-height:160px" placeholder="Paste multiple questions here..."></textarea><button class="btn" id="bulkAdd">Add All</button>
+<h3 style="margin-top:22px">Existing Questions</h3><div id="cbtQList" class="muted">Select a test</div>`;
+try{const{data:tests}=await db.from("tests").select("id,title,file_path").order("created_at",{ascending:false});const sel=document.getElementById("cbtTestSel");(tests||[]).forEach(t=>{const o=document.createElement("option");o.value=t.id;o.textContent=t.title+(t.file_path?" (PDF)":" (CBT)");sel.appendChild(o)});
+const loadQs=async()=>{const testId=sel.value;const list=document.getElementById("cbtQList");if(!testId){list.innerHTML=`<div class="muted">Select a test</div>`;return}try{const{data,error}=await db.from("test_questions").select("*").eq("test_id",testId).order("sort_order");if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No questions yet</div>`;return}list.innerHTML="";data.forEach((q,i)=>{const row=el(`<div class="card"><div class="row"><div style="flex:1"><div class="muted">Q${i+1} · Correct: ${escapeHtml(q.correct_option)}</div><div style="margin-top:4px">${escapeHtml(q.question_text)}</div></div><button class="btn-danger delQ">Delete</button></div></div>`);row.querySelector(".delQ").onclick=async()=>{if(!confirm("Delete?"))return;try{await db.from("test_questions").delete().eq("id",q.id);loadQs()}catch(e){alert(e?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}};
+sel.onchange=loadQs;
+document.getElementById("addCbtQ").onclick=async()=>{const test_id=sel.value,question_text=document.getElementById("cbtQ").value.trim(),option_a=document.getElementById("cbtA").value.trim(),option_b=document.getElementById("cbtB").value.trim(),option_c=document.getElementById("cbtC").value.trim(),option_d=document.getElementById("cbtD").value.trim(),correct_option=document.getElementById("cbtCorrect").value;if(!test_id||!question_text||!option_a||!option_b||!option_c||!option_d){alert("Fill all");return}try{await db.from("test_questions").insert({test_id,question_text,option_a,option_b,option_c,option_d,correct_option});document.getElementById("cbtQ").value="";document.getElementById("cbtA").value="";document.getElementById("cbtB").value="";document.getElementById("cbtC").value="";document.getElementById("cbtD").value="";loadQs()}catch(e){alert(e?.message||"Error")}};
+document.getElementById("bulkAdd").onclick=async()=>{const test_id=sel.value,raw=document.getElementById("bulkText").value.trim();if(!test_id){alert("Select test first");return}if(!raw){alert("Paste questions");return}const blocks=raw.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);const rows=[];for(const block of blocks){const lines=block.split("\n").map(l=>l.trim()).filter(Boolean);if(lines.length<6)continue;const question_text=lines[0].replace(/^\d+[\.\)]\s*/,"");const getOpt=l=>{const m=l.match(/^[A-Da-d][\.\)\]]\s*(.+)/);return m?m[1]:l};const option_a=getOpt(lines[1]),option_b=getOpt(lines[2]),option_c=getOpt(lines[3]),option_d=getOpt(lines[4]);let correct_option="A";const ansLine=lines.find(l=>/answer\s*[:=]/i.test(l))||lines[lines.length-1];const am=ansLine.match(/[A-Da-d]/);if(am)correct_option=am[0].toUpperCase();rows.push({test_id,question_text,option_a,option_b,option_c,option_d,correct_option})}if(!rows.length){alert("No valid questions found. Check format.");return}try{const{error}=await db.from("test_questions").insert(rows);if(error)throw error;document.getElementById("bulkText").value="";alert(`${rows.length} questions added`);loadQs()}catch(e){alert(e?.message||"Bulk add failed")}}}catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function boot(){if(!db)throw new Error("Supabase not init");try{const{data,error}=await db.auth.getSession();if(error)throw error;session=data?.session||null;if(session)await afterLogin();else renderAuth();db.auth.onAuthStateChange((e,ns)=>{session=ns||null})}catch(e){throw e}}
 initializeApp();
 </script>
 </body>
