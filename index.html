@@ -78,8 +78,8 @@
 /* =========================================================
    CONFIG
    ========================================================= */
-const SUPABASE_URL = "https://qhggamgxfwlwtpmwxfwk.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_X9_aDiQcrKhYyPfuQdnKPA_K8F7RPjM";
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // optional, not required for core app
 /* ========================================================= */
 
@@ -211,6 +211,7 @@ function renderShell(){
   app.innerHTML = "";
   const isAdmin = profile.role === "admin";
   app.appendChild(el(`
+    <div>
     <div class="topbar">
       <div class="brand">NEETrix</div>
       <button class="navbtn" data-t="content">Content</button>
@@ -222,6 +223,7 @@ function renderShell(){
       <button class="btn-outline" id="logout">Log out</button>
     </div>
     <div class="content" id="content"></div>
+    </div>
   `));
   document.getElementById("logout").onclick = async () => { await db.auth.signOut(); session=null; profile=null; renderAuth(); };
   document.querySelectorAll(".navbtn").forEach(b => b.onclick = () => { activeTab = b.dataset.t; selSubject=null; selChapter=null; renderTabsUI(); renderBody(); });
