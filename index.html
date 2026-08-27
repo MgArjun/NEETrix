@@ -211,7 +211,6 @@ function renderShell(){
   app.innerHTML = "";
   const isAdmin = profile.role === "admin";
   app.appendChild(el(`
-    <div>
     <div class="topbar">
       <div class="brand">NEETrix</div>
       <button class="navbtn" data-t="content">Content</button>
@@ -223,7 +222,6 @@ function renderShell(){
       <button class="btn-outline" id="logout">Log out</button>
     </div>
     <div class="content" id="content"></div>
-    </div>
   `));
   document.getElementById("logout").onclick = async () => { await db.auth.signOut(); session=null; profile=null; renderAuth(); };
   document.querySelectorAll(".navbtn").forEach(b => b.onclick = () => { activeTab = b.dataset.t; selSubject=null; selChapter=null; renderTabsUI(); renderBody(); });
