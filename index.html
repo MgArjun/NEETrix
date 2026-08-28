@@ -273,6 +273,11 @@ function renderHome(c){
 }
 
 function showDetailedReport(last){
+  if(last && last.review && last.review.length){
+    const c = document.getElementById("content");
+    if(c) renderQuestionReview(c, last);
+    return;
+  }
   const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:560px">
     <button class="modal-close" id="drClose">×</button>
     <h2 style="margin-bottom:8px">${escapeHtml(last.title||"Last Test")}</h2>
@@ -283,7 +288,6 @@ function showDetailedReport(last){
       <div class="card" style="margin:0;text-align:center"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${last.correct||0}</div></div>
       <div class="card" style="margin:0;text-align:center"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${last.wrong||0}</div></div>
     </div>
-    <div class="muted">Detailed question-wise review is available after you attempt the test with the latest version.</div>
     <button class="btn" style="width:100%;margin-top:16px" id="drClose2">Close</button>
   </div></div>`);
   document.body.appendChild(modal);
@@ -291,9 +295,6 @@ function showDetailedReport(last){
   document.getElementById("drClose2").onclick=()=>modal.remove();
   modal.onclick=e=>{if(e.target===modal)modal.remove()};
 }
-
-// ===== remaining functions (Subject, PDF, Bookmarks, Tests, CBT, Admin) =====
-// Main remaining logic continues from original stable version with scoring fix + sort_order + image support.
 
 async function renderSubjectBrowser(c,mode){
   if(!selSubject){
@@ -415,76 +416,145 @@ function renderCbtUI(){
     palette.appendChild(btn);
   });
 }
-
 async function finishCbt(auto){
   if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}
   const c=document.getElementById("content");
   c.innerHTML=`<div class="card score-card"><div class="muted">Calculating score...</div></div>`;
 
+  let score=0, total=cbtQuestions.length*4, correct=0, wrong=0, unattempted=0;
+  let reviewQs = [];
+
+  try{
+    const {data: fullQs} = await db.from("test_questions")
+      .select("id, question_text, option_a, option_b, option_c, option_d, correct_option, sort_order")
+      .eq("test_id", cbtTest.id)
+      .order("sort_order");
+    if(fullQs?.length) cbtQuestions = fullQs;
+  }catch(e){}
+
+  cbtQuestions.forEach(q=>{
+    const ans = cbtAnswers[q.id] || null;
+    const corr = (q.correct_option || "").toUpperCase();
+    let status = "unattempted";
+    if(!ans){ unattempted++; }
+    else if(corr && ans === corr){ correct++; status = "correct"; }
+    else { wrong++; status = "wrong"; }
+    reviewQs.push({
+      id: q.id,
+      question_text: q.question_text,
+      option_a: q.option_a,
+      option_b: q.option_b,
+      option_c: q.option_c,
+      option_d: q.option_d,
+      correct_option: corr || null,
+      user_answer: ans,
+      status
+    });
+  });
+
+  score = (correct * 4) + (wrong * -1);
+  total = cbtQuestions.length * 4;
+
   try{
     const answersPayload = {};
     Object.keys(cbtAnswers).forEach(id => { answersPayload[id] = cbtAnswers[id]; });
-
     const { data, error } = await db.rpc("score_cbt_test", {
       p_test_id: cbtTest.id,
       p_answers: answersPayload
     });
+    if(!error && data){
+      score = data.score ?? score;
+      total = data.total ?? total;
+      correct = data.correct ?? correct;
+      wrong = data.wrong ?? wrong;
+      unattempted = data.unattempted ?? unattempted;
+    }
+  }catch(e){}
 
-    if(error) throw error;
+  const lastScoreData = {
+    score, total, correct, wrong, unattempted,
+    title: cbtTest?.title,
+    at: Date.now(),
+    review: reviewQs
+  };
+  saveLastScore(lastScoreData);
+  showScoreAndReview(c, lastScoreData, auto);
+}
 
-    const result = data || {};
-    const score = result.score ?? 0;
-    const total = result.total ?? (cbtQuestions.length * 4);
-    const correct = result.correct ?? 0;
-    const wrong = result.wrong ?? 0;
-    const unattempted = result.unattempted ?? 0;
-    const accuracy = cbtQuestions.length ? Math.round((correct / cbtQuestions.length) * 100) : 0;
+function showScoreAndReview(c, data, auto){
+  const den = (data.correct||0) + (data.wrong||0) + (data.unattempted||0);
+  const accuracy = den ? Math.round(((data.correct||0) / den) * 100) : 0;
 
-    saveLastScore({score, total, correct, wrong, unattempted, title: cbtTest?.title, at: Date.now()});
+  c.innerHTML = `<div class="card score-card">
+    <div class="muted" style="margin-bottom:6px">${auto ? "Time's up!" : "Test Submitted"}</div>
+    <h2 style="margin-bottom:4px">${escapeHtml(data.title || "Test")}</h2>
+    <div class="score-num">${data.score}</div>
+    <div class="muted" style="margin-bottom:18px">out of ${data.total}</div>
+    <div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left">
+      <div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${data.correct||0}</div></div>
+      <div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${data.wrong||0}</div></div>
+      <div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${data.unattempted||0}</div></div>
+      <div class="card" style="margin:0"><div class="muted">Accuracy</div><div style="font-weight:700">${accuracy}%</div></div>
+    </div>
+    <button class="btn" style="width:100%;margin-bottom:10px" id="viewReview">Question-wise Review</button>
+    <button class="btn-outline" style="width:100%" id="backTests">Back to Tests</button>
+  </div>`;
 
-    c.innerHTML=`<div class="card score-card">
-      <div class="muted" style="margin-bottom:6px">${auto?"Time's up!":"Test Submitted"}</div>
-      <h2 style="margin-bottom:4px">${escapeHtml(cbtTest?.title||"Test")}</h2>
-      <div class="score-num">${score}</div>
-      <div class="muted" style="margin-bottom:18px">out of ${total}</div>
-      <div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left">
-        <div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${correct}</div></div>
-        <div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${wrong}</div></div>
-        <div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${unattempted}</div></div>
-        <div class="card" style="margin:0"><div class="muted">Accuracy</div><div style="font-weight:700">${accuracy}%</div></div>
-      </div>
-      <button class="btn" id="backTests">Back to Tests</button>
-    </div>`;
-    document.getElementById("backTests").onclick=()=>{cbtTest=null;cbtQuestions=[];renderTests(c)};
-  }catch(e){
-    // Fallback for admin testing
-    let correct=0, wrong=0, unattempted=0;
-    cbtQuestions.forEach(q=>{
-      const ans = cbtAnswers[q.id];
-      if(!ans){ unattempted++; return; }
-      if(q.correct_option && ans === (q.correct_option||"").toUpperCase()) correct++;
-      else wrong++;
-    });
-    const score = (correct*4) + (wrong*-1);
-    const total = cbtQuestions.length*4;
-    const accuracy = cbtQuestions.length ? Math.round((correct / cbtQuestions.length)*100) : 0;
-    saveLastScore({score, total, correct, wrong, unattempted, title: cbtTest?.title, at: Date.now()});
+  document.getElementById("backTests").onclick = () => {
+    cbtTest = null; cbtQuestions = []; cbtAnswers = {};
+    renderTests(c);
+  };
+  document.getElementById("viewReview").onclick = () => renderQuestionReview(c, data);
+}
 
-    c.innerHTML=`<div class="card score-card">
-      <div class="muted" style="margin-bottom:6px">${auto?"Time's up!":"Test Submitted"}</div>
-      <h2 style="margin-bottom:4px">${escapeHtml(cbtTest?.title||"Test")}</h2>
-      <div class="score-num">${score}</div>
-      <div class="muted" style="margin-bottom:18px">out of ${total}</div>
-      <div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left">
-        <div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${correct}</div></div>
-        <div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${wrong}</div></div>
-        <div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${unattempted}</div></div>
-        <div class="card" style="margin:0"><div class="muted">Accuracy</div><div style="font-weight:700">${accuracy}%</div></div>
-      </div>
-      <button class="btn" id="backTests">Back to Tests</button>
-    </div>`;
-    document.getElementById("backTests").onclick=()=>{cbtTest=null;cbtQuestions=[];renderTests(c)};
+function renderQuestionReview(c, data){
+  if(!data.review || !data.review.length){
+    c.innerHTML = `<div class="empty">Review data not available.</div>
+      <button class="btn" id="backScore">Back</button>`;
+    document.getElementById("backScore").onclick = () => showScoreAndReview(c, data, false);
+    return;
   }
+
+  let html = `<button class="back" id="backScore">Score Summary</button>
+    <h2>${escapeHtml(data.title || "Review")}</h2>
+    <div class="muted" style="margin-bottom:16px">${data.correct||0} correct · ${data.wrong||0} wrong · ${data.unattempted||0} skipped</div>`;
+
+  data.review.forEach((q, i) => {
+    const statusColor = q.status === "correct" ? "var(--green)" : q.status === "wrong" ? "var(--danger)" : "var(--muted)";
+    const statusText = q.status === "correct" ? "Correct" : q.status === "wrong" ? "Wrong" : "Not Attempted";
+
+    const optHtml = (letter, text) => {
+      let extra = "";
+      if(q.user_answer === letter) extra += ` <span style="color:var(--accent);font-weight:600">(Your answer)</span>`;
+      if(q.correct_option === letter) extra += ` <span style="color:var(--green);font-weight:600">(Correct)</span>`;
+      let bg = "var(--panel2)";
+      if(q.correct_option === letter) bg = "rgba(61,214,140,.12)";
+      else if(q.user_answer === letter && q.status === "wrong") bg = "rgba(239,90,90,.12)";
+      return `<div style="padding:10px 12px;margin:6px 0;border-radius:8px;border:1px solid var(--border);background:${bg}">
+        <b>${letter}.</b> ${escapeHtml(text||"")}${extra}
+      </div>`;
+    };
+
+    html += `<div class="card" style="margin-bottom:14px">
+      <div class="row" style="margin-bottom:8px">
+        <div style="font-weight:600">Q${i+1}</div>
+        <div style="color:${statusColor};font-weight:600;font-size:13px">${statusText}</div>
+      </div>
+      <div style="line-height:1.5;margin-bottom:10px">${escapeHtml(q.question_text)}</div>
+      ${optHtml("A", q.option_a)}
+      ${optHtml("B", q.option_b)}
+      ${optHtml("C", q.option_c)}
+      ${optHtml("D", q.option_d)}
+    </div>`;
+  });
+
+  html += `<button class="btn" style="width:100%;margin-top:10px" id="backTests2">Back to Tests</button>`;
+  c.innerHTML = html;
+  document.getElementById("backScore").onclick = () => showScoreAndReview(c, data, false);
+  document.getElementById("backTests2").onclick = () => {
+    cbtTest = null; cbtQuestions = []; cbtAnswers = {};
+    renderTests(c);
+  };
 }
 
 async function renderAdmin(c){
@@ -567,6 +637,83 @@ async function renderAdminContent(body){
     document.getElementById("addVid").onclick=async()=>{const chapter_id=document.getElementById("vidChap").value,title=document.getElementById("vidTitle").value.trim(),url=document.getElementById("vidUrl").value.trim(),youtubeId=ytId(url);if(!chapter_id||!title||!youtubeId){alert("Check fields + valid YouTube link");return}try{await db.from("videos").insert({chapter_id,title,youtube_id:youtubeId});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
     document.getElementById("addPdf").onclick=async()=>{const chapter_id=document.getElementById("pdfChap").value,category=document.getElementById("pdfCat").value,title=document.getElementById("pdfTitle").value.trim(),file=document.getElementById("pdfFile").files[0];if(!chapter_id||!title||!file){alert("Fill all");return}if(file.type!=="application/pdf"){alert("PDF only");return}try{const path=`pdfs/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{error:insErr}=await db.from("pdfs").insert({chapter_id,category,title,file_path:path});if(insErr){try{await db.storage.from("content").remove([path])}catch(e){}throw insErr}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
     document.getElementById("addTest").onclick=async()=>{const title=document.getElementById("testTitle").value.trim(),duration_minutes=parseInt(document.getElementById("testDur").value)||60,file=document.getElementById("testFile").files[0];if(!title){alert("Enter title");return}try{let file_path=null,type="cbt";if(file){if(file.type!=="application/pdf"){alert("PDF only");return}file_path=`tests/${crypto.randomUUID()}_${file.name}`;type="pdf";const{error:upErr}=await db.storage.from("content").upload(file_path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr}const payload={title,duration_minutes,file_path};try{const{error}=await db.from("tests").insert({...payload,type});if(error)throw error}catch(e){const{error}=await db.from("tests").insert(payload);if(error){if(file_path)try{await db.storage.from("content").remove([file_path])}catch(x){}throw error}}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+
+    // Existing Tests Edit + Delete
+    const testsSection = el(`<div style="margin-top:36px;border-top:1px solid var(--border);padding-top:22px">
+      <h3>Existing Tests (Edit / Delete)</h3>
+      <div id="existingTestsList"><div class="muted">Loading...</div></div>
+    </div>`);
+    body.appendChild(testsSection);
+
+    const loadExistingTests = async () => {
+      const list = document.getElementById("existingTestsList");
+      if(!list) return;
+      try {
+        const { data, error } = await db.from("tests").select("*").order("created_at", { ascending: false });
+        if (error) throw error;
+        if (!data || !data.length) {
+          list.innerHTML = `<div class="empty">No tests yet.</div>`;
+          return;
+        }
+        list.innerHTML = "";
+        data.forEach(t => {
+          const typeLabel = (t.type === "cbt" || !t.file_path) ? "CBT" : "PDF";
+          const row = el(`<div class="card" style="margin-bottom:10px">
+            <div class="row">
+              <div style="flex:1">
+                <div style="font-weight:600">${escapeHtml(t.title)}</div>
+                <div class="muted">${t.duration_minutes || 60} min · ${typeLabel}</div>
+              </div>
+              <div class="row-wrap">
+                <button class="btn-small editT">Edit</button>
+                <button class="btn-danger delT">Delete</button>
+              </div>
+            </div>
+          </div>`);
+
+          row.querySelector(".editT").onclick = () => {
+            const newTitle = prompt("New title:", t.title);
+            if (newTitle === null) return;
+            const newDur = prompt("Duration (minutes):", String(t.duration_minutes || 60));
+            if (newDur === null) return;
+            (async () => {
+              try {
+                const { error } = await db.from("tests").update({
+                  title: (newTitle.trim() || t.title),
+                  duration_minutes: parseInt(newDur) || 60
+                }).eq("id", t.id);
+                if (error) throw error;
+                alert("Updated");
+                loadExistingTests();
+              } catch (e) {
+                alert(e?.message || "Update failed");
+              }
+            })();
+          };
+
+          row.querySelector(".delT").onclick = async () => {
+            if (!confirm(`Delete test "${t.title}"?\nIske saare questions bhi delete ho jayenge.`)) return;
+            try {
+              await db.from("test_questions").delete().eq("test_id", t.id);
+              const { error } = await db.from("tests").delete().eq("id", t.id);
+              if (error) throw error;
+              if (t.file_path) {
+                try { await db.storage.from("content").remove([t.file_path]); } catch (e) {}
+              }
+              alert("Test deleted");
+              loadExistingTests();
+            } catch (e) {
+              alert(e?.message || "Delete failed");
+            }
+          };
+
+          list.appendChild(row);
+        });
+      } catch (e) {
+        list.innerHTML = `<div class="empty">${escapeHtml(e?.message || "Error")}</div>`;
+      }
+    };
+    loadExistingTests();
   }catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
 }
 
