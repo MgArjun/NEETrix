@@ -3,277 +3,186 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>NEETrix</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>NEETrix · Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#060912;--panel:#0f1524;--panel2:#151d30;--border:#243049;
-  --text:#eef2fb;--muted:#8b97b3;--accent:#5b9dff;--accent2:#6b7cff;
-  --green:#3dd68c;--danger:#ef5a5a;--warn:#f0b429;--shadow:0 8px 32px rgba(0,0,0,.35);
+  --bg:#030712;--panel:#0d1322;--panel2:#131c31;--border:#1e293b;
+  --text:#f8fafc;--muted:#94a3b8;--accent:#3b82f6;--accent2:#2563eb;
+  --green:#10b981;--danger:#ef4444;--warn:#f59e0b;--shadow:0 12px 40px rgba(0,0,0,.5);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
-#app{min-height:100vh;padding-bottom:52px}
-input,textarea,select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit}
-input:focus,textarea:focus,select:focus{border-color:var(--accent)}
-textarea{min-height:90px;resize:vertical}
-button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-highlight-color:transparent}
-.btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 4px 14px rgba(91,157,255,.25)}
-.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,157,255,.35)}
-.btn:active{transform:scale(.96)}
+*{box-sizing:border-box;margin:0;padding:0;letter-spacing:-0.01em}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+#app{min-height:100vh;padding-bottom:60px}
+input,textarea,select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:14px 16px;font-size:14px;margin-bottom:12px;outline:none;font-family:inherit;transition:all .2s cubic-bezier(.4,0,.2,1)}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+textarea{min-height:100px;resize:vertical}
+button{cursor:pointer;font-family:inherit;transition:all .2s cubic-bezier(.4,0,.2,1);-webkit-tap-highlight-color:transparent}
+.btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 4px 16px rgba(59,130,246,.3)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.4)}
+.btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.45;pointer-events:none}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:9px;font-size:13px}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
-.btn-outline:active{transform:scale(.96)}
-.btn-danger{background:var(--danger);border:none;color:#fff;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
-.btn-good{background:var(--green);border:none;color:#06281a;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
-.btn-warn{background:var(--warn);border:none;color:#3a2a00;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
-.btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:12px}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:12px;font-size:13.5px}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.05)}
+.btn-outline:active{transform:scale(.97)}
+.btn-danger{background:var(--danger);border:none;color:#fff;padding:8px 14px;border-radius:10px;font-size:12.5px;font-weight:600}
+.btn-good{background:var(--green);border:none;color:#022c22;padding:8px 14px;border-radius:10px;font-size:12.5px;font-weight:600}
+.btn-warn{background:var(--warn);border:none;color:#451a03;padding:8px 14px;border-radius:10px;font-size:12.5px;font-weight:600}
+.btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:9px;font-size:12.5px}
 .btn-small:active{transform:scale(.95)}
 
-.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 0%,#121a2e 0%,var(--bg) 70%)}
-.auth-card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:var(--shadow)}
-.brand{font-size:26px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.03em}
-.sub{color:var(--muted);font-size:13.5px;margin:8px 0 22px}
-.msg{font-size:12.5px;margin:-4px 0 12px;min-height:16px}
-.link{color:var(--accent);background:none;border:none;font-size:13px;text-align:center;width:100%;margin-top:10px}
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 50% 20%,#0f172a 0%,var(--bg) 80%)}
+.auth-card{background:var(--panel);border:1px solid var(--border);border-radius:24px;padding:40px 32px;width:100%;max-width:420px;box-shadow:var(--shadow);animation:fadeIn .5s cubic-bezier(.16,1,.3,1)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.brand{font-size:28px;font-weight:800;background:linear-gradient(135deg,#60a5fa,#3b82f6,#10b981);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.03em}
+.sub{color:var(--muted);font-size:14px;margin:8px 0 24px}
+.msg{font-size:13px;margin:-4px 0 14px;min-height:18px}
+.link{color:var(--accent);background:none;border:none;font-size:13.5px;text-align:center;width:100%;margin-top:12px}
 
-.topbar{display:flex;align-items:center;gap:4px;padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(15,21,36,.92);backdrop-filter:blur(12px);overflow-x:auto;position:sticky;top:0;z-index:50}
-.topbar .brand{font-size:17px;margin:0;flex-shrink:0;margin-right:6px}
-.navbtn{background:none;border:1px solid transparent;color:var(--muted);padding:7px 12px;border-radius:8px;font-size:12.5px;white-space:nowrap;flex-shrink:0}
-.navbtn:hover{color:var(--text)}
-.navbtn.active{background:var(--panel2);color:var(--text);border-color:var(--border)}
-.navbtn:active{transform:scale(.96)}
-.spacer{flex:1;min-width:8px}
+.topbar{display:flex;align-items:center;gap:6px;padding:12px 18px;border-bottom:1px solid var(--border);background:rgba(3,7,18,.85);backdrop-filter:blur(16px);overflow-x:auto;position:sticky;top:0;z-index:50}
+.topbar .brand{font-size:18px;margin:0;flex-shrink:0;margin-right:8px}
+.navbtn{background:none;border:1px solid transparent;color:var(--muted);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;flex-shrink:0;transition:all .2s}
+.navbtn:hover{color:var(--text);background:var(--panel2)}
+.navbtn.active{background:var(--panel2);color:var(--text);border-color:var(--border);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.navbtn:active{transform:scale(.95)}
+.spacer{flex:1;min-width:12px}
 .profile-wrap{position:relative;flex-shrink:0}
-.profile-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(91,157,255,.3)}
+.profile-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--green));border:none;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(59,130,246,.3)}
 .profile-btn:active{transform:scale(.9)}
 
-.content{max-width:920px;margin:0 auto;padding:22px 16px 40px}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:560px){.grid2{grid-template-columns:1fr}}
-.subject-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px 18px;cursor:pointer;transition:.2s}
-.subject-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.25)}
+.content{max-width:980px;margin:0 auto;padding:28px 20px 48px;animation:fadeIn .4s cubic-bezier(.16,1,.3,1)}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.2);transition:all .25s cubic-bezier(.4,0,.2,1)}
+.card:hover{border-color:rgba(59,130,246,.4);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+.subject-card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:24px 20px;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden}
+.subject-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(59,130,246,.1),transparent);opacity:0;transition:opacity .3s}
+.subject-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 32px rgba(59,130,246,.2)}
+.subject-card:hover::before{opacity:1}
 .subject-card:active{transform:scale(.97)}
-.subject-card h3{margin:0;font-size:15.5px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.row-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
-.muted{color:var(--muted);font-size:12.5px}
-.badge{font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
-.badge.admin{color:var(--accent);border-color:var(--accent)}
-.badge.active{color:var(--green);border-color:var(--green)}
-.back{background:none;border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:8px;font-size:12.5px;margin-bottom:16px}
-.tabs2{display:flex;gap:6px;margin:12px 0 16px;flex-wrap:wrap}
-.tab2{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 15px;border-radius:9px;font-size:12.5px;font-weight:500}
-.tab2.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
-h2{font-size:20px;margin:2px 0 10px;font-weight:700;letter-spacing:-.02em}
-h3{font-size:15px;margin:16px 0 10px;font-weight:600}
-.empty{color:var(--muted);font-size:13.5px;padding:32px 0;text-align:center}
+.subject-card h3{margin:0;font-size:17px;font-weight:700}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.row-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.muted{color:var(--muted);font-size:13px}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--muted);font-weight:500}
+.badge.admin{color:var(--accent);border-color:var(--accent);background:rgba(59,130,246,.1)}
+.badge.active{color:var(--green);border-color:var(--green);background:rgba(16,185,129,.1)}
+.back{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:10px;font-size:13px;font-weight:500;margin-bottom:20px;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.back:hover{border-color:var(--accent);background:rgba(59,130,246,.1)}
+.tabs2{display:flex;gap:8px;margin:16px 0 20px;flex-wrap:wrap}
+.tab2{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:9px 18px;border-radius:11px;font-size:13px;font-weight:600;transition:all .2s}
+.tab2.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;box-shadow:0 4px 12px rgba(59,130,246,.3)}
+h2{font-size:24px;margin:4px 0 16px;font-weight:800;letter-spacing:-.02em}
+h3{font-size:16px;margin:18px 0 12px;font-weight:700}
+.empty{color:var(--muted);font-size:14px;padding:48px 0;text-align:center}
 
 .home-hero{
   text-align:center;
-  padding:32px 16px 28px;
+  padding:40px 20px 32px;
   background:
-    radial-gradient(ellipse at 30% 40%, rgba(91,157,255,.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 40%, rgba(61,214,140,.08) 0%, transparent 50%),
-    linear-gradient(180deg,rgba(91,157,255,.06) 0%,transparent 100%);
+    radial-gradient(circle at 30% 30%, rgba(59,130,246,.15) 0%, transparent 60%),
+    radial-gradient(circle at 70% 50%, rgba(16,185,129,.1) 0%, transparent 60%),
+    var(--panel);
   border:1px solid var(--border);
-  border-radius:20px;
-  margin-bottom:18px;
-  overflow:hidden;
+  border-radius:24px;
+  margin-bottom:20px;
   position:relative;
+  overflow:hidden;
+  box-shadow:var(--shadow);
 }
 .anim-row{
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:56px;
-  margin-bottom:20px;
+  gap:64px;
+  margin-bottom:24px;
   flex-wrap:wrap;
-  min-height:180px;
+  min-height:160px;
 }
-
-/* ===== PRO ATOM ===== */
-.atom-wrap{
-  width:150px;height:150px;
-  position:relative;flex-shrink:0;
-  filter:drop-shadow(0 0 20px rgba(91,157,255,.35));
-}
-.atom-core{
-  width:22px;height:22px;
-  background:radial-gradient(circle at 35% 30%,#e8f4ff 0%,#7eb8ff 40%,#3b82f6 100%);
-  border-radius:50%;
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  box-shadow:
-    0 0 12px #fff,
-    0 0 28px var(--accent),
-    0 0 50px rgba(91,157,255,.5),
-    inset 0 -2px 6px rgba(0,0,0,.25);
-  z-index:5;
-}
-.atom-core::after{
-  content:"";
-  position:absolute;inset:-6px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(91,157,255,.35) 0%,transparent 70%);
-  animation:corePulse 2.4s ease-in-out infinite;
-}
-@keyframes corePulse{
-  0%,100%{transform:scale(1);opacity:.7}
-  50%{transform:scale(1.35);opacity:.25}
-}
-.orbit{
-  position:absolute;top:50%;left:50%;
-  border:1.5px solid rgba(125,211,252,.35);
-  border-radius:50%;
-  transform:translate(-50%,-50%);
-  animation:spin linear infinite;
-  box-shadow:0 0 8px rgba(91,157,255,.12);
-}
-.orbit1{width:64px;height:40px;animation-duration:3.8s;border-color:rgba(125,211,252,.45)}
-.orbit2{width:94px;height:58px;animation-duration:6.2s;animation-direction:reverse;border-color:rgba(167,139,250,.3)}
-.orbit3{width:122px;height:76px;animation-duration:8.5s;border-color:rgba(91,157,255,.28)}
-.orbit4{width:140px;height:90px;animation-duration:11s;animation-direction:reverse;opacity:.5;border-color:rgba(125,211,252,.18)}
-.electron{
-  width:9px;height:9px;
-  background:radial-gradient(circle at 30% 30%,#fff,#7dd3fc 60%,#38bdf8);
-  border-radius:50%;
-  position:absolute;top:-4.5px;left:50%;margin-left:-4.5px;
-  box-shadow:0 0 10px #7dd3fc,0 0 18px rgba(56,189,248,.6);
-}
-.orbit2 .electron{background:radial-gradient(circle at 30% 30%,#fff,#c4b5fd 60%,#a78bfa);box-shadow:0 0 10px #a78bfa,0 0 16px rgba(167,139,250,.5)}
-.orbit3 .electron{width:7px;height:7px;top:-3.5px;margin-left:-3.5px}
-.orbit4 .electron{width:6px;height:6px;top:-3px;margin-left:-3px;opacity:.75}
+.atom-wrap{width:140px;height:140px;position:relative;flex-shrink:0;filter:drop-shadow(0 0 24px rgba(59,130,246,.4))}
+.atom-core{width:24px;height:24px;background:radial-gradient(circle at 35% 30%,#fff,#60a5fa 50%,#2563eb 100%);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 16px #fff,0 0 32px var(--accent),0 0 60px rgba(59,130,246,.6);z-index:5}
+.atom-core::after{content:"";position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.4) 0%,transparent 70%);animation:corePulse 2.5s ease-in-out infinite}
+@keyframes corePulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.4);opacity:.2}}
+.orbit{position:absolute;top:50%;left:50%;border:1.5px solid rgba(147,197,253,.3);border-radius:50%;transform:translate(-50%,-50%);animation:spin linear infinite}
+.orbit1{width:70px;height:42px;animation-duration:3.5s}
+.orbit2{width:100px;height:60px;animation-duration:5.8s;animation-direction:reverse}
+.orbit3{width:130px;height:78px;animation-duration:8s}
+.electron{width:8px;height:8px;background:#93c5fd;border-radius:50%;position:absolute;top:-4px;left:50%;margin-left:-4px;box-shadow:0 0 10px #60a5fa}
 @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-/* ===== PRO NERVOUS SYSTEM ===== */
-.nerve-wrap{
-  width:130px;height:170px;
-  position:relative;flex-shrink:0;
-  filter:drop-shadow(0 0 16px rgba(91,157,255,.3));
-}
-.nerve-brain{
-  width:48px;height:36px;
-  background:
-    radial-gradient(ellipse at 40% 35%,#c7e0ff 0%,#6ba3f0 45%,#3b6fd4 100%);
-  border-radius:50% 50% 42% 42%;
-  position:absolute;top:0;left:50%;
-  transform:translateX(-50%);
-  box-shadow:
-    0 0 16px rgba(91,157,255,.6),
-    0 0 32px rgba(91,157,255,.25),
-    inset 0 -3px 8px rgba(0,0,0,.2);
-  z-index:3;
-}
-.nerve-brain::before{
-  content:"";
-  position:absolute;
-  width:14px;height:12px;
-  background:radial-gradient(circle,#e0f0ff,#7eb8ff);
-  border-radius:50%;
-  top:6px;left:8px;
-  opacity:.85;
-  box-shadow:0 0 8px rgba(255,255,255,.4);
-}
-.nerve-spine{
-  width:6px;height:100px;
-  background:linear-gradient(180deg,#7eb8ff 0%,var(--accent) 40%,rgba(91,157,255,.35) 100%);
-  position:absolute;top:32px;left:50%;
-  transform:translateX(-50%);
-  border-radius:4px;
-  box-shadow:0 0 12px rgba(91,157,255,.45);
-  z-index:2;
-}
-.nerve-wave{
-  position:absolute;left:50%;
-  width:8px;height:8px;
-  background:radial-gradient(circle,#6ee7b7,var(--green));
-  border-radius:50%;
-  transform:translateX(-50%);
-  box-shadow:0 0 12px var(--green),0 0 20px rgba(61,214,140,.5);
-  animation:nerveDown 2.4s ease-in-out infinite;
-  z-index:4;
-}
-.nerve-wave:nth-child(3){animation-delay:.6s}
-.nerve-wave:nth-child(4){animation-delay:1.2s}
-.nerve-wave:nth-child(5){animation-delay:1.8s}
-.nerve-branch{
-  position:absolute;height:2.5px;
-  background:linear-gradient(90deg,rgba(91,157,255,.7),rgba(91,157,255,.15));
-  border-radius:2px;
-  box-shadow:0 0 6px rgba(91,157,255,.3);
-}
-.nerve-branch.arm-l{width:34px;top:52px;left:calc(50% - 34px);transform:rotate(-28deg)}
-.nerve-branch.arm-r{width:34px;top:52px;left:50%;transform:rotate(28deg);background:linear-gradient(90deg,rgba(91,157,255,.15),rgba(91,157,255,.7))}
-.nerve-branch.leg-l{width:26px;top:108px;left:calc(50% - 22px);transform:rotate(-38deg)}
-.nerve-branch.leg-r{width:26px;top:108px;left:50%;transform:rotate(38deg);background:linear-gradient(90deg,rgba(91,157,255,.15),rgba(91,157,255,.7))}
-.nerve-branch.org{width:18px;top:78px;left:calc(50% - 18px);transform:rotate(-14deg);opacity:.75}
-.nerve-branch.org2{width:18px;top:78px;left:50%;transform:rotate(14deg);opacity:.75;background:linear-gradient(90deg,rgba(91,157,255,.15),rgba(91,157,255,.55))}
-@keyframes nerveDown{
-  0%{top:36px;opacity:0;transform:translateX(-50%) scale(.4)}
-  15%{opacity:1}
-  85%{opacity:1}
-  100%{top:128px;opacity:0;transform:translateX(-50%) scale(.25)}
-}
+.nerve-wrap{width:120px;height:160px;position:relative;flex-shrink:0;filter:drop-shadow(0 0 20px rgba(16,185,129,.35))}
+.nerve-brain{width:46px;height:34px;background:radial-gradient(ellipse at 40% 35%,#a7f3d0 0%,#34d399 50%,#059669 100%);border-radius:50% 50% 40% 40%;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3}
+.nerve-spine{width:6px;height:96px;background:linear-gradient(180deg,#34d399 0%,var(--green) 50%,rgba(16,185,129,.2) 100%);position:absolute;top:30px;left:50%;transform:translateX(-50%);border-radius:4px;z-index:2}
+.nerve-wave{position:absolute;left:50%;width:8px;height:8px;background:#fff;border-radius:50%;transform:translateX(-50%);animation:nerveDown 2.2s cubic-bezier(.4,0,.6,1) infinite;z-index:4}
+.nerve-wave:nth-child(3){animation-delay:.5s}
+.nerve-wave:nth-child(4){animation-delay:1s}
+.nerve-wave:nth-child(5){animation-delay:1.5s}
+@keyframes nerveDown{0%{top:34px;opacity:0;transform:translateX(-50%) scale(.4)}20%{opacity:1}80%{opacity:1}100%{top:122px;opacity:0;transform:translateX(-50%) scale(.3)}}
 
-.welcome{font-size:22px;font-weight:700;margin-bottom:4px}
-.progress-box{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;cursor:pointer}
-.progress-box:active{transform:scale(.98)}
-.progress-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.progress-bar-bg{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-bottom:10px}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:4px;transition:width .6s ease}
-.progress-stats{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px}
+.welcome{font-size:24px;font-weight:800;margin-bottom:6px}
+.progress-box{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:20px;cursor:pointer;box-shadow:var(--shadow);transition:all .25s}
+.progress-box:hover{border-color:var(--accent);transform:translateY(-2px)}
+.progress-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-weight:600}
+.progress-bar-bg{height:10px;background:var(--panel2);border-radius:6px;overflow:hidden;margin-bottom:12px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:6px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.progress-stats{display:flex;gap:20px;flex-wrap:wrap;font-size:13px}
 .progress-stats span{color:var(--muted)}
-.progress-stats b{color:var(--text);font-weight:600}
+.progress-stats b{color:var(--text);font-weight:700}
 
-.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-@media(max-width:600px){.home-grid{grid-template-columns:1fr}}
-.home-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px 14px;text-align:center;cursor:pointer;transition:.22s}
-.home-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.28)}
-.home-card:active{transform:scale(.96)}
-.home-card .icon{font-size:30px;margin-bottom:10px}
-.home-card h3{margin:0 0 4px;font-size:15px}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:640px){.home-grid{grid-template-columns:1fr}}
+.home-card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.home-card:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 12px 36px rgba(59,130,246,.25)}
+.home-card .icon{font-size:32px;margin-bottom:12px;display:inline-block;transition:transform .3s}
+.home-card:hover .icon{transform:scale(1.15)}
+.home-card h3{margin:0 0 6px;font-size:16px;font-weight:700}
 
-.powered{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;color:var(--muted);padding:11px 0;background:rgba(6,9,18,.94);backdrop-filter:blur(10px);border-top:1px solid rgba(36,48,73,.6);z-index:40}
-.powered span{background:linear-gradient(90deg,var(--muted),var(--accent),var(--muted));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:500}
+.powered{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11.5px;color:var(--muted);padding:12px 0;background:rgba(3,7,18,.9);backdrop-filter:blur(12px);border-top:1px solid rgba(30,41,59,.8);z-index:40}
+.powered span{background:linear-gradient(90deg,var(--muted),var(--accent),var(--muted));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600}
 
-.yt-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;background:#000;margin-bottom:14px;border:1px solid var(--border)}
+.yt-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:14px;overflow:hidden;background:#000;margin-bottom:16px;border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.4)}
 .yt-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
-table{width:100%;border-collapse:collapse;font-size:12.5px}
-th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border)}
-th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
 
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px}
-.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:22px}
-.modal-close{background:none;border:none;color:var(--muted);float:right;font-size:24px;line-height:1;padding:0 4px}
+.modal-bg{position:fixed;inset:0;background:rgba(3,7,18,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px;animation:fadeIn .25s ease}
+.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:24px;max-width:1000px;width:100%;max-height:92vh;overflow:auto;padding:24px;box-shadow:var(--shadow)}
+.modal-close{background:var(--panel2);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;float:right;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.modal-close:hover{border-color:var(--danger);color:var(--danger);transform:scale(1.05)}
 
-.timer{font-size:22px;font-weight:800;color:var(--warn);text-align:center;padding:12px;background:var(--panel2);border-radius:10px;margin-bottom:12px}
-.zoom-row{display:flex;gap:8px;justify-content:center;margin-top:10px}
-.zoom-row button{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px}
+.timer{font-size:24px;font-weight:800;color:var(--warn);text-align:center;padding:14px;background:var(--panel2);border-radius:14px;margin-bottom:16px;border:1px solid var(--border);box-shadow:inset 0 2px 8px rgba(0,0,0,.3)}
 
-.cbt-layout{display:grid;grid-template-columns:1fr 220px;gap:16px}
-@media(max-width:720px){.cbt-layout{grid-template-columns:1fr}}
-.cbt-qbox{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px}
-.cbt-palette{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px;height:fit-content;position:sticky;top:70px}
-.cbt-palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
-.cbt-pbtn{width:100%;aspect-ratio:1;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:12px;font-weight:600}
-.cbt-pbtn.answered{background:rgba(91,157,255,.2);border-color:var(--accent);color:var(--accent)}
-.cbt-pbtn.marked{background:rgba(240,180,41,.2);border-color:var(--warn);color:var(--warn)}
-.cbt-pbtn.current{outline:2px solid var(--green);outline-offset:1px}
-.cbt-opt{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px}
-.cbt-opt.selected{border-color:var(--accent);background:rgba(91,157,255,.12)}
-.cbt-opt:active{transform:scale(.985)}
-.cbt-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.cbt-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--muted)}
-.cbt-legend span{display:flex;align-items:center;gap:4px}
-.cbt-dot{width:10px;height:10px;border-radius:3px}
-.score-card{text-align:center;padding:28px 16px}
-.score-num{font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
-.profile-field{margin-bottom:14px}
-.profile-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
-.q-img{max-width:100%;border-radius:10px;margin:10px 0;border:1px solid var(--border)}
+/* PROFESSIONAL PDF VIEWER STYLING */
+.pdf-pro-container{display:flex;flex-direction:column;height:82vh;background:#090d16;border-radius:16px;border:1px solid var(--border);overflow:hidden;position:relative}
+.pdf-pro-header{display:flex;align-items:center;justify-content:between;gap:12px;padding:12px 18px;background:var(--panel2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.pdf-pro-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pdf-tool-btn{background:var(--panel);border:1px solid var(--border);color:var(--muted);padding:8px 12px;border-radius:9px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.pdf-tool-btn:hover{border-color:var(--accent);color:var(--text)}
+.pdf-tool-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 10px rgba(59,130,246,.3)}
+.pdf-content-area{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:24px;position:relative;background:#060912}
+.pdf-page-wrapper{position:relative;box-shadow:0 12px 40px rgba(0,0,0,.6);border-radius:10px;overflow:hidden;background:#fff;margin:auto}
+.pdf-page-wrapper canvas{display:block}
+.pdf-draw-layer{position:absolute;top:0;left:0;width:100%;height:100%;cursor:crosshair;touch-action:none}
+
+.cbt-layout{display:grid;grid-template-columns:1fr 240px;gap:20px}
+@media(max-width:768px){.cbt-layout{grid-template-columns:1fr}}
+.cbt-qbox{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:24px;box-shadow:var(--shadow)}
+.cbt-palette{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:18px;height:fit-content;position:sticky;top:80px;box-shadow:var(--shadow)}
+.cbt-palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.cbt-pbtn{width:100%;aspect-ratio:1;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:13px;font-weight:700;transition:all .15s}
+.cbt-pbtn:hover{border-color:var(--accent)}
+.cbt-pbtn.answered{background:rgba(59,130,246,.25);border-color:var(--accent);color:#93c5fd}
+.cbt-pbtn.marked{background:rgba(245,158,11,.25);border-color:var(--warn);color:#fcd34d}
+.cbt-pbtn.current{outline:2px solid var(--green);outline-offset:2px}
+.cbt-opt{display:block;width:100%;text-align:left;padding:16px 18px;margin-bottom:12px;background:var(--panel2);border:1px solid var(--border);border-radius:14px;color:var(--text);font-size:15px;font-weight:500;transition:all .2s}
+.cbt-opt:hover{border-color:var(--accent);background:rgba(59,130,246,.08)}
+.cbt-opt.selected{border-color:var(--accent);background:rgba(59,130,246,.2);color:#fff;box-shadow:0 4px 16px rgba(59,130,246,.2)}
+.score-card{text-align:center;padding:36px 20px}
+.score-num{font-size:56px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent;margin:8px 0}
+.profile-field{margin-bottom:16px}
+.profile-field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.q-img{max-width:100%;border-radius:12px;margin:12px 0;border:1px solid var(--border)}
 </style>
 </head>
 <body>
@@ -285,14 +194,11 @@ const SUPABASE_URL = "https://qhggamgxfwlwtpmwxfwk.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_X9_aDiQcrKhYyPfuQdnKPA_K8F7RPjM";
 
 let db=null,session=null,profile=null,activeTab="home",selSubject=null,selChapter=null,selCategory="general",adminTab="users";
-let cbtTest=null,cbtQuestions=[],cbtAnswers={},cbtMarked=new Set(),cbtBookmarks=new Set(),cbtIndex=0,cbtTimerRef=null,cbtRemaining=0;
+let cbtTest=null,cbtQuestions=[],cbtAnswers={},cbtMarked=new Set(),cbtIndex=0,cbtTimerRef=null,cbtRemaining=0;
 
 const app=document.getElementById("app");
-function escapeHtml(v){return(v??"").toString().replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function escapeHtml(v){return(v?^^-1: v??"").toString().replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function el(h){const d=document.createElement("div");d.innerHTML=h.trim();return d.firstElementChild}
-function fmtDate(iso){if(!iso)return"";const d=new Date(iso);if(Number.isNaN(d.getTime()))return"";return d.toLocaleString(undefined,{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})}
-function ytId(url){const m=(url||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);return m?m[1]:null}
-function showFatalError(m){document.body.innerHTML=`<div style="min-height:100vh;background:var(--bg);color:#fff;padding:24px"><div style="max-width:700px;margin:40px auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:24px"><h2 style="color:var(--danger)">NEETrix Error</h2><div style="color:#c5cada;line-height:1.6;white-space:pre-wrap">${escapeHtml(m)}</div></div></div>`}
 function getLastScore(){try{return JSON.parse(localStorage.getItem("neetrix_last_score")||"null")}catch(e){return null}}
 function saveLastScore(obj){try{localStorage.setItem("neetrix_last_score",JSON.stringify(obj))}catch(e){}}
 
@@ -301,17 +207,17 @@ async function loadSupabase(){if(window.supabase)return true;const srcs=["https:
 async function loadPdfJs(){if(window.pdfjsLib)return true;const srcs=["https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js","https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"];for(const s of srcs){try{await loadScript(s);if(window.pdfjsLib)return true}catch(e){}}return false}
 
 async function initializeApp(){try{await loadSupabase();if(!SUPABASE_URL||!SUPABASE_ANON_KEY)throw new Error("Supabase not configured");db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);loadPdfJs().catch(()=>{});await boot()}catch(e){console.error(e);showFatalError(e?.message||"Could not start")}}
-function renderAuth(mode){mode=mode||"login";app.innerHTML="";app.appendChild(el(`<div class="auth-wrap"><div class="auth-card"><div class="brand">NEETrix</div><div class="sub">The focused way to prepare.</div><div class="msg" id="msg"></div><div id="fields"></div><button class="btn" style="width:100%" id="mainBtn"></button><button class="link" id="link1"></button><button class="link" id="link2" style="display:none"></button></div></div>`));
+function renderAuth(mode){mode=mode||"login";app.innerHTML="";app.appendChild(el(`<div class="auth-wrap"><div class="auth-card"><div class="brand">NEETrix Pro</div><div class="sub">The ultimate AI & prep experience.</div><div class="msg" id="msg"></div><div id="fields"></div><button class="btn" style="width:100%" id="mainBtn"></button><button class="link" id="link1"></button><button class="link" id="link2" style="display:none"></button></div></div>`));
 const fields=document.getElementById("fields"),mainBtn=document.getElementById("mainBtn"),link1=document.getElementById("link1"),link2=document.getElementById("link2"),msg=document.getElementById("msg");
 if(mode==="login"||mode==="signup"){fields.innerHTML=`<input id="email" type="email" placeholder="Email address" autocomplete="email"/><input id="pass" type="password" placeholder="Password (8+ characters)" autocomplete="${mode==="login"?"current-password":"new-password"}"/>`;mainBtn.textContent=mode==="login"?"Log in":"Create account";link1.textContent=mode==="login"?"New here? Create an account":"Already have an account? Log in";link1.onclick=()=>renderAuth(mode==="login"?"signup":"login");link2.style.display=mode==="login"?"block":"none";link2.textContent="Forgot password?";link2.onclick=()=>renderAuth("forgot");
 mainBtn.onclick=async()=>{msg.textContent="";mainBtn.disabled=true;const email=document.getElementById("email").value.trim(),pass=document.getElementById("pass").value;if(!email||!pass){msg.style.color="var(--muted)";msg.textContent="Enter both fields.";mainBtn.disabled=false;return}try{if(mode==="signup"){const{error}=await db.auth.signUp({email,password:pass});if(error)throw error;msg.style.color="var(--green)";msg.textContent="Account created! Check email if needed, then log in.";setTimeout(()=>renderAuth("login"),1800)}else{const{data,error}=await db.auth.signInWithPassword({email,password:pass});if(error)throw error;session=data.session;await afterLogin()}}catch(e){msg.style.color="var(--danger)";msg.textContent=e?.message||"Something went wrong"}finally{mainBtn.disabled=false}}}
 else if(mode==="forgot"){fields.innerHTML=`<input id="email" type="email" placeholder="Email address"/>`;mainBtn.textContent="Send reset link";link1.textContent="Back to log in";link1.onclick=()=>renderAuth("login");mainBtn.onclick=async()=>{msg.textContent="";mainBtn.disabled=true;const email=document.getElementById("email").value.trim();if(!email){msg.style.color="var(--muted)";msg.textContent="Enter email";mainBtn.disabled=false;return}try{const{error}=await db.auth.resetPasswordForEmail(email);if(error)throw error;msg.style.color="var(--green)";msg.textContent="Reset link sent"}catch(e){msg.style.color="var(--danger)";msg.textContent=e?.message||"Error"}finally{mainBtn.disabled=false}}}}
 
-function renderStatusScreen(status){app.innerHTML="";const msgs={pending:["Request sent","Your access request has been sent. Wait for admin approval."],paused:["Account paused","Your account is paused by admin."],blocked:["Account blocked","Access blocked by admin."]};const[t,b]=msgs[status]||["Access unavailable","Contact admin."];app.appendChild(el(`<div class="auth-wrap"><div class="auth-card"><div class="brand">NEETrix</div><h2 style="margin-top:14px">${escapeHtml(t)}</h2><p class="muted" style="line-height:1.6;margin:10px 0 16px">${escapeHtml(b)}</p><button class="btn-outline" style="width:100%" id="out">Log out</button></div></div>`));document.getElementById("out").onclick=async()=>{try{await db.auth.signOut()}catch(e){}session=null;profile=null;renderAuth()}}
+function renderStatusScreen(status){app.innerHTML="";const msgs={pending:["Request sent","Your access request has been sent. Wait for admin approval."],paused:["Account paused","Your account is paused by admin."],blocked:["Account blocked","Access blocked by admin."]};const[t,b]=msgs[status]||["Access unavailable","Contact admin."];app.appendChild(el(`<div class="auth-wrap"><div class="auth-card"><div class="brand">NEETrix Pro</div><h2 style="margin-top:14px">${escapeHtml(t)}</h2><p class="muted" style="line-height:1.6;margin:10px 0 18px">${escapeHtml(b)}</p><button class="btn-outline" style="width:100%" id="out">Log out</button></div></div>`));document.getElementById("out").onclick=async()=>{try{await db.auth.signOut()}catch(e){}session=null;profile=null;renderAuth()}}
 
 async function afterLogin(){if(!session?.user){renderAuth();return}try{try{await db.from("login_events").insert({user_id:session.user.id,email:session.user.email})}catch(e){}const{data,error}=await db.from("profiles").select("*").eq("id",session.user.id).single();if(error){if(error.code==="PGRST116"){profile=null;renderStatusScreen("pending");return}throw error}profile=data;if(!profile||profile.status!=="active"){renderStatusScreen(profile?profile.status:"pending");return}activeTab="home";selSubject=null;selChapter=null;renderShell()}catch(e){showFatalError(e?.message||"Unable to load account")}}
 
-function renderShell(){app.innerHTML="";const isAdmin=profile?.role==="admin";const initial=(profile?.name||profile?.email||"U")[0].toUpperCase();app.appendChild(el(`<div><div class="topbar"><div class="brand">NEETrix</div><button class="navbtn" data-t="home">Home</button><button class="navbtn" data-t="content">Content</button><button class="navbtn" data-t="questions">Questions</button><button class="navbtn" data-t="bookmarks">Bookmarks</button><button class="navbtn" data-t="tests">Test</button>${isAdmin?`<button class="navbtn" data-t="admin">Admin</button>`:""}<div class="spacer"></div><div class="profile-wrap"><button class="profile-btn" id="profileBtn">${escapeHtml(initial)}</button></div></div><div class="content" id="content"></div></div>`));
+function renderShell(){app.innerHTML="";const isAdmin=profile?.role==="admin";const initial=(profile?.name||profile?.email||"U")[0].toUpperCase();app.appendChild(el(`<div><div class="topbar"><div class="brand">NEETrix Pro</div><button class="navbtn" data-t="home">Home</button><button class="navbtn" data-t="content">Content</button><button class="navbtn" data-t="questions">Questions</button><button class="navbtn" data-t="bookmarks">Bookmarks</button><button class="navbtn" data-t="tests">Test</button>${isAdmin?`<button class="navbtn" data-t="admin">Admin Panel</button>`:""}<div class="spacer"></div><div class="profile-wrap"><button class="profile-btn" id="profileBtn">${escapeHtml(initial)}</button></div></div><div class="content" id="content"></div></div>`));
 document.getElementById("profileBtn").onclick=()=>openProfileModal();
 document.querySelectorAll(".navbtn").forEach(btn=>{btn.onclick=()=>{activeTab=btn.dataset.t;selSubject=null;selChapter=null;if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}renderTabsUI();renderBody()}});
 renderTabsUI();renderBody()}
@@ -320,15 +226,15 @@ function renderTabsUI(){document.querySelectorAll(".navbtn").forEach(b=>b.classL
 function renderBody(){const c=document.getElementById("content");if(!c)return;if(activeTab==="home")renderHome(c);else if(activeTab==="content")renderSubjectBrowser(c,"video");else if(activeTab==="questions")renderSubjectBrowser(c,"pdf");else if(activeTab==="tests")renderTests(c);else if(activeTab==="bookmarks")renderBookmarks(c);else if(activeTab==="admin"){if(profile?.role==="admin")renderAdmin(c);else{activeTab="home";renderTabsUI();renderHome(c)}}}
 
 function openProfileModal(){
-  const modal=el(`<div class="modal-bg" id="profileModal"><div class="modal-box">
+  const modal=el(`<div class="modal-bg" id="profileModal"><div class="modal-box" style="max-width:480px">
     <button class="modal-close" id="pmClose">×</button>
-    <h2 style="margin-bottom:16px">My Profile</h2>
+    <h2 style="margin-bottom:20px">My Profile</h2>
     <div class="profile-field"><label>Name</label><input id="pfName" value="${escapeHtml(profile?.name||"")}" placeholder="Your name"/></div>
     <div class="profile-field"><label>Phone</label><input id="pfPhone" value="${escapeHtml(profile?.phone||"")}" placeholder="Phone number"/></div>
-    <div class="profile-field"><label>Email</label><input value="${escapeHtml(profile?.email||"")}" disabled style="opacity:.7"/></div>
-    <button class="btn" style="width:100%;margin-top:6px" id="pfSave">Save Profile</button>
-    <button class="btn-outline" style="width:100%;margin-top:10px" id="pfReport">Report to Owner</button>
-    <button class="btn-danger" style="width:100%;margin-top:10px" id="pfLogout">Log out</button>
+    <div class="profile-field"><label>Email</label><input value="${escapeHtml(profile?.email||"")}" disabled style="opacity:.6"/></div>
+    <button class="btn" style="width:100%;margin-top:8px" id="pfSave">Save Profile</button>
+    <button class="btn-outline" style="width:100%;margin-top:10px" id="pfReport">Report Issue</button>
+    <button class="btn-danger" style="width:100%;margin-top:12px" id="pfLogout">Log out</button>
   </div></div>`);
   document.body.appendChild(modal);
   document.getElementById("pmClose").onclick=()=>modal.remove();
@@ -340,16 +246,16 @@ function openProfileModal(){
       const{error}=await db.from("profiles").update({name,phone}).eq("id",session.user.id);
       if(error)throw error;
       profile.name=name;profile.phone=phone;
-      alert("Profile saved");
+      alert("Profile updated successfully");
       modal.remove();
       renderShell();
     }catch(e){alert(e?.message||"Error saving")}
   };
   document.getElementById("pfReport").onclick=async()=>{
-    if(!confirm("Send report to owner?"))return;
+    if(!confirm("Send report to admin?"))return;
     try{
-      await db.from("reports").insert({user_id:session.user.id,email:profile?.email||session.user.email,message:"User reported from profile"});
-      alert("Report sent to owner");
+      await db.from("reports").insert({user_id:session.user.id,email:profile?.email||session.user.email,message:"User reported issue from profile"});
+      alert("Report sent to admin");
     }catch(e){alert(e?.message||"Could not send report")}
   };
   document.getElementById("pfLogout").onclick=async()=>{
@@ -359,35 +265,31 @@ function openProfileModal(){
     session=null;profile=null;activeTab="home";selSubject=null;selChapter=null;renderAuth();
   };
 }
+
 function renderHome(c){
   const name=profile?.name||(profile?.email?profile.email.split("@")[0]:"Student");
   const last=getLastScore();
   const pct=last?Math.min(100,Math.round((last.score/(last.total||1))*100)):0;
   c.innerHTML=`<div class="home-hero"><div class="anim-row">
-<div class="atom-wrap"><div class="atom-core"></div><div class="orbit orbit1"><div class="electron"></div></div><div class="orbit orbit2"><div class="electron"></div></div><div class="orbit orbit3"><div class="electron"></div></div><div class="orbit orbit4"><div class="electron"></div></div></div>
+<div class="atom-wrap"><div class="atom-core"></div><div class="orbit orbit1"><div class="electron"></div></div><div class="orbit orbit2"><div class="electron"></div></div><div class="orbit orbit3"><div class="electron"></div></div></div>
 <div class="nerve-wrap">
   <div class="nerve-brain"></div>
   <div class="nerve-spine"></div>
   <div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div>
-  <div class="nerve-branch arm-l"></div><div class="nerve-branch arm-r"></div>
-  <div class="nerve-branch leg-l"></div><div class="nerve-branch leg-r"></div>
-  <div class="nerve-branch org"></div><div class="nerve-branch org2"></div>
 </div>
-</div><div class="welcome">Hey ${escapeHtml(name)}</div><div class="muted">Ready to study today?</div></div>
+</div><div class="welcome">Welcome back, ${escapeHtml(name)}</div><div class="muted">Your AI-powered NEET preparation hub</div></div>
 <div class="progress-box" id="progressBox">
-  <div class="progress-head"><div style="font-weight:600">Your Progress</div>${last?`<div class="muted">Last: ${last.score}/${last.total}</div>`:""}</div>
+  <div class="progress-head"><span>Recent Performance</span>${last?`<span class="muted">${last.score}/${last.total}</span>`:""}</div>
   <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-  <div class="progress-stats">${last?`<span>Last score <b>${last.score}</b></span><span>Correct <b>${last.correct||0}</b></span><span>Accuracy <b>${pct}%</b></span><div class="muted" style="width:100%;margin-top:6px">Tap for detailed report →</div>`:`<span>Attempt tests to see progress here</span>`}</div>
+  <div class="progress-stats">${last?`<span>Score: <b>${last.score}</b></span><span>Correct: <b>${last.correct||0}</b></span><span>Accuracy: <b>${pct}%</b></span><div class="muted" style="width:100%;margin-top:6px">Tap to view full analysis →</div>`:`<span>Attempt any test to see detailed analytics here</span>`}</div>
 </div>
 <div class="home-grid">
-<div class="home-card" data-go="content"><div class="icon">▶️</div><h3>Content</h3><div class="muted">Video lessons</div></div>
-<div class="home-card" data-go="questions"><div class="icon">📑</div><h3>Questions</h3><div class="muted">Practice & PYQs</div></div>
-<div class="home-card" data-go="tests"><div class="icon">📝</div><h3>Tests</h3><div class="muted">Mock tests</div></div>
+<div class="home-card" data-go="content"><span class="icon">▶️</span><h3>Video Lectures</h3><div class="muted">High-yield concepts</div></div>
+<div class="home-card" data-go="questions"><span class="icon">📑</span><h3>Question Bank</h3><div class="muted">PYQs & practice</div></div>
+<div class="home-card" data-go="tests"><span class="icon">📝</span><h3>Mock Tests</h3><div class="muted">All India exam pattern</div></div>
 </div>`;
   c.querySelectorAll(".home-card").forEach(card=>{card.onclick=()=>{activeTab=card.dataset.go;renderTabsUI();renderBody()}});
-  if(last){
-    document.getElementById("progressBox").onclick=()=>showDetailedReport(last);
-  }
+  if(last){document.getElementById("progressBox").onclick=()=>showDetailedReport(last);}
 }
 
 function showDetailedReport(last){
@@ -396,60 +298,44 @@ function showDetailedReport(last){
     if(c) renderQuestionReview(c, last);
     return;
   }
-  const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:560px">
-    <button class="modal-close" id="drClose">×</button>
-    <h2 style="margin-bottom:8px">${escapeHtml(last.title||"Last Test")}</h2>
-    <div class="muted" style="margin-bottom:16px">${last.at?new Date(last.at).toLocaleString():""}</div>
-    <div class="grid2" style="margin-bottom:18px">
-      <div class="card" style="margin:0;text-align:center"><div class="muted">Score</div><div style="font-size:24px;font-weight:700">${last.score}/${last.total}</div></div>
-      <div class="card" style="margin:0;text-align:center"><div class="muted">Accuracy</div><div style="font-size:24px;font-weight:700">${last.total?Math.round((last.correct/(last.correct+last.wrong+last.unattempted||1))*100):0}%</div></div>
-      <div class="card" style="margin:0;text-align:center"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${last.correct||0}</div></div>
-      <div class="card" style="margin:0;text-align:center"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${last.wrong||0}</div></div>
-    </div>
-    <button class="btn" style="width:100%;margin-top:16px" id="drClose2">Close</button>
-  </div></div>`);
-  document.body.appendChild(modal);
-  document.getElementById("drClose").onclick=()=>modal.remove();
-  document.getElementById("drClose2").onclick=()=>modal.remove();
-  modal.onclick=e=>{if(e.target===modal)modal.remove()};
 }
 
 async function renderSubjectBrowser(c,mode){
   if(!selSubject){
-    c.innerHTML=`<h2>${mode==="video"?"Video Lessons":"Question Bank"}</h2>${mode==="pdf"?`<div class="tabs2"><button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button><button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button><button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button></div>`:""}<div class="grid2" id="subjList"></div>`;
+    c.innerHTML=`<h2>${mode==="video"?"Video Lectures":"Question Bank"}</h2>${mode==="pdf"?`<div class="tabs2"><button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice Sheets</button><button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">Past Year Papers</button><button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">NCERT Notes</button></div>`:""}<div class="grid2" id="subjList"></div>`;
     if(mode==="pdf")c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{selCategory=b.dataset.c;renderBody()}});
     const{data,error}=await db.from("subjects").select("*").order("sort_order");
     const wrap=document.getElementById("subjList");
     if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
-    if(!data?.length){wrap.innerHTML=`<div class="empty">No subjects yet.</div>`;return}
-    wrap.innerHTML="";data.forEach(s=>{const card=el(`<div class="subject-card"><h3>${escapeHtml(s.name)}</h3></div>`);card.onclick=()=>{selSubject=s;selChapter=null;renderBody()};wrap.appendChild(card)});return;
+    if(!data?.length){wrap.innerHTML=`<div class="empty">No subjects available yet.</div>`;return}
+    wrap.innerHTML="";data.forEach(s=>{const card=el(`<div class="subject-card"><h3>${escapeHtml(s.name)}</h3><div class="muted" style="margin-top:6px">Explore chapters & materials</div></div>`);card.onclick=()=>{selSubject=s;selChapter=null;renderBody()};wrap.appendChild(card)});return;
   }
   if(!selChapter){
-    c.innerHTML=`<button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button><h2>Chapters</h2><div id="chapList"></div>`;
+    c.innerHTML=`<button class="back" id="b1">← Back to Subjects</button><h2>${escapeHtml(selSubject.name)} · Chapters</h2><div id="chapList"></div>`;
     document.getElementById("b1").onclick=()=>{selSubject=null;renderBody()};
     const{data,error}=await db.from("chapters").select("*").eq("subject_id",selSubject.id).order("sort_order");
     const wrap=document.getElementById("chapList");
     if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
-    if(!data?.length){wrap.innerHTML=`<div class="empty">No chapters yet.</div>`;return}
-    wrap.innerHTML="";data.forEach(ch=>{const row=el(`<div class="card row" style="cursor:pointer"><span>${escapeHtml(ch.name)}</span><span class="muted">→</span></div>`);row.onclick=()=>{selChapter=ch;renderBody()};wrap.appendChild(row)});return;
+    if(!data?.length){wrap.innerHTML=`<div class="empty">No chapters added yet.</div>`;return}
+    wrap.innerHTML="";data.forEach(ch=>{const row=el(`<div class="card row" style="cursor:pointer"><div><div style="font-weight:700;font-size:15px">${escapeHtml(ch.name)}</div><div class="muted" style="margin-top:2px">Tap to view lectures & documents</div></div><span style="font-size:18px;color:var(--accent)">→</span></div>`);row.onclick=()=>{selChapter=ch;renderBody()};wrap.appendChild(row)});return;
   }
-  c.innerHTML=`<button class="back" id="b2">← ${escapeHtml(selChapter.name)}</button>`;
+  c.innerHTML=`<button class="back" id="b2">← Back to Chapters</button><h2>${escapeHtml(selChapter.name)}</h2>`;
   document.getElementById("b2").onclick=()=>{selChapter=null;renderBody()};
   if(mode==="video"){
     const box=el(`<div id="vidBox"></div>`);c.appendChild(box);
     const{data,error}=await db.from("videos").select("*").eq("chapter_id",selChapter.id).order("sort_order");
     if(error){box.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
-    if(!data?.length){box.innerHTML=`<div class="empty">No videos yet.</div>`;return}
+    if(!data?.length){box.innerHTML=`<div class="empty">No video lectures for this chapter yet.</div>`;return}
     box.innerHTML=data.map(v=>`<h3>${escapeHtml(v.title)}</h3><div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(v.youtube_id)}?modestbranding=1&rel=0" title="${escapeHtml(v.title)}" allowfullscreen></iframe></div>`).join("");
   }else{
     const list=el(`<div id="pdfList"></div>`);c.appendChild(list);
     const{data,error}=await db.from("pdfs").select("*").eq("chapter_id",selChapter.id).eq("category",selCategory).order("created_at",{ascending:false});
     if(error){list.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
-    if(!data?.length){list.innerHTML=`<div class="empty">No content in this category yet.</div>`;return}
+    if(!data?.length){list.innerHTML=`<div class="empty">No PDF documents in this category yet.</div>`;return}
     let bmSet=new Set();
     try{const{data:bms}=await db.from("bookmarks").select("pdf_id").eq("user_id",session.user.id);if(bms)bmSet=new Set(bms.map(b=>b.pdf_id))}catch(e){}
     list.innerHTML="";data.forEach(pdf=>{
-      const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="openPdf">${escapeHtml(pdf.title)}</span><button class="btn-small bmBtn">${bmSet.has(pdf.id)?"★ Saved":"☆ Save"}</button></div>`);
+      const row=el(`<div class="card row"><div style="cursor:pointer;flex:1" class="openPdf"><div style="font-weight:700;font-size:15px">${escapeHtml(pdf.title)}</div><div class="muted" style="margin-top:2px">Tap to open professional reader</div></div><button class="btn-small bmBtn">${bmSet.has(pdf.id)?"★ Saved":"☆ Bookmark"}</button></div>`);
       row.querySelector(".openPdf").onclick=()=>openPdf(pdf);
       row.querySelector(".bmBtn").onclick=async e=>{e.stopPropagation();try{if(bmSet.has(pdf.id))await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",pdf.id);else await db.from("bookmarks").insert({user_id:session.user.id,pdf_id:pdf.id});renderBody()}catch(err){alert(err?.message||"Error")}};
       list.appendChild(row);
@@ -458,13 +344,169 @@ async function renderSubjectBrowser(c,mode){
 }
 
 async function openPdf(pdf){try{const{data,error}=await db.storage.from("content").createSignedUrl(pdf.file_path,3600);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");await showPdfModal(data.signedUrl,pdf.title)}catch(e){alert(e?.message||"Unable to open PDF")}}
-async function showPdfModal(url,title){if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:920px"><button class="modal-close" id="mc">×</button><h3>${escapeHtml(title||"")}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div></div></div>`);document.body.appendChild(modal);document.getElementById("mc").onclick=()=>modal.remove();const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;try{const pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){modal.querySelector(".modal-box").innerHTML+=`<div class="empty">Unable to render<br>${escapeHtml(e?.message||"")}</div>`}}
 
-async function renderBookmarks(c){c.innerHTML=`<h2>My Bookmarks</h2><div id="bmList"></div>`;const list=document.getElementById("bmList");try{const{data,error}=await db.from("bookmarks").select("pdf_id, pdfs(title, id, file_path)").eq("user_id",session.user.id);if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No bookmarks yet.</div>`;return}list.innerHTML="";data.forEach(bm=>{if(!bm.pdfs)return;const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="open">${escapeHtml(bm.pdfs.title)}</span><button class="btn-small rm">Remove</button></div>`);row.querySelector(".open").onclick=()=>openPdf(bm.pdfs);row.querySelector(".rm").onclick=async e=>{e.stopPropagation();try{await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",bm.pdfs.id);renderBookmarks(c)}catch(err){alert(err?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+async function showPdfModal(url,title){
+  if(!window.pdfjsLib)await loadPdfJs();
+  if(!window.pdfjsLib){alert("PDF viewer library failed to load");return}
 
-async function renderTests(c){c.innerHTML=`<h2>Tests</h2><div id="testList"></div>`;const list=document.getElementById("testList");try{const{data,error}=await db.from("tests").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No tests yet.</div>`;return}list.innerHTML="";data.forEach(test=>{const isCbt=test.type==="cbt"||!test.file_path;const row=el(`<div class="card row"><div><div style="font-weight:600">${escapeHtml(test.title)}</div><div class="muted">${test.duration_minutes||60} min · ${isCbt?"CBT Mode":"PDF Paper"}</div></div><button class="btn">Start</button></div>`);row.querySelector("button").onclick=()=>{if(isCbt)startCbtTest(test);else startPdfTest(test)};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+  const modal=el(`<div class="modal-bg" id="pdfModal">
+    <div class="modal-box" style="max-width:1100px;padding:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h3 style="margin:0;font-size:17px">${escapeHtml(title||"Document Viewer")}</h3>
+        <button class="modal-close" id="mc" style="float:none">×</button>
+      </div>
+      <div class="pdf-pro-container">
+        <div class="pdf-pro-header">
+          <div class="pdf-pro-toolbar">
+            <button class="pdf-tool-btn" id="prevPage">◀ Prev</button>
+            <span id="pageInfo" style="font-size:13.5px;font-weight:700;padding:0 6px">1 / 1</span>
+            <button class="pdf-tool-btn" id="nextPage">Next ▶</button>
+          </div>
+          <div class="pdf-pro-toolbar">
+            <button class="pdf-tool-btn active" data-tool="pen">✏️ Pen</button>
+            <button class="pdf-tool-btn" data-tool="highlighter">🖍️ Marker</button>
+            <button class="pdf-tool-btn" data-tool="eraser">🧹 Eraser</button>
+            <button class="pdf-tool-btn" id="clearDraw" style="color:var(--danger)">Clear Page</button>
+          </div>
+          <div class="pdf-pro-toolbar">
+            <button class="pdf-tool-btn" id="zoomOut">−</button>
+            <span id="zoomLbl" style="font-size:13px;font-weight:600">100%</span>
+            <button class="pdf-tool-btn" id="zoomIn">+</button>
+          </div>
+        </div>
+        <div class="pdf-content-area" id="viewerContainer">
+          <div class="pdf-page-wrapper" id="canvasWrap">
+            <canvas id="pdfCanvas"></canvas>
+            <canvas class="pdf-draw-layer" id="drawCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`);
 
-async function startPdfTest(test){if(!test.file_path){alert("No paper uploaded");return}try{const{data,error}=await db.storage.from("content").createSignedUrl(test.file_path,7200);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:920px"><div class="timer" id="tmr"></div><h3>${escapeHtml(test.title)}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div><button class="btn" style="width:100%;margin-top:14px" id="submitTest">Submit Test</button></div></div>`);document.body.appendChild(modal);let remaining=(Number(test.duration_minutes)||60)*60;const timerEl=document.getElementById("tmr");let timerRef=null;const finish=()=>{if(timerRef)clearInterval(timerRef);modal.remove();alert("Test submitted")};const tick=()=>{const m=Math.floor(remaining/60),s=remaining%60;timerEl.textContent=`${m}:${s<10?"0":""}${s} remaining`;if(remaining<=0){finish();return}remaining--};tick();timerRef=setInterval(tick,1000);document.getElementById("submitTest").onclick=()=>{if(confirm("Submit now?"))finish()};const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;const pdfDoc=await pdfjsLib.getDocument({url:data.signedUrl,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){alert(e?.message||"Unable to start")}}
+  document.body.appendChild(modal);
+  document.getElementById("mc").onclick=()=>modal.remove();
+  modal.onclick=e=>{if(e.target===modal)modal.remove();};
+
+  const pdfjsLib=window.pdfjsLib;
+  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+  let pdfDoc=null, pageNum=1, numPages=1, scale=1.3;
+  let currentTool="pen";
+  let drawings={};
+
+  const canvas=document.getElementById("pdfCanvas");
+  const drawCanvas=document.getElementById("drawCanvas");
+  const ctx=canvas.getContext("2d");
+  const dCtx=drawCanvas.getContext("2d");
+
+  try{
+    pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;
+    numPages=pdfDoc.numPages;
+
+    async function renderPage(num){
+      const page=await pdfDoc.getPage(num);
+      const viewport=page.getViewport({scale});
+      canvas.width=viewport.width;
+      canvas.height=viewport.height;
+      drawCanvas.width=viewport.width;
+      drawCanvas.height=viewport.height;
+
+      await page.render({canvasContext:ctx,viewport}).promise;
+      document.getElementById("pageInfo").textContent=`${num} / ${numPages}`;
+      document.getElementById("zoomLbl").textContent=Math.round(scale/1.3*100)+"%";
+      redrawCanvas();
+    }
+
+    function redrawCanvas(){
+      dCtx.clearRect(0,0,drawCanvas.width,drawCanvas.height);
+      const pageStrokes=drawings[pageNum]||[];
+      pageStrokes.forEach(stroke=>{
+        dCtx.save();
+        dCtx.strokeStyle=stroke.color;
+        dCtx.lineWidth=stroke.width;
+        dCtx.lineCap="round";
+        dCtx.lineJoin="round";
+        dCtx.globalAlpha=stroke.alpha;
+        dCtx.beginPath();
+        if(stroke.pts.length>0){
+          dCtx.moveTo(stroke.pts[0].x,stroke.pts[0].y);
+          for(let i=1;i<stroke.pts.length;i++){dCtx.lineTo(stroke.pts[i].x,stroke.pts[i].y);}
+          dCtx.stroke();
+        }
+        dCtx.restore();
+      });
+    }
+
+    await renderPage(pageNum);
+
+    document.getElementById("prevPage").onclick=async()=>{if(pageNum>1){pageNum--;await renderPage(pageNum)}};
+    document.getElementById("nextPage").onclick=async()=>{if(pageNum<numPages){pageNum++;await renderPage(pageNum)}};
+    document.getElementById("zoomIn").onclick=async()=>{scale+=0.3;await renderPage(pageNum)};
+    document.getElementById("zoomOut").onclick=async()=>{scale=Math.max(0.6,scale-0.3);await renderPage(pageNum)};
+
+    modal.querySelectorAll(".pdf-tool-btn[data-tool]").forEach(btn=>{
+      btn.onclick=()=>{
+        modal.querySelectorAll(".pdf-tool-btn[data-tool]").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        currentTool=btn.dataset.tool;
+      };
+    });
+
+    document.getElementById("clearDraw").onclick=()=>{if(confirm("Clear annotations on this page?")){drawings[pageNum]=[];redrawCanvas();}};
+
+    let isDrawing=false, currentStroke=null;
+    const getPos=(e)=>{
+      const rect=drawCanvas.getBoundingClientRect();
+      const clientX=e.touches?e.touches[0].clientX:e.clientX;
+      const clientY=e.touches?e.touches[0].clientY:e.clientY;
+      return{x:(clientX-rect.left)*(drawCanvas.width/rect.width), y:(clientY-rect.top)*(drawCanvas.height/rect.height)};
+    };
+
+    const startDraw=(e)=>{
+      isDrawing=true; const pos=getPos(e);
+      let color="#ef4444", width=3, alpha=1.0;
+      if(currentTool==="highlighter"){color="#f59e0b";width=20;alpha=0.35;}
+      else if(currentTool==="eraser"){color="#ffffff";width=28;alpha=1.0;}
+      currentStroke={color,width,alpha,pts:[pos]};
+      if(!drawings[pageNum])drawings[pageNum]=[];
+      drawings[pageNum].push(currentStroke);
+      e.preventDefault();
+    };
+
+    const moveDraw=(e)=>{
+      if(!isDrawing||!currentStroke)return;
+      currentStroke.pts.push(getPos(e));
+      redrawCanvas();
+      e.preventDefault();
+    };
+
+    const endDraw=()=>{isDrawing=false;currentStroke=null;};
+
+    drawCanvas.addEventListener("mousedown",startDraw);
+    drawCanvas.addEventListener("mousemove",moveDraw);
+    window.addEventListener("mouseup",endDraw);
+    drawCanvas.addEventListener("touchstart",startDraw,{passive:false});
+    drawCanvas.addEventListener("touchmove",moveDraw,{passive:false});
+    window.addEventListener("touchend",endDraw);
+
+    let touchStartX=0;
+    const wrapEl=document.getElementById("canvasWrap");
+    wrapEl.addEventListener("touchstart",e=>{touchStartX=e.changedTouches[0].screenX},{passive:true});
+    wrapEl.addEventListener("touchend",async e=>{
+      const touchEndX=e.changedTouches[0].screenX;
+      if(touchEndX<touchStartX-60 && pageNum<numPages){pageNum++;await renderPage(pageNum);}
+      else if(touchEndX>touchStartX+60 && pageNum>1){pageNum--;await renderPage(pageNum);}
+    },{passive:true});
+
+  }catch(e){modal.querySelector(".modal-box").innerHTML+=`<div class="empty">Unable to render PDF<br>${escapeHtml(e?.message||"")}</div>`}
+}
+
+async function renderBookmarks(c){c.innerHTML=`<h2>My Bookmarks</h2><div id="bmList"></div>`;const list=document.getElementById("bmList");try{const{data,error}=await db.from("bookmarks").select("pdf_id, pdfs(title, id, file_path)").eq("user_id",session.user.id);if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No bookmarks saved yet.</div>`;return}list.innerHTML="";data.forEach(bm=>{if(!bm.pdfs)return;const row=el(`<div class="card row"><div style="cursor:pointer;flex:1" class="open"><div style="font-weight:700;font-size:15px">${escapeHtml(bm.pdfs.title)}</div></div><button class="btn-danger" style="padding:6px 12px">Remove</button></div>`);row.querySelector(".open").onclick=()=>openPdf(bm.pdfs);row.querySelector("button").onclick=async e=>{e.stopPropagation();try{await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",bm.pdfs.id);renderBookmarks(c)}catch(err){alert(err?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function renderTests(c){c.innerHTML=`<h2>Mock Tests</h2><div id="testList"></div>`;const list=document.getElementById("testList");try{const{data,error}=await db.from("tests").select("*, subjects(name), chapters(name)").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No tests available right now.</div>`;return}list.innerHTML="";data.forEach(test=>{const isCbt=test.type==="cbt"||!test.file_path;const metaInfo=[test.subjects?.name, test.chapters?.name].filter(Boolean).join(" › ");const row=el(`<div class="card row"><div><div style="font-weight:700;font-size:16px">${escapeHtml(test.title)}</div><div class="muted" style="margin-top:4px">${metaInfo?metaInfo+" · ":""}${test.duration_minutes||60} mins · ${isCbt?"Interactive CBT":"PDF Paper"}</div></div><button class="btn">Start Test</button></div>`);row.querySelector("button").onclick=()=>{if(isCbt)startCbtTest(test);else startPdfTest(test)};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+async function startPdfTest(test){if(!test.file_path){alert("No paper uploaded");return}try{const{data,error}=await db.storage.from("content").createSignedUrl(test.file_path,7200);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");await showPdfModal(data.signedUrl,test.title)}catch(e){alert(e?.message||"Unable to start")}}
 
 async function startCbtTest(test){
   try{
@@ -472,8 +514,8 @@ async function startCbtTest(test){
     const cols = isAdmin ? "*" : "id, question_text, option_a, option_b, option_c, option_d, sort_order, question_image";
     const{data,error}=await db.from("test_questions").select(cols).eq("test_id",test.id).order("sort_order");
     if(error)throw error;
-    if(!data?.length){alert("No questions for this CBT yet.");return}
-    cbtTest=test;cbtQuestions=data;cbtAnswers={};cbtMarked=new Set();cbtBookmarks=new Set();cbtIndex=0;
+    if(!data?.length){alert("No questions configured for this test yet.");return}
+    cbtTest=test;cbtQuestions=data;cbtAnswers={};cbtMarked=new Set();cbtIndex=0;
     cbtRemaining=(Number(test.duration_minutes)||60)*60;
     if(cbtTimerRef)clearInterval(cbtTimerRef);
     cbtTimerRef=setInterval(()=>{
@@ -491,39 +533,32 @@ function renderCbtUI(){
   if(!c||!cbtQuestions.length)return;
   const q=cbtQuestions[cbtIndex];
   const selected=cbtAnswers[q.id]||null;
-  const imgHtml = q.question_image ? `<img class="q-img" src="${escapeHtml(q.question_image)}" alt="Question image"/>` : "";
+  const imgHtml = q.question_image ? `<img class="q-img" src="${escapeHtml(q.question_image)}" alt="Question figure"/>` : "";
   c.innerHTML=`<div class="timer" id="cbtTimer">${Math.floor(cbtRemaining/60)}:${(cbtRemaining%60)<10?"0":""}${cbtRemaining%60}</div>
   <div class="cbt-layout"><div class="cbt-qbox">
-    <div class="muted" style="margin-bottom:8px">Question ${cbtIndex+1} of ${cbtQuestions.length}</div>
-    <div style="font-size:15.5px;line-height:1.55;margin-bottom:12px">${escapeHtml(q.question_text)}</div>
+    <div class="muted" style="margin-bottom:8px;font-weight:600">Question ${cbtIndex+1} of ${cbtQuestions.length}</div>
+    <div style="font-size:16px;line-height:1.6;margin-bottom:14px;font-weight:500">${escapeHtml(q.question_text)}</div>
     ${imgHtml}
     <button class="cbt-opt ${selected==="A"?"selected":""}" data-o="A">A. ${escapeHtml(q.option_a)}</button>
     <button class="cbt-opt ${selected==="B"?"selected":""}" data-o="B">B. ${escapeHtml(q.option_b)}</button>
     <button class="cbt-opt ${selected==="C"?"selected":""}" data-o="C">C. ${escapeHtml(q.option_c)}</button>
     <button class="cbt-opt ${selected==="D"?"selected":""}" data-o="D">D. ${escapeHtml(q.option_d)}</button>
-    <div class="cbt-nav">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
       <button class="btn-outline" id="cbtPrev" ${cbtIndex===0?"disabled":""}>← Previous</button>
       <button class="btn-outline" id="cbtMark">${cbtMarked.has(q.id)?"Unmark":"Mark for Review"}</button>
-      <button class="btn-outline" id="cbtBm">${cbtBookmarks.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button>
-      <button class="btn" id="cbtNext">${cbtIndex===cbtQuestions.length-1?"Review":"Next →"}</button>
+      <button class="btn" id="cbtNext" style="flex:1">${cbtIndex===cbtQuestions.length-1?"Review Summary":"Next →"}</button>
     </div>
-    <button class="btn-danger" style="width:100%;margin-top:14px" id="cbtSubmit">Submit Test</button>
+    <button class="btn-danger" style="width:100%;margin-top:14px" id="cbtSubmit">Submit Final Test</button>
   </div>
   <div class="cbt-palette">
-    <div style="font-weight:600;font-size:13px">Question Palette</div>
+    <div style="font-weight:700;font-size:13.5px">Question Palette</div>
     <div class="cbt-palette-grid" id="palette"></div>
-    <div class="cbt-legend">
-      <span><div class="cbt-dot" style="background:rgba(91,157,255,.35);border:1px solid var(--accent)"></div> Answered</span>
-      <span><div class="cbt-dot" style="background:rgba(240,180,41,.35);border:1px solid var(--warn)"></div> Marked</span>
-      <span><div class="cbt-dot" style="background:var(--panel2);border:1px solid var(--border)"></div> Not visited</span>
-    </div>
   </div></div>`;
   c.querySelectorAll(".cbt-opt").forEach(btn=>{btn.onclick=()=>{cbtAnswers[q.id]=btn.dataset.o;renderCbtUI()}});
   document.getElementById("cbtPrev").onclick=()=>{if(cbtIndex>0){cbtIndex--;renderCbtUI()}};
   document.getElementById("cbtNext").onclick=()=>{if(cbtIndex<cbtQuestions.length-1){cbtIndex++;renderCbtUI()}};
   document.getElementById("cbtMark").onclick=()=>{if(cbtMarked.has(q.id))cbtMarked.delete(q.id);else cbtMarked.add(q.id);renderCbtUI()};
-  document.getElementById("cbtBm").onclick=()=>{if(cbtBookmarks.has(q.id))cbtBookmarks.delete(q.id);else cbtBookmarks.add(q.id);renderCbtUI()};
-  document.getElementById("cbtSubmit").onclick=()=>{if(confirm("Submit test? Answers cannot be changed."))finishCbt(false)};
+  document.getElementById("cbtSubmit").onclick=()=>{if(confirm("Are you sure you want to submit the test?"))finishCbt(false)};
   const palette=document.getElementById("palette");
   cbtQuestions.forEach((qq,i)=>{
     const btn=el(`<button class="cbt-pbtn">${i+1}</button>`);
@@ -538,469 +573,289 @@ function renderCbtUI(){
 async function finishCbt(auto){
   if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}
   const c=document.getElementById("content");
-  c.innerHTML=`<div class="card score-card"><div class="muted">Calculating score...</div></div>`;
+  c.innerHTML=`<div class="card score-card"><div class="muted">Calculating results...</div></div>`;
 
   let score=0, total=cbtQuestions.length*4, correct=0, wrong=0, unattempted=0;
-  let reviewQs = [];
-
   try{
-    const {data: fullQs} = await db.from("test_questions")
-      .select("id, question_text, option_a, option_b, option_c, option_d, correct_option, sort_order")
-      .eq("test_id", cbtTest.id)
-      .order("sort_order");
+    const {data: fullQs} = await db.from("test_questions").select("*").eq("test_id", cbtTest.id).order("sort_order");
     if(fullQs?.length) cbtQuestions = fullQs;
   }catch(e){}
 
   cbtQuestions.forEach(q=>{
     const ans = cbtAnswers[q.id] || null;
     const corr = (q.correct_option || "").toUpperCase();
-    let status = "unattempted";
-    if(!ans){ unattempted++; }
-    else if(corr && ans === corr){ correct++; status = "correct"; }
-    else { wrong++; status = "wrong"; }
-    reviewQs.push({
-      id: q.id,
-      question_text: q.question_text,
-      option_a: q.option_a,
-      option_b: q.option_b,
-      option_c: q.option_c,
-      option_d: q.option_d,
-      correct_option: corr || null,
-      user_answer: ans,
-      status
-    });
+    if(!ans) unattempted++;
+    else if(corr && ans === corr) correct++;
+    else wrong++;
   });
 
   score = (correct * 4) + (wrong * -1);
   total = cbtQuestions.length * 4;
 
-  try{
-    const answersPayload = {};
-    Object.keys(cbtAnswers).forEach(id => { answersPayload[id] = cbtAnswers[id]; });
-    const { data, error } = await db.rpc("score_cbt_test", {
-      p_test_id: cbtTest.id,
-      p_answers: answersPayload
-    });
-    if(!error && data){
-      score = data.score ?? score;
-      total = data.total ?? total;
-      correct = data.correct ?? correct;
-      wrong = data.wrong ?? wrong;
-      unattempted = data.unattempted ?? unattempted;
-    }
-  }catch(e){}
-
-  const lastScoreData = {
-    score, total, correct, wrong, unattempted,
-    title: cbtTest?.title,
-    at: Date.now(),
-    review: reviewQs
-  };
+  const lastScoreData = { score, total, correct, wrong, unattempted, title: cbtTest?.title, at: Date.now() };
   saveLastScore(lastScoreData);
-  showScoreAndReview(c, lastScoreData, auto);
-}
-
-function showScoreAndReview(c, data, auto){
-  const den = (data.correct||0) + (data.wrong||0) + (data.unattempted||0);
-  const accuracy = den ? Math.round(((data.correct||0) / den) * 100) : 0;
 
   c.innerHTML = `<div class="card score-card">
-    <div class="muted" style="margin-bottom:6px">${auto ? "Time's up!" : "Test Submitted"}</div>
-    <h2 style="margin-bottom:4px">${escapeHtml(data.title || "Test")}</h2>
-    <div class="score-num">${data.score}</div>
-    <div class="muted" style="margin-bottom:18px">out of ${data.total}</div>
-    <div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left">
-      <div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${data.correct||0}</div></div>
-      <div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${data.wrong||0}</div></div>
-      <div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${data.unattempted||0}</div></div>
-      <div class="card" style="margin:0"><div class="muted">Accuracy</div><div style="font-weight:700">${accuracy}%</div></div>
+    <div class="muted" style="margin-bottom:6px">${auto ? "Time's up!" : "Test Successfully Submitted"}</div>
+    <h2 style="margin-bottom:4px">${escapeHtml(cbtTest?.title || "Mock Test")}</h2>
+    <div class="score-num">${score}</div>
+    <div class="muted" style="margin-bottom:20px">Total Score out of ${total}</div>
+    <div style="display:flex;gap:14px;justify-content:center;margin-bottom:24px">
+      <div><div style="font-weight:700;color:var(--green)">${correct}</div><div class="muted" style="font-size:12px">Correct</div></div>
+      <div><div style="font-weight:700;color:var(--danger)">${wrong}</div><div class="muted" style="font-size:12px">Incorrect</div></div>
+      <div><div style="font-weight:700;color:var(--muted)">${unattempted}</div><div class="muted" style="font-size:12px">Skipped</div></div>
     </div>
-    <button class="btn" style="width:100%;margin-bottom:10px" id="viewReview">Question-wise Review</button>
-    <button class="btn-outline" style="width:100%" id="backTests">Back to Tests</button>
+    <button class="btn" style="width:100%" id="backTests">Back to Tests</button>
   </div>`;
-
-  document.getElementById("backTests").onclick = () => {
-    cbtTest = null; cbtQuestions = []; cbtAnswers = {};
-    renderTests(c);
-  };
-  document.getElementById("viewReview").onclick = () => renderQuestionReview(c, data);
+  document.getElementById("backTests").onclick = () => { cbtTest=null; renderTests(c); };
 }
 
-function renderQuestionReview(c, data){
-  if(!data.review || !data.review.length){
-    c.innerHTML = `<div class="empty">Review data not available.</div>
-      <button class="btn" id="backScore">Back</button>`;
-    document.getElementById("backScore").onclick = () => showScoreAndReview(c, data, false);
-    return;
-  }
-
-  let html = `<button class="back" id="backScore">Score Summary</button>
-    <h2>${escapeHtml(data.title || "Review")}</h2>
-    <div class="muted" style="margin-bottom:16px">${data.correct||0} correct · ${data.wrong||0} wrong · ${data.unattempted||0} skipped</div>`;
-
-  data.review.forEach((q, i) => {
-    const statusColor = q.status === "correct" ? "var(--green)" : q.status === "wrong" ? "var(--danger)" : "var(--muted)";
-    const statusText = q.status === "correct" ? "Correct" : q.status === "wrong" ? "Wrong" : "Not Attempted";
-
-    const optHtml = (letter, text) => {
-      let extra = "";
-      if(q.user_answer === letter) extra += ` <span style="color:var(--accent);font-weight:600">(Your answer)</span>`;
-      if(q.correct_option === letter) extra += ` <span style="color:var(--green);font-weight:600">(Correct)</span>`;
-      let bg = "var(--panel2)";
-      if(q.correct_option === letter) bg = "rgba(61,214,140,.12)";
-      else if(q.user_answer === letter && q.status === "wrong") bg = "rgba(239,90,90,.12)";
-      return `<div style="padding:10px 12px;margin:6px 0;border-radius:8px;border:1px solid var(--border);background:${bg}">
-        <b>${letter}.</b> ${escapeHtml(text||"")}${extra}
-      </div>`;
-    };
-
-    html += `<div class="card" style="margin-bottom:14px">
-      <div class="row" style="margin-bottom:8px">
-        <div style="font-weight:600">Q${i+1}</div>
-        <div style="color:${statusColor};font-weight:600;font-size:13px">${statusText}</div>
-      </div>
-      <div style="line-height:1.5;margin-bottom:10px">${escapeHtml(q.question_text)}</div>
-      ${optHtml("A", q.option_a)}
-      ${optHtml("B", q.option_b)}
-      ${optHtml("C", q.option_c)}
-      ${optHtml("D", q.option_d)}
-    </div>`;
-  });
-
-  html += `<button class="btn" style="width:100%;margin-top:10px" id="backTests2">Back to Tests</button>`;
-  c.innerHTML = html;
-  document.getElementById("backScore").onclick = () => showScoreAndReview(c, data, false);
-  document.getElementById("backTests2").onclick = () => {
-    cbtTest = null; cbtQuestions = []; cbtAnswers = {};
-    renderTests(c);
-  };
-}
 async function renderAdmin(c){
-  c.innerHTML=`<h2>Admin</h2><div class="tabs2">
-    <button class="tab2 ${adminTab==="users"?"active":""}" data-a="users">Users</button>
-    <button class="tab2 ${adminTab==="logins"?"active":""}" data-a="logins">Login History</button>
-    <button class="tab2 ${adminTab==="settings"?"active":""}" data-a="settings">Settings</button>
-    <button class="tab2 ${adminTab==="content"?"active":""}" data-a="content">Content Manager</button>
-    <button class="tab2 ${adminTab==="cbt"?"active":""}" data-a="cbt">CBT Questions</button>
+  c.innerHTML=`<h2>Admin Control Panel</h2><div class="tabs2">
+    <button class="tab2 ${adminTab==="users"?"active":""}" data-a="users">User Access</button>
+    <button class="tab2 ${adminTab==="content"?"active":""}" data-a="content">Subjects & Content</button>
+    <button class="tab2 ${adminTab==="tests"?"active":""}" data-a="tests">Tests & Questions Editor</button>
   </div><div id="adminBody"></div>`;
   c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{adminTab=b.dataset.a;renderAdmin(c)}});
   const body=document.getElementById("adminBody");
   if(adminTab==="users")await renderAdminUsers(body);
-  else if(adminTab==="logins")await renderAdminLogins(body);
-  else if(adminTab==="settings")await renderAdminSettings(body);
   else if(adminTab==="content")await renderAdminContent(body);
-  else if(adminTab==="cbt")await renderAdminCbt(body);
+  else if(adminTab==="tests")await renderAdminTests(body);
 }
 
 async function renderAdminUsers(body){
   try{
     const{data,error}=await db.from("profiles").select("*").order("created_at",{ascending:false});
     if(error)throw error;
-    if(!data?.length){body.innerHTML=`<div class="empty">No users yet.</div>`;return}
-    body.innerHTML=`<table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;
+    if(!data?.length){body.innerHTML=`<div class="empty">No registered users yet.</div>`;return}
+    body.innerHTML=`<table><thead><tr><th>User Email</th><th>Role</th><th>Status</th><th>Control Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;
     const rows=document.getElementById("uRows");
     data.forEach(user=>{
-      const tr=el(`<tr><td>${escapeHtml(user.email)}</td><td><span class="badge ${user.role==="admin"?"admin":""}">${escapeHtml(user.role)}</span></td><td><span class="badge ${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td><td class="row-wrap" id="act-${escapeHtml(user.id)}"></td></tr>`);
+      const tr=el(`<tr><td><b>${escapeHtml(user.email)}</b></td><td><span class="badge ${user.role==="admin"?"admin":""}">${escapeHtml(user.role)}</span></td><td><span class="badge ${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td><td class="row-wrap" id="act-${escapeHtml(user.id)}"></td></tr>`);
       rows.appendChild(tr);
       const act=tr.querySelector(`#act-${CSS.escape(user.id)}`);
-      if(user.role==="admin"){act.innerHTML=`<span class="muted">—</span>`;return}
+      if(user.role==="admin"){act.innerHTML=`<span class="muted">Master Admin</span>`;return}
       const setStatus=async st=>{try{await db.from("profiles").update({status:st}).eq("id",user.id);renderAdmin(document.getElementById("content"))}catch(e){alert(e?.message||"Error")}};
       if(user.status==="pending"){
         const a=el(`<button class="btn-good">Approve</button>`);a.onclick=()=>setStatus("active");act.appendChild(a);
-        const r=el(`<button class="btn-danger">Reject</button>`);r.onclick=()=>setStatus("blocked");act.appendChild(r);
       }else{
         const p=el(`<button class="btn-warn">${user.status==="paused"?"Resume":"Pause"}</button>`);p.onclick=()=>setStatus(user.status==="paused"?"active":"paused");act.appendChild(p);
-        const b=el(`<button class="btn-danger">${user.status==="blocked"?"Unblock":"Block"}</button>`);b.onclick=()=>setStatus(user.status==="blocked"?"active":"blocked");act.appendChild(b);
       }
+      const del=el(`<button class="btn-danger">Delete</button>`);
+      del.onclick=async()=>{if(confirm("Permanently delete this user?")){try{await db.from("profiles").delete().eq("id",user.id);renderAdmin(document.getElementById("content"))}catch(e){alert(e?.message)}}};
+      act.appendChild(del);
     });
-  }catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
-}
-
-async function renderAdminLogins(body){
-  try{
-    const{data,error}=await db.from("login_events").select("*").order("logged_in_at",{ascending:false}).limit(200);
-    if(error)throw error;
-    if(!data?.length){body.innerHTML=`<div class="empty">No login activity.</div>`;return}
-    body.innerHTML=`<table><thead><tr><th>Email</th><th>Logged in at</th></tr></thead><tbody>${data.map(l=>`<tr><td>${escapeHtml(l.email)}</td><td>${escapeHtml(fmtDate(l.logged_in_at))}</td></tr>`).join("")}</tbody></table>`;
-  }catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
-}
-
-async function renderAdminSettings(body){
-  try{
-    const{data,error}=await db.from("app_settings").select("*").eq("id",1).single();
-    if(error&&error.code!=="PGRST116")throw error;
-    const open=data?Boolean(data.registration_open):true;
-    body.innerHTML=`<div class="card"><div class="row"><div><div>Accept new users</div><div class="muted">When off, new signups go pending.</div></div><button class="btn" id="toggleReg">${open?"Turn OFF":"Turn ON"}</button></div></div>`;
-    document.getElementById("toggleReg").onclick=async()=>{try{await db.from("app_settings").update({registration_open:!open}).eq("id",1);renderAdminSettings(body)}catch(e){alert(e?.message||"Error")}};
   }catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
 }
 
 async function renderAdminContent(body){
-  body.innerHTML=`<h3>Add Subject</h3><input id="newSubj" placeholder="Subject name"/><button class="btn" id="addSubj">Add Subject</button>
-  <h3>Add Chapter</h3><select id="chSubj"></select><input id="newChap" placeholder="Chapter name"/><button class="btn" id="addChap">Add Chapter</button>
-  <h3>Add Video</h3><select id="vidSubj"></select><select id="vidChap"></select><input id="vidTitle" placeholder="Video title"/><input id="vidUrl" placeholder="YouTube link"/><button class="btn" id="addVid">Add Video</button>
-  <h3>Add Question PDF</h3><select id="pdfSubj"></select><select id="pdfChap"></select><select id="pdfCat"><option value="general">Practice</option><option value="ncert">Important</option><option value="pyq">PYQs</option></select><input id="pdfTitle" placeholder="PDF title"/><input type="file" id="pdfFile" accept="application/pdf"/><button class="btn" id="addPdf">Upload PDF</button>
-  <h3>Add Test</h3><input id="testTitle" placeholder="Test title"/><input id="testDur" type="number" value="60" placeholder="Duration (min)"/><input type="file" id="testFile" accept="application/pdf"/><div class="muted" style="margin-bottom:8px">Leave file empty = CBT test</div><button class="btn" id="addTest">Create Test</button>`;
+  body.innerHTML=`<h3>Complete Curriculum Management</h3>
+  <div class="card">
+    <input id="subName" placeholder="New Subject Name (e.g. Biology, Physics)"/>
+    <button class="btn" id="addSubj">Add New Subject</button>
+  </div>
+  <div id="adminSubjList"></div>`;
+  
   try{
-    const{data:subjects,error}=await db.from("subjects").select("*").order("sort_order");
-    if(error)throw error;
-    const opts=(subjects||[]).map(s=>`<option value="${escapeHtml(s.id)}">${escapeHtml(s.name)}</option>`).join("");
-    ["chSubj","vidSubj","pdfSubj"].forEach(id=>{const sel=document.getElementById(id);if(sel)sel.innerHTML=opts||`<option value="">No subjects</option>`});
-    const loadChapters=async(subId,chapId)=>{const subSel=document.getElementById(subId),chapSel=document.getElementById(chapId);if(!subSel||!chapSel)return;const sid=subSel.value;if(!sid){chapSel.innerHTML=`<option value="">No chapters</option>`;return}const{data:chs}=await db.from("chapters").select("*").eq("subject_id",sid).order("sort_order");chapSel.innerHTML=(chs||[]).map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("")||`<option value="">No chapters</option>`};
-    if(subjects?.length){await loadChapters("vidSubj","vidChap");await loadChapters("pdfSubj","pdfChap")}
-    document.getElementById("vidSubj").onchange=()=>loadChapters("vidSubj","vidChap");
-    document.getElementById("pdfSubj").onchange=()=>loadChapters("pdfSubj","pdfChap");
-    document.getElementById("addSubj").onclick=async()=>{const name=document.getElementById("newSubj").value.trim();if(!name)return;try{await db.from("subjects").insert({name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-    document.getElementById("addChap").onclick=async()=>{const subject_id=document.getElementById("chSubj").value,name=document.getElementById("newChap").value.trim();if(!subject_id||!name)return;try{await db.from("chapters").insert({subject_id,name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-    document.getElementById("addVid").onclick=async()=>{const chapter_id=document.getElementById("vidChap").value,title=document.getElementById("vidTitle").value.trim(),url=document.getElementById("vidUrl").value.trim(),youtubeId=ytId(url);if(!chapter_id||!title||!youtubeId){alert("Check fields + valid YouTube link");return}try{await db.from("videos").insert({chapter_id,title,youtube_id:youtubeId});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-    document.getElementById("addPdf").onclick=async()=>{const chapter_id=document.getElementById("pdfChap").value,category=document.getElementById("pdfCat").value,title=document.getElementById("pdfTitle").value.trim(),file=document.getElementById("pdfFile").files[0];if(!chapter_id||!title||!file){alert("Fill all");return}if(file.type!=="application/pdf"){alert("PDF only");return}try{const path=`pdfs/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{error:insErr}=await db.from("pdfs").insert({chapter_id,category,title,file_path:path});if(insErr){try{await db.storage.from("content").remove([path])}catch(e){}throw insErr}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-    document.getElementById("addTest").onclick=async()=>{const title=document.getElementById("testTitle").value.trim(),duration_minutes=parseInt(document.getElementById("testDur").value)||60,file=document.getElementById("testFile").files[0];if(!title){alert("Enter title");return}try{let file_path=null,type="cbt";if(file){if(file.type!=="application/pdf"){alert("PDF only");return}file_path=`tests/${crypto.randomUUID()}_${file.name}`;type="pdf";const{error:upErr}=await db.storage.from("content").upload(file_path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr}const payload={title,duration_minutes,file_path};try{const{error}=await db.from("tests").insert({...payload,type});if(error)throw error}catch(e){const{error}=await db.from("tests").insert(payload);if(error){if(file_path)try{await db.storage.from("content").remove([file_path])}catch(x){}throw error}}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-
-    // Existing Tests Edit + Delete
-    const testsSection = el(`<div style="margin-top:36px;border-top:1px solid var(--border);padding-top:22px">
-      <h3>Existing Tests (Edit / Delete)</h3>
-      <div id="existingTestsList"><div class="muted">Loading...</div></div>
-    </div>`);
-    body.appendChild(testsSection);
-
-    const loadExistingTests = async () => {
-      const list = document.getElementById("existingTestsList");
-      if(!list) return;
-      try {
-        const { data, error } = await db.from("tests").select("*").order("created_at", { ascending: false });
-        if (error) throw error;
-        if (!data || !data.length) {
-          list.innerHTML = `<div class="empty">No tests yet.</div>`;
-          return;
-        }
-        list.innerHTML = "";
-        data.forEach(t => {
-          const typeLabel = (t.type === "cbt" || !t.file_path) ? "CBT" : "PDF";
-          const row = el(`<div class="card" style="margin-bottom:10px">
-            <div class="row">
-              <div style="flex:1">
-                <div style="font-weight:600">${escapeHtml(t.title)}</div>
-                <div class="muted">${t.duration_minutes || 60} min · ${typeLabel}</div>
-              </div>
-              <div class="row-wrap">
-                <button class="btn-small editT">Edit</button>
-                <button class="btn-danger delT">Delete</button>
-              </div>
-            </div>
-          </div>`);
-
-          row.querySelector(".editT").onclick = () => {
-            const newTitle = prompt("New title:", t.title);
-            if (newTitle === null) return;
-            const newDur = prompt("Duration (minutes):", String(t.duration_minutes || 60));
-            if (newDur === null) return;
-            (async () => {
-              try {
-                const { error } = await db.from("tests").update({
-                  title: (newTitle.trim() || t.title),
-                  duration_minutes: parseInt(newDur) || 60
-                }).eq("id", t.id);
-                if (error) throw error;
-                alert("Updated");
-                loadExistingTests();
-              } catch (e) {
-                alert(e?.message || "Update failed");
-              }
-            })();
-          };
-
-          row.querySelector(".delT").onclick = async () => {
-            if (!confirm(`Delete test "${t.title}"?\nIske saare questions bhi delete ho jayenge.`)) return;
-            try {
-              await db.from("test_questions").delete().eq("test_id", t.id);
-              const { error } = await db.from("tests").delete().eq("id", t.id);
-              if (error) throw error;
-              if (t.file_path) {
-                try { await db.storage.from("content").remove([t.file_path]); } catch (e) {}
-              }
-              alert("Test deleted");
-              loadExistingTests();
-            } catch (e) {
-              alert(e?.message || "Delete failed");
-            }
-          };
-
-          list.appendChild(row);
-        });
-      } catch (e) {
-        list.innerHTML = `<div class="empty">${escapeHtml(e?.message || "Error")}</div>`;
-      }
+    document.getElementById("addSubj").onclick=async()=>{
+      const name=document.getElementById("subName").value.trim();
+      if(!name)return;
+      try{await db.from("subjects").insert({name});renderAdminContent(body);}catch(e){alert(e?.message)}
     };
-    loadExistingTests();
-  }catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+
+    const{data:subjects}=await db.from("subjects").select("*").order("sort_order");
+    const subList=document.getElementById("adminSubjList");
+    if(!subjects?.length){subList.innerHTML=`<div class="empty">No subjects found.</div>`;return;}
+    
+    subList.innerHTML="";
+    for(let s of subjects){
+      const sCard=el(`<div class="card"><div class="row"><b style="font-size:16px">${escapeHtml(s.name)}</b><button class="btn-danger delSub">Delete Subject</button></div>
+      <div style="margin-top:14px;display:flex;gap:10px">
+        <input placeholder="Chapter Name for ${escapeHtml(s.name)}" id="chInp-${s.id}" style="margin:0;flex:1"/>
+        <button class="btn" id="addCh-${s.id}" style="white-space:nowrap">Add Chapter</button>
+      </div>
+      <div id="chs-${s.id}" style="margin-top:14px"></div></div>`);
+      
+      sCard.querySelector(".delSub").onclick=async()=>{if(confirm(`Delete subject ${s.name} and all its chapters?`)){try{await db.from("subjects").delete().eq("id",s.id);renderAdminContent(body);}catch(e){alert(e?.message)}}};
+      sCard.querySelector(`#addCh-${s.id}`).onclick=async()=>{
+        const name=document.getElementById(`chInp-${s.id}`).value.trim();
+        if(!name)return;
+        try{await db.from("chapters").insert({subject_id:s.id,name});renderAdminContent(body);}catch(e){alert(e?.message)}
+      };
+      
+      subList.appendChild(sCard);
+
+      const{data:chapters}=await db.from("chapters").select("*").eq("subject_id",s.id).order("sort_order");
+      const chContainer=sCard.querySelector(`#chs-${s.id}`);
+      if(chapters?.length){
+        chapters.forEach(ch=>{
+          const chRow=el(`<div class="row" style="background:var(--panel2);padding:10px 14px;border-radius:10px;margin-bottom:8px"><div><span style="font-weight:600">${escapeHtml(ch.name)}</span></div><div class="row-wrap"><button class="btn-small addVid">Add Video</button><button class="btn-small addPdf">Add PDF</button><button class="btn-danger" style="padding:5px 10px;font-size:11.5px">Delete</button></div></div>`);
+          
+          chRow.querySelector(".addVid").onclick=()=>openAddVideoModal(ch);
+          chRow.querySelector(".addPdf").onclick=()=>openAddPdfModal(ch);
+          chRow.querySelector(".btn-danger").onclick=async()=>{if(confirm(`Delete chapter ${ch.name}?`)){try{await db.from("chapters").delete().eq("id",ch.id);renderAdminContent(body);}catch(e){alert(e?.message)}}};
+          chContainer.appendChild(chRow);
+        });
+      }else{
+        chContainer.innerHTML=`<div class="muted" style="font-size:13px">No chapters added under this subject yet.</div>`;
+      }
+    }
+  }catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
 }
 
-async function renderAdminCbt(body){
-  body.innerHTML=`
-    <h3>1. Select Test</h3>
-    <select id="cbtTestSel"><option value="">Select test…</option></select>
+function openAddVideoModal(ch){
+  const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:465px">
+    <button class="modal-close" id="mc">×</button>
+    <h3 style="margin-bottom:16px">Add Video Lecture to ${escapeHtml(ch.name)}</h3>
+    <input id="vTitle" placeholder="Lecture Title"/>
+    <input id="vId" placeholder="YouTube Video ID (e.g. dQw4w9WgXcQ)"/>
+    <button class="btn" style="width:100%;margin-top:8px" id="saveVid">Upload Video</button>
+  </div></div>`);
+  document.body.appendChild(modal);
+  modal.querySelector("#mc").onclick=()=>modal.remove();
+  modal.querySelector("#saveVid").onclick=async()=>{
+    const title=document.getElementById("vTitle").value.trim();
+    const youtube_id=document.getElementById("vId").value.trim();
+    if(!title||!youtube_id)return alert("Fill all fields");
+    try{
+      await db.from("videos").insert({chapter_id:ch.id,title,youtube_id});
+      alert("Video added successfully");
+      modal.remove();
+    }catch(e){alert(e?.message)}
+  };
+}
 
-    <h3 style="margin-top:20px">2. Bulk Add Questions</h3>
-    <div class="muted" style="margin-bottom:8px">Format (blank line se alag):<br>
-    Question text<br>A) option<br>B) option<br>C) option<br>D) option</div>
-    <textarea id="bulkText" style="min-height:150px" placeholder="Paste multiple questions here..."></textarea>
-    <button class="btn" id="bulkAdd">Add All Questions</button>
+function openAddPdfModal(ch){
+  const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:465px">
+    <button class="modal-close" id="mc">×</button>
+    <h3 style="margin-bottom:16px">Add PDF Document to ${escapeHtml(ch.name)}</h3>
+    <input id="pTitle" placeholder="Document Title"/>
+    <select id="pCat"><option value="general">Practice Sheet</option><option value="pyq">Past Year Paper</option><option value="ncert">NCERT Notes</option></select>
+    <input type="file" id="pFile" accept="application/pdf" style="margin-top:8px"/>
+    <button class="btn" style="width:100%;margin-top:10px" id="savePdf">Upload PDF</button>
+  </div></div>`);
+  document.body.appendChild(modal);
+  modal.querySelector("#mc").onclick=()=>modal.remove();
+  modal.querySelector("#savePdf").onclick=async()=>{
+    const title=document.getElementById("pTitle").value.trim();
+    const category=document.getElementById("pCat").value;
+    const file=document.getElementById("pFile").files[0];
+    if(!title||!file)return alert("Provide title and PDF file");
+    try{
+      const file_path=`pdfs/${crypto.randomUUID()}_${file.name}`;
+      await db.storage.from("content").upload(file_path,file);
+      await db.from("pdfs").insert({chapter_id:ch.id,title,category,file_path});
+      alert("PDF uploaded successfully");
+      modal.remove();
+    }catch(e){alert(e?.message)}
+  };
+}
 
-    <h3 style="margin-top:22px">3. Set Correct Answers (Number-wise)</h3>
-    <div class="muted" style="margin-bottom:8px">Example:<br>1. B<br>2. A<br>3. D</div>
-    <textarea id="ansText" style="min-height:100px" placeholder="1. A&#10;2. B&#10;3. C..."></textarea>
-    <button class="btn" id="setAnswers">Update Answers</button>
-
-    <h3 style="margin-top:22px">4. Existing Questions (Edit / Delete / Image)</h3>
-    <div id="cbtQList" class="muted">Select a test first</div>
-  `;
+async function renderAdminTests(body){
+  body.innerHTML=`<h3>Create Mock Tests & Add Questions to Any Chapter Name</h3>
+  <div class="card">
+    <input id="tTitle" placeholder="Test Title (e.g. Full Syllabus Mock 1)"/>
+    <input id="tDur" type="number" value="180" placeholder="Duration in Minutes"/>
+    <select id="tSubj"><option value="">-- Link to Subject (Optional) --</option></select>
+    <select id="tChap"><option value="">-- Link to Chapter Name --</option></select>
+    <button class="btn" id="createTestBtn" style="margin-top:8px">Create CBT Test Instance</button>
+  </div>
+  <h3>Existing Tests & Question Management</h3>
+  <div id="existingTests"></div>`;
 
   try{
-    const{data:tests}=await db.from("tests").select("id,title,file_path").order("created_at",{ascending:false});
-    const sel=document.getElementById("cbtTestSel");
-    (tests||[]).forEach(t=>{
-      const o=document.createElement("option");
-      o.value=t.id;
-      o.textContent=t.title+(t.file_path?" (PDF)":" (CBT)");
-      sel.appendChild(o);
+    const{data:subjects}=await db.from("subjects").select("*").order("sort_order");
+    const subjSel=document.getElementById("tSubj");
+    const chapSel=document.getElementById("tChap");
+
+    subjects?.forEach(s=>{
+      const opt=document.createElement("option");
+      opt.value=s.id;opt.textContent=s.name;
+      subjSel.appendChild(opt);
     });
 
-    const loadQs=async()=>{
-      const testId=sel.value;
-      const list=document.getElementById("cbtQList");
-      if(!testId){list.innerHTML=`<div class="muted">Select a test</div>`;return}
-      try{
-        const{data,error}=await db.from("test_questions").select("*").eq("test_id",testId).order("sort_order");
-        if(error)throw error;
-        if(!data?.length){list.innerHTML=`<div class="empty">No questions yet</div>`;return}
-        list.innerHTML="";
-        data.forEach((q,i)=>{
-          const imgPreview = q.question_image ? `<img src="${escapeHtml(q.question_image)}" style="max-width:120px;border-radius:8px;margin-top:8px;border:1px solid var(--border)"/>` : "";
-          const row=el(`<div class="card">
-            <div class="row">
-              <div style="flex:1">
-                <div class="muted">Q${i+1} · Correct: 
-                  <select class="corrSel" data-id="${q.id}" style="width:auto;display:inline;padding:4px 8px;margin:0">
-                    <option value="A" ${q.correct_option==="A"?"selected":""}>A</option>
-                    <option value="B" ${q.correct_option==="B"?"selected":""}>B</option>
-                    <option value="C" ${q.correct_option==="C"?"selected":""}>C</option>
-                    <option value="D" ${q.correct_option==="D"?"selected":""}>D</option>
-                  </select>
-                </div>
-                <div style="margin-top:6px">${escapeHtml(q.question_text)}</div>
-                ${imgPreview}
-                <div style="margin-top:8px">
-                  <input type="file" accept="image/*" class="imgInput" data-id="${q.id}" style="font-size:12px"/>
-                </div>
-              </div>
-              <button class="btn-danger delQ">Delete</button>
-            </div>
-          </div>`);
-          row.querySelector(".delQ").onclick=async()=>{
-            if(!confirm("Delete this question?"))return;
-            try{await db.from("test_questions").delete().eq("id",q.id);loadQs()}catch(e){alert(e?.message||"Error")}
-          };
-          row.querySelector(".corrSel").onchange=async(e)=>{
-            try{await db.from("test_questions").update({correct_option:e.target.value}).eq("id",q.id)}catch(err){alert(err?.message||"Error")}
-          };
-          row.querySelector(".imgInput").onchange=async(e)=>{
-            const file = e.target.files[0];
-            if(!file)return;
-            try{
-              const path = `question-images/${crypto.randomUUID()}_${file.name}`;
-              const {error:upErr} = await db.storage.from("content").upload(path, file, {cacheControl:"3600", upsert:false});
-              if(upErr)throw upErr;
-              const {data:urlData} = await db.storage.from("content").getPublicUrl(path);
-              const publicUrl = urlData?.publicUrl;
-              if(!publicUrl)throw new Error("No public URL");
-              await db.from("test_questions").update({question_image: publicUrl}).eq("id", q.id);
-              loadQs();
-            }catch(err){alert(err?.message||"Image upload failed")}
-          };
-          list.appendChild(row);
-        });
-      }catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+    subjSel.onchange=async()=>{
+      chapSel.innerHTML=`<option value="">-- Link to Chapter Name --</option>`;
+      if(!subjSel.value)return;
+      const{data:chapters}=await db.from("chapters").select("*").eq("subject_id",subjSel.value).order("sort_order");
+      chapters?.forEach(ch=>{
+        const opt=document.createElement("option");
+        opt.value=ch.id;opt.textContent=ch.name;
+        chapSel.appendChild(opt);
+      });
     };
 
-    sel.onchange=loadQs;
+    document.getElementById("createTestBtn").onclick=async()=>{
+      const title=document.getElementById("tTitle").value.trim();
+      const duration_minutes=parseInt(document.getElementById("tDur").value)||180;
+      const subject_id=subjSel.value||null;
+      const chapter_id=chapSel.value||null;
+      if(!title){alert("Enter test title");return;}
 
-    document.getElementById("bulkAdd").onclick=async()=>{
-      const test_id=sel.value;
-      const raw=document.getElementById("bulkText").value.trim();
-      if(!test_id){alert("Select test first");return}
-      if(!raw){alert("Paste questions");return}
+      try{
+        await db.from("tests").insert({title,duration_minutes,subject_id,chapter_id,type:"cbt"});
+        alert("Test created successfully!");
+        renderAdminTests(body);
+      }catch(e){alert(e?.message||"Error creating test")}
+    };
 
-      const blocks=raw.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);
-      const rows=[];
-      for(const block of blocks){
-        const lines=block.split("\n").map(l=>l.trim()).filter(Boolean);
-        if(lines.length<5)continue;
-        const question_text=lines[0].replace(/^\d+[\.\)]\s*/,"");
-        const getOpt=l=>{
-          const m=l.match(/^[A-Da-d][\.\)\]]\s*(.+)/);
-          return m?m[1]:l;
-        };
-        const option_a=getOpt(lines[1]);
-        const option_b=getOpt(lines[2]);
-        const option_c=getOpt(lines[3]);
-        const option_d=getOpt(lines[4]);
-        let correct_option=null;
-        const ansLine=lines.find(l=>/answer\s*[:=]/i.test(l));
-        if(ansLine){
-          const am=ansLine.match(/[A-Da-d]/);
-          if(am)correct_option=am[0].toUpperCase();
+    const{data:tests}=await db.from("tests").select("*, subjects(name), chapters(name)").order("created_at",{ascending:false});
+    const tContainer=document.getElementById("existingTests");
+    if(!tests?.length){tContainer.innerHTML=`<div class="empty">No tests created yet.</div>`;return;}
+    
+    tContainer.innerHTML="";
+    tests.forEach(t=>{
+      const meta=[t.subjects?.name, t.chapters?.name].filter(Boolean).join(" › ");
+      const row=el(`<div class="card row"><div><b style="font-size:16px">${escapeHtml(t.title)}</b><div class="muted" style="margin-top:3px">${meta?meta+" · ":""}${t.duration_minutes} mins</div></div><div class="row-wrap"><button class="btn-good addQ">Add Question</button><button class="btn-danger">Delete</button></div></div>`);
+      
+      row.querySelector(".addQ").onclick=()=>openAddQuestionModal(t);
+      row.querySelector(".btn-danger").onclick=async()=>{
+        if(confirm(`Delete test ${t.title}?`)){
+          try{await db.from("tests").delete().eq("id",t.id);renderAdminTests(body);}catch(e){alert(e?.message)}
         }
-        rows.push({
-          test_id,
-          question_text,
-          option_a,
-          option_b,
-          option_c,
-          option_d,
-          correct_option: correct_option || "A",
-          sort_order: rows.length + 1
-        });
-      }
-      if(!rows.length){alert("No valid questions found.");return}
-      try{
-        const{error}=await db.from("test_questions").insert(rows);
-        if(error)throw error;
-        document.getElementById("bulkText").value="";
-        alert(`${rows.length} questions added`);
-        loadQs();
-      }catch(e){alert(e?.message||"Bulk add failed")}
-    };
+      };
+      tContainer.appendChild(row);
+    });
 
-    document.getElementById("setAnswers").onclick=async()=>{
-      const test_id=sel.value;
-      const raw=document.getElementById("ansText").value.trim();
-      if(!test_id){alert("Select test first");return}
-      if(!raw){alert("Paste answers");return}
+  }catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+}
 
-      const{data:qs,error}=await db.from("test_questions").select("id,sort_order").eq("test_id",test_id).order("sort_order");
-      if(error)throw error;
-      if(!qs?.length){alert("No questions found");return}
+function openAddQuestionModal(test){
+  const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:560px">
+    <button class="modal-close" id="mc">×</button>
+    <h3 style="margin-bottom:16px">Add Question to: ${escapeHtml(test.title)}</h3>
+    <textarea id="qText" placeholder="Question statement..."></textarea>
+    <input id="optA" placeholder="Option A"/>
+    <input id="optB" placeholder="Option B"/>
+    <input id="optC" placeholder="Option C"/>
+    <input id="optD" placeholder="Option D"/>
+    <select id="corr"><option value="A">Correct Option: A</option><option value="B">Correct Option: B</option><option value="C">Correct Option: C</option><option value="D">Correct Option: D</option></select>
+    <input id="qImg" placeholder="Optional Question Image URL (optional)" style="margin-top:6px"/>
+    <button class="btn" style="width:100%;margin-top:10px" id="saveQ">Save Question</button>
+  </div></div>`);
+  document.body.appendChild(modal);
+  modal.querySelector("#mc").onclick=()=>modal.remove();
+  modal.querySelector("#saveQ").onclick=async()=>{
+    const question_text=document.getElementById("qText").value.trim();
+    const option_a=document.getElementById("optA").value.trim();
+    const option_b=document.getElementById("optB").value.trim();
+    const option_c=document.getElementById("optC").value.trim();
+    const option_d=document.getElementById("optD").value.trim();
+    const correct_option=document.getElementById("corr").value;
+    const question_image=document.getElementById("qImg").value.trim()||null;
 
-      const lines=raw.split("\n").map(l=>l.trim()).filter(Boolean);
-      let updated=0;
-      for(const line of lines){
-        const m=line.match(/^(\d+)\s*[\.\)\-\:]?\s*([A-Da-d])/i);
-        if(!m)continue;
-        const num=parseInt(m[1]);
-        const ans=m[2].toUpperCase();
-        if(num<1||num>qs.length)continue;
-        const q=qs[num-1];
-        try{
-          await db.from("test_questions").update({correct_option:ans}).eq("id",q.id);
-          updated++;
-        }catch(e){}
-      }
-      alert(`${updated} answers updated`);
-      document.getElementById("ansText").value="";
-      loadQs();
-    };
-
-  }catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
+    if(!question_text||!option_a||!option_b||!option_c||!option_d)return alert("Fill question statement and all 4 options");
+    try{
+      await db.from("test_questions").insert({test_id:test.id,question_text,option_a,option_b,option_c,option_d,correct_option,question_image});
+      alert("Question added successfully!");
+      document.getElementById("qText").value="";
+      document.getElementById("optA").value="";
+      document.getElementById("optB").value="";
+      document.getElementById("optC").value="";
+      document.getElementById("optD").value="";
+      document.getElementById("qImg").value="";
+    }catch(e){alert(e?.message)}
+  };
 }
 
 async function boot(){
