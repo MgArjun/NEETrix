@@ -12,23 +12,26 @@
   --green:#3dd68c;--danger:#ef5a5a;--warn:#f0b429;--shadow:0 8px 32px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overscroll-behavior:none;letter-spacing:-.01em}
 #app{min-height:100vh;padding-bottom:52px}
-input,textarea,select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit}
-input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+input,textarea,select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit;transition:border-color .15s ease,box-shadow .15s ease}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,157,255,.12)}
 textarea{min-height:90px;resize:vertical}
 button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-highlight-color:transparent}
-.btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 4px 14px rgba(91,157,255,.25)}
+.btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 4px 14px rgba(91,157,255,.25);transition:transform .12s cubic-bezier(.2,.8,.2,1),box-shadow .15s ease,opacity .12s ease}
 .btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,157,255,.35)}
 .btn:active{transform:scale(.96)}
 .btn:disabled{opacity:.45;pointer-events:none}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:9px;font-size:13px}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:9px;font-size:13px;transition:transform .12s cubic-bezier(.2,.8,.2,1),border-color .15s ease,color .15s ease}
 .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
 .btn-outline:active{transform:scale(.96)}
-.btn-danger{background:var(--danger);border:none;color:#fff;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
-.btn-good{background:var(--green);border:none;color:#06281a;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
-.btn-warn{background:var(--warn);border:none;color:#3a2a00;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
-.btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:12px}
+.btn-danger{background:var(--danger);border:none;color:#fff;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;transition:transform .12s cubic-bezier(.2,.8,.2,1)}
+.btn-danger:active{transform:scale(.95)}
+.btn-good{background:var(--green);border:none;color:#06281a;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;transition:transform .12s cubic-bezier(.2,.8,.2,1)}
+.btn-good:active{transform:scale(.95)}
+.btn-warn{background:var(--warn);border:none;color:#3a2a00;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;transition:transform .12s cubic-bezier(.2,.8,.2,1)}
+.btn-warn:active{transform:scale(.95)}
+.btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:12px;transition:transform .12s cubic-bezier(.2,.8,.2,1)}
 .btn-small:active{transform:scale(.95)}
 
 .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 0%,#121a2e 0%,var(--bg) 70%)}
@@ -40,17 +43,17 @@ button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-h
 
 .topbar{display:flex;align-items:center;gap:4px;padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(15,21,36,.92);backdrop-filter:blur(12px);overflow-x:auto;position:sticky;top:0;z-index:50}
 .topbar .brand{font-size:17px;margin:0;flex-shrink:0;margin-right:6px}
-.navbtn{background:none;border:1px solid transparent;color:var(--muted);padding:7px 12px;border-radius:8px;font-size:12.5px;white-space:nowrap;flex-shrink:0}
+.navbtn{background:none;border:1px solid transparent;color:var(--muted);padding:7px 12px;border-radius:8px;font-size:12.5px;white-space:nowrap;flex-shrink:0;transition:transform .12s cubic-bezier(.2,.8,.2,1),color .15s ease,background .15s ease}
 .navbtn:hover{color:var(--text)}
 .navbtn.active{background:var(--panel2);color:var(--text);border-color:var(--border)}
 .navbtn:active{transform:scale(.96)}
 .spacer{flex:1;min-width:8px}
 .profile-wrap{position:relative;flex-shrink:0}
-.profile-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(91,157,255,.3)}
+.profile-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(91,157,255,.3);transition:transform .12s cubic-bezier(.2,.8,.2,1)}
 .profile-btn:active{transform:scale(.9)}
 
 .content{max-width:920px;margin:0 auto;padding:22px 16px 40px}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;transition:transform .15s cubic-bezier(.2,.8,.2,1),border-color .15s ease}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:560px){.grid2{grid-template-columns:1fr}}
 .subject-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px 18px;cursor:pointer;transition:.2s}
@@ -63,12 +66,14 @@ button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-h
 .badge{font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
 .badge.admin{color:var(--accent);border-color:var(--accent)}
 .badge.active{color:var(--green);border-color:var(--green)}
-.back{background:none;border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:8px;font-size:12.5px;margin-bottom:16px}
+.back{background:none;border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:8px;font-size:12.5px;margin-bottom:16px;transition:transform .12s cubic-bezier(.2,.8,.2,1)}
+.back:active{transform:scale(.96)}
 .tabs2{display:flex;gap:6px;margin:12px 0 16px;flex-wrap:wrap}
-.tab2{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 15px;border-radius:9px;font-size:12.5px;font-weight:500}
+.tab2{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 15px;border-radius:9px;font-size:12.5px;font-weight:500;transition:transform .12s cubic-bezier(.2,.8,.2,1),background .15s ease,color .15s ease}
 .tab2.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
+.tab2:active{transform:scale(.96)}
 h2{font-size:20px;margin:2px 0 10px;font-weight:700;letter-spacing:-.02em}
-h3{font-size:15px;margin:16px 0 10px;font-weight:600}
+h3{font-size:15px;margin:16px 0 10px;font-weight:600;letter-spacing:-.01em}
 .empty{color:var(--muted);font-size:13.5px;padding:32px 0;text-align:center}
 
 .home-hero{
@@ -218,8 +223,8 @@ h3{font-size:15px;margin:16px 0 10px;font-weight:600}
   100%{top:128px;opacity:0;transform:translateX(-50%) scale(.25)}
 }
 
-.welcome{font-size:22px;font-weight:700;margin-bottom:4px}
-.progress-box{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;cursor:pointer}
+.welcome{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.02em}
+.progress-box{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;cursor:pointer;transition:transform .15s cubic-bezier(.2,.8,.2,1),border-color .15s ease}
 .progress-box:active{transform:scale(.98)}
 .progress-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .progress-bar-bg{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-bottom:10px}
@@ -245,9 +250,11 @@ table{width:100%;border-collapse:collapse;font-size:12.5px}
 th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border)}
 th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase}
 
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px}
-.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:22px}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px;animation:fadeIn .2s ease both}
+.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:22px;animation:modalPop .25s cubic-bezier(.2,.8,.2,1) both}
 .modal-close{background:none;border:none;color:var(--muted);float:right;font-size:24px;line-height:1;padding:0 4px}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes modalPop{from{opacity:0;transform:scale(.96) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
 
 .timer{font-size:22px;font-weight:800;color:var(--warn);text-align:center;padding:12px;background:var(--panel2);border-radius:10px;margin-bottom:12px}
 .zoom-row{display:flex;gap:8px;justify-content:center;margin-top:10px}
@@ -274,6 +281,60 @@ th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase}
 .profile-field{margin-bottom:14px}
 .profile-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
 .q-img{max-width:100%;border-radius:10px;margin:10px 0;border:1px solid var(--border)}
+
+/* ===== PREMIUM: skeleton loaders ===== */
+.skel{background:linear-gradient(90deg,var(--panel2) 25%,rgba(255,255,255,.05) 37%,var(--panel2) 63%);background-size:400% 100%;animation:skelShine 1.4s ease infinite;border-radius:12px}
+@keyframes skelShine{0%{background-position:100% 0}100%{background-position:0 0}}
+.skel-card{height:64px;margin-bottom:10px}
+.skel-subj{height:74px;border-radius:14px}
+
+/* ===== PREMIUM: page/modal entrance ===== */
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.home-hero,.progress-box,.home-card{animation:fadeSlideIn .5s cubic-bezier(.2,.8,.2,1) both}
+.home-hero{animation-delay:0s}
+.progress-box{animation-delay:.08s}
+.home-grid .home-card:nth-child(1){animation-delay:.14s}
+.home-grid .home-card:nth-child(2){animation-delay:.2s}
+.home-grid .home-card:nth-child(3){animation-delay:.26s}
+.page-fade{animation:fadeSlideIn .3s cubic-bezier(.2,.8,.2,1) both}
+
+/* ===== PREMIUM: toast ===== */
+.toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%) translateY(10px);background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;transition:opacity .25s ease,transform .25s ease;z-index:200;pointer-events:none;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== PREMIUM PDF READER ===== */
+.pdf-modal{position:fixed;inset:0;background:#000;z-index:100;display:flex;flex-direction:column;animation:fadeIn .2s ease both}
+.pdf-toolbar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(15,21,36,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:transform .25s ease,opacity .25s ease;z-index:5}
+.pdf-toolbar.hidden{transform:translateY(-100%);opacity:0;pointer-events:none}
+.pdf-tbtn{background:var(--panel2);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:9px;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .12s cubic-bezier(.2,.8,.2,1),background .15s ease,border-color .15s ease}
+.pdf-tbtn:active{transform:scale(.9)}
+.pdf-tbtn.active-tool{background:var(--accent);border-color:var(--accent);color:#fff}
+.pdf-title{flex:1;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pdf-tools{display:flex;align-items:center;gap:6px;flex-shrink:0;overflow-x:auto}
+.pdf-zoom-label{font-size:11.5px;color:var(--muted);min-width:34px;text-align:center}
+.pdf-canvas-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:16px;position:relative;-webkit-overflow-scrolling:touch}
+.pdf-canvas-stack{position:relative;flex-shrink:0}
+.pdf-canvas-stack canvas{display:block}
+#pdfAnnoCanvas{position:absolute;top:0;left:0;pointer-events:none}
+#pdfAnnoCanvas.tool-active{pointer-events:auto;touch-action:none}
+.pdf-pagebar{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:rgba(15,21,36,.96);backdrop-filter:blur(14px);border-top:1px solid var(--border);transition:transform .25s ease,opacity .25s ease;z-index:5}
+.pdf-pagebar.hidden{transform:translateY(100%);opacity:0;pointer-events:none}
+.pdf-pagebar input{width:52px;text-align:center;margin:0;padding:6px}
+.pdf-annobar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(15,21,36,.96);border-top:1px solid var(--border);overflow-x:auto}
+.pdf-color{width:22px;height:22px;border-radius:50%;border:2px solid transparent;flex-shrink:0;transition:transform .12s cubic-bezier(.2,.8,.2,1)}
+.pdf-color.selected{border-color:#fff;transform:scale(1.1)}
+.pdf-panel{position:absolute;right:0;top:0;bottom:0;width:280px;max-width:82vw;background:var(--panel);border-left:1px solid var(--border);z-index:10;transform:translateX(100%);transition:transform .25s cubic-bezier(.2,.8,.2,1);overflow:auto}
+.pdf-panel.open{transform:translateX(0)}
+.pdf-panel-tabs{display:flex;border-bottom:1px solid var(--border)}
+.pdf-panel-tab{flex:1;padding:12px;text-align:center;font-size:12px;color:var(--muted);background:none;border:none}
+.pdf-panel-tab.active{color:var(--accent);border-bottom:2px solid var(--accent)}
+.pdf-panel-body{padding:10px}
+.pdf-panel-item{padding:10px;border-radius:9px;background:var(--panel2);margin-bottom:8px;font-size:12.5px;cursor:pointer;transition:transform .12s cubic-bezier(.2,.8,.2,1)}
+.pdf-panel-item:active{transform:scale(.97)}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
 </style>
 </head>
 <body>
@@ -286,6 +347,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_X9_aDiQcrKhYyPfuQdnKPA_K8F7RPjM";
 
 let db=null,session=null,profile=null,activeTab="home",selSubject=null,selChapter=null,selCategory="general",adminTab="users";
 let cbtTest=null,cbtQuestions=[],cbtAnswers={},cbtMarked=new Set(),cbtBookmarks=new Set(),cbtIndex=0,cbtTimerRef=null,cbtRemaining=0;
+let pr=null; // premium pdf reader state
 
 const app=document.getElementById("app");
 function escapeHtml(v){return(v??"").toString().replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
@@ -295,6 +357,11 @@ function ytId(url){const m=(url||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\
 function showFatalError(m){document.body.innerHTML=`<div style="min-height:100vh;background:var(--bg);color:#fff;padding:24px"><div style="max-width:700px;margin:40px auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:24px"><h2 style="color:var(--danger)">NEETrix Error</h2><div style="color:#c5cada;line-height:1.6;white-space:pre-wrap">${escapeHtml(m)}</div></div></div>`}
 function getLastScore(){try{return JSON.parse(localStorage.getItem("neetrix_last_score")||"null")}catch(e){return null}}
 function saveLastScore(obj){try{localStorage.setItem("neetrix_last_score",JSON.stringify(obj))}catch(e){}}
+
+/* ---- premium helpers: local storage + skeletons ---- */
+function lsGet(key,fallback){try{const v=localStorage.getItem(key);return v!=null?JSON.parse(v):fallback}catch(e){return fallback}}
+function lsSet(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch(e){}}
+function skelList(n,cls){let h="";for(let i=0;i<n;i++)h+=`<div class="skel ${cls||"skel-card"}"></div>`;return h}
 
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.async=true;s.onload=()=>res();s.onerror=()=>rej(new Error("Failed: "+src));document.head.appendChild(s)})}
 async function loadSupabase(){if(window.supabase)return true;const srcs=["https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2","https://unpkg.com/@supabase/supabase-js@2"];let last=null;for(const s of srcs){try{await loadScript(s);if(window.supabase)return true}catch(e){last=e}}throw last||new Error("Supabase load failed")}
@@ -317,7 +384,7 @@ document.querySelectorAll(".navbtn").forEach(btn=>{btn.onclick=()=>{activeTab=bt
 renderTabsUI();renderBody()}
 
 function renderTabsUI(){document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.t===activeTab))}
-function renderBody(){const c=document.getElementById("content");if(!c)return;if(activeTab==="home")renderHome(c);else if(activeTab==="content")renderSubjectBrowser(c,"video");else if(activeTab==="questions")renderSubjectBrowser(c,"pdf");else if(activeTab==="tests")renderTests(c);else if(activeTab==="bookmarks")renderBookmarks(c);else if(activeTab==="admin"){if(profile?.role==="admin")renderAdmin(c);else{activeTab="home";renderTabsUI();renderHome(c)}}}
+function renderBody(){const c=document.getElementById("content");if(!c)return;c.classList.remove("page-fade");void c.offsetWidth;c.classList.add("page-fade");if(activeTab==="home")renderHome(c);else if(activeTab==="content")renderSubjectBrowser(c,"video");else if(activeTab==="questions")renderSubjectBrowser(c,"pdf");else if(activeTab==="tests")renderTests(c);else if(activeTab==="bookmarks")renderBookmarks(c);else if(activeTab==="admin"){if(profile?.role==="admin")renderAdmin(c);else{activeTab="home";renderTabsUI();renderHome(c)}}}
 
 function openProfileModal(){
   const modal=el(`<div class="modal-bg" id="profileModal"><div class="modal-box">
@@ -380,7 +447,7 @@ function renderHome(c){
   <div class="progress-stats">${last?`<span>Last score <b>${last.score}</b></span><span>Correct <b>${last.correct||0}</b></span><span>Accuracy <b>${pct}%</b></span><div class="muted" style="width:100%;margin-top:6px">Tap for detailed report →</div>`:`<span>Attempt tests to see progress here</span>`}</div>
 </div>
 <div class="home-grid">
-<div class="home-card" data-go="content"><div class="icon">▶️</div><h3>Content</h3><div class="muted">Video lessons</div></div>
+<div class="home-card" data-go="content"><div class="icon">▶</div><h3>Content</h3><div class="muted">Video lessons</div></div>
 <div class="home-card" data-go="questions"><div class="icon">📑</div><h3>Questions</h3><div class="muted">Practice & PYQs</div></div>
 <div class="home-card" data-go="tests"><div class="icon">📝</div><h3>Tests</h3><div class="muted">Mock tests</div></div>
 </div>`;
@@ -416,7 +483,7 @@ function showDetailedReport(last){
 
 async function renderSubjectBrowser(c,mode){
   if(!selSubject){
-    c.innerHTML=`<h2>${mode==="video"?"Video Lessons":"Question Bank"}</h2>${mode==="pdf"?`<div class="tabs2"><button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button><button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button><button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button></div>`:""}<div class="grid2" id="subjList"></div>`;
+    c.innerHTML=`<h2>${mode==="video"?"Video Lessons":"Question Bank"}</h2>${mode==="pdf"?`<div class="tabs2"><button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button><button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button><button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button></div>`:""}<div class="grid2" id="subjList">${skelList(4,"skel-subj")}</div>`;
     if(mode==="pdf")c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{selCategory=b.dataset.c;renderBody()}});
     const{data,error}=await db.from("subjects").select("*").order("sort_order");
     const wrap=document.getElementById("subjList");
@@ -425,7 +492,7 @@ async function renderSubjectBrowser(c,mode){
     wrap.innerHTML="";data.forEach(s=>{const card=el(`<div class="subject-card"><h3>${escapeHtml(s.name)}</h3></div>`);card.onclick=()=>{selSubject=s;selChapter=null;renderBody()};wrap.appendChild(card)});return;
   }
   if(!selChapter){
-    c.innerHTML=`<button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button><h2>Chapters</h2><div id="chapList"></div>`;
+    c.innerHTML=`<button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button><h2>Chapters</h2><div id="chapList">${skelList(3)}</div>`;
     document.getElementById("b1").onclick=()=>{selSubject=null;renderBody()};
     const{data,error}=await db.from("chapters").select("*").eq("subject_id",selSubject.id).order("sort_order");
     const wrap=document.getElementById("chapList");
@@ -436,13 +503,13 @@ async function renderSubjectBrowser(c,mode){
   c.innerHTML=`<button class="back" id="b2">← ${escapeHtml(selChapter.name)}</button>`;
   document.getElementById("b2").onclick=()=>{selChapter=null;renderBody()};
   if(mode==="video"){
-    const box=el(`<div id="vidBox"></div>`);c.appendChild(box);
+    const box=el(`<div id="vidBox">${skelList(2)}</div>`);c.appendChild(box);
     const{data,error}=await db.from("videos").select("*").eq("chapter_id",selChapter.id).order("sort_order");
     if(error){box.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
     if(!data?.length){box.innerHTML=`<div class="empty">No videos yet.</div>`;return}
     box.innerHTML=data.map(v=>`<h3>${escapeHtml(v.title)}</h3><div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(v.youtube_id)}?modestbranding=1&rel=0" title="${escapeHtml(v.title)}" allowfullscreen></iframe></div>`).join("");
   }else{
-    const list=el(`<div id="pdfList"></div>`);c.appendChild(list);
+    const list=el(`<div id="pdfList">${skelList(3)}</div>`);c.appendChild(list);
     const{data,error}=await db.from("pdfs").select("*").eq("chapter_id",selChapter.id).eq("category",selCategory).order("created_at",{ascending:false});
     if(error){list.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
     if(!data?.length){list.innerHTML=`<div class="empty">No content in this category yet.</div>`;return}
@@ -457,12 +524,246 @@ async function renderSubjectBrowser(c,mode){
   }
 }
 
-async function openPdf(pdf){try{const{data,error}=await db.storage.from("content").createSignedUrl(pdf.file_path,3600);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");await showPdfModal(data.signedUrl,pdf.title)}catch(e){alert(e?.message||"Unable to open PDF")}}
-async function showPdfModal(url,title){if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:920px"><button class="modal-close" id="mc">×</button><h3>${escapeHtml(title||"")}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div></div></div>`);document.body.appendChild(modal);document.getElementById("mc").onclick=()=>modal.remove();const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;try{const pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){modal.querySelector(".modal-box").innerHTML+=`<div class="empty">Unable to render<br>${escapeHtml(e?.message||"")}</div>`}}
+async function openPdf(pdf){try{const{data,error}=await db.storage.from("content").createSignedUrl(pdf.file_path,3600);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");await openPdfReader(data.signedUrl,pdf.title,"pdf_"+pdf.id)}catch(e){alert(e?.message||"Unable to open PDF")}}
 
-async function renderBookmarks(c){c.innerHTML=`<h2>My Bookmarks</h2><div id="bmList"></div>`;const list=document.getElementById("bmList");try{const{data,error}=await db.from("bookmarks").select("pdf_id, pdfs(title, id, file_path)").eq("user_id",session.user.id);if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No bookmarks yet.</div>`;return}list.innerHTML="";data.forEach(bm=>{if(!bm.pdfs)return;const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="open">${escapeHtml(bm.pdfs.title)}</span><button class="btn-small rm">Remove</button></div>`);row.querySelector(".open").onclick=()=>openPdf(bm.pdfs);row.querySelector(".rm").onclick=async e=>{e.stopPropagation();try{await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",bm.pdfs.id);renderBookmarks(c)}catch(err){alert(err?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+/* =========================================================
+   PREMIUM PDF READER
+   Zoom / page navigation / fullscreen / per-page bookmarks /
+   pen + highlighter annotations. Bookmarks & annotations are
+   saved in this browser (localStorage), keyed to the PDF.
+   ========================================================= */
+function pr_toast(msg){const t=document.getElementById("pdfToast");if(!t)return;t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+function pr_setToolActive(active){const c=document.getElementById("pdfAnnoCanvas");if(c)c.classList.toggle("tool-active",!!active)}
+function pr_highlightToolBtn(id){["toolPen","toolHi","toolEraser"].forEach(x=>{const b=document.getElementById(x);if(b)b.classList.toggle("active-tool",x===id)})}
+function pr_saveAnno(){lsSet("pdfanno_"+pr.storageKey,pr.annotations)}
+function pr_scheduleHide(){clearTimeout(pr.hideTimer);pr.hideTimer=setTimeout(()=>{if(document.fullscreenElement){document.getElementById("pdfToolbar")?.classList.add("hidden");document.getElementById("pdfPagebar")?.classList.add("hidden")}},3000)}
 
-async function renderTests(c){c.innerHTML=`<h2>Tests</h2><div id="testList"></div>`;const list=document.getElementById("testList");try{const{data,error}=await db.from("tests").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No tests yet.</div>`;return}list.innerHTML="";data.forEach(test=>{const isCbt=test.type==="cbt"||!test.file_path;const row=el(`<div class="card row"><div><div style="font-weight:600">${escapeHtml(test.title)}</div><div class="muted">${test.duration_minutes||60} min · ${isCbt?"CBT Mode":"PDF Paper"}</div></div><button class="btn">Start</button></div>`);row.querySelector("button").onclick=()=>{if(isCbt)startCbtTest(test);else startPdfTest(test)};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+function pr_drawAnnotations(){
+  const anno=document.getElementById("pdfAnnoCanvas");
+  if(!anno)return;
+  const ctx=anno.getContext("2d");
+  ctx.clearRect(0,0,anno.width,anno.height);
+  const strokes=pr.annotations[pr.pageNum]||[];
+  strokes.forEach(s=>{
+    ctx.strokeStyle=s.color;ctx.lineWidth=s.width*pr.scale;ctx.lineCap="round";ctx.lineJoin="round";ctx.globalAlpha=s.alpha||1;
+    ctx.beginPath();
+    s.points.forEach((p,i)=>{const x=p[0]*pr.scale,y=p[1]*pr.scale;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});
+    ctx.stroke();
+  });
+  ctx.globalAlpha=1;
+}
+
+function pr_eraseAt(pos){
+  const strokes=pr.annotations[pr.pageNum]||[];
+  const idx=strokes.findIndex(s=>s.points.some(p=>Math.hypot(p[0]-pos[0],p[1]-pos[1])<14/pr.scale));
+  if(idx>-1){strokes.splice(idx,1);pr_drawAnnotations();pr_saveAnno()}
+}
+
+function pr_undo(){const strokes=pr.annotations[pr.pageNum]||[];if(!strokes.length)return;const s=strokes.pop();if(!pr.redoStack[pr.pageNum])pr.redoStack[pr.pageNum]=[];pr.redoStack[pr.pageNum].push(s);pr_drawAnnotations();pr_saveAnno()}
+function pr_redo(){const redo=pr.redoStack[pr.pageNum]||[];if(!redo.length)return;const s=redo.pop();if(!pr.annotations[pr.pageNum])pr.annotations[pr.pageNum]=[];pr.annotations[pr.pageNum].push(s);pr_drawAnnotations();pr_saveAnno()}
+
+function pr_bindDrawing(){
+  const anno=document.getElementById("pdfAnnoCanvas");
+  let drawing=false,stroke=null;
+  const getPos=(e)=>{const rect=anno.getBoundingClientRect();const cx=e.clientX-rect.left,cy=e.clientY-rect.top;return[cx/pr.scale,cy/pr.scale]};
+  anno.addEventListener("pointerdown",(e)=>{
+    if(!pr.tool)return;
+    e.preventDefault();
+    if(pr.tool==="eraser"){pr_eraseAt(getPos(e));return}
+    drawing=true;
+    const[x,y]=getPos(e);
+    stroke={color:pr.color,width:pr.tool==="highlighter"?16:pr.width,alpha:pr.tool==="highlighter"?0.35:1,points:[[x,y]]};
+  });
+  anno.addEventListener("pointermove",(e)=>{
+    if(!drawing||!stroke)return;
+    e.preventDefault();
+    stroke.points.push(getPos(e));
+    pr_drawAnnotations();
+    const ctx=anno.getContext("2d");
+    ctx.strokeStyle=stroke.color;ctx.lineWidth=stroke.width*pr.scale;ctx.lineCap="round";ctx.lineJoin="round";ctx.globalAlpha=stroke.alpha;
+    ctx.beginPath();
+    stroke.points.forEach((p,i)=>{const x=p[0]*pr.scale,y=p[1]*pr.scale;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});
+    ctx.stroke();ctx.globalAlpha=1;
+  });
+  window.addEventListener("pointerup",()=>{
+    if(drawing&&stroke&&stroke.points.length>1){
+      if(!pr.annotations[pr.pageNum])pr.annotations[pr.pageNum]=[];
+      pr.annotations[pr.pageNum].push(stroke);
+      pr.redoStack[pr.pageNum]=[];
+      pr_saveAnno();
+    }
+    drawing=false;stroke=null;
+  });
+}
+
+async function pr_renderPage(){
+  const page=await pr.pdfDoc.getPage(pr.pageNum);
+  const baseVp=page.getViewport({scale:1});
+  if(pr.fitMode==="width"){
+    const wrap=document.getElementById("pdfCanvasWrap");
+    const availW=(wrap?.clientWidth||360)-32;
+    pr.scale=Math.max(0.4,availW/baseVp.width);
+  }
+  const vp=page.getViewport({scale:pr.scale});
+  const canvas=document.getElementById("pdfCanvas"),anno=document.getElementById("pdfAnnoCanvas"),stack=document.getElementById("pdfCanvasStack");
+  if(!canvas||!anno||!stack)return;
+  canvas.width=vp.width;canvas.height=vp.height;
+  anno.width=vp.width;anno.height=vp.height;
+  stack.style.width=vp.width+"px";stack.style.height=vp.height+"px";
+  await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;
+  pr_drawAnnotations();
+  const zl=document.getElementById("pdfZoomLabel");if(zl)zl.textContent=Math.round(pr.scale*100)+"%";
+  const pi=document.getElementById("pdfPageInput");if(pi)pi.value=pr.pageNum;
+  const pt=document.getElementById("pdfPageTotal");if(pt)pt.textContent=pr.totalPages;
+  const bm=pr.bookmarks[pr.pageNum];
+  const bb=document.getElementById("pdfBookmarkPage");
+  if(bb){bb.textContent=bm?"★":"☆";bb.classList.toggle("active-tool",!!bm)}
+  lsSet("pdfprog_"+pr.storageKey,{page:pr.pageNum,scale:pr.fitMode==="width"?null:pr.scale});
+}
+
+async function pr_goToPage(n){
+  if(!pr)return;
+  n=Math.max(1,Math.min(pr.totalPages,n));
+  pr.pageNum=n;
+  await pr_renderPage();
+}
+
+function pr_renderPanel(tab){
+  const body=document.getElementById("pdfPanelBody");
+  if(!body)return;
+  if(tab==="pages"){
+    let h="";
+    for(let i=1;i<=pr.totalPages;i++)h+=`<div class="pdf-panel-item" data-p="${i}">Page ${i}${pr.bookmarks[i]?" ★":""}</div>`;
+    body.innerHTML=h||`<div class="empty">No pages</div>`;
+  }else if(tab==="bookmarks"){
+    const keys=Object.keys(pr.bookmarks);
+    if(!keys.length){body.innerHTML=`<div class="empty">No bookmarks yet</div>`;return}
+    body.innerHTML=keys.map(k=>`<div class="pdf-panel-item" data-p="${k}">${escapeHtml(pr.bookmarks[k].label||("Page "+k))}</div>`).join("");
+  }else{
+    const keys=Object.keys(pr.annotations).filter(k=>(pr.annotations[k]||[]).length);
+    if(!keys.length){body.innerHTML=`<div class="empty">No notes/drawings yet</div>`;return}
+    body.innerHTML=keys.map(k=>`<div class="pdf-panel-item" data-p="${k}">Page ${k} — ${pr.annotations[k].length} stroke(s)</div>`).join("");
+  }
+  body.querySelectorAll(".pdf-panel-item").forEach(it=>{it.onclick=()=>{pr_goToPage(parseInt(it.dataset.p));document.getElementById("pdfPanel")?.classList.remove("open")}});
+}
+
+async function openPdfReader(url,title,storageKeyRaw){
+  if(!window.pdfjsLib)await loadPdfJs();
+  if(!window.pdfjsLib){alert("PDF viewer failed to load");return}
+  const storageKey=encodeURIComponent(storageKeyRaw||url).slice(0,180);
+  const modal=el(`<div class="pdf-modal" id="pdfModal">
+    <div class="pdf-toolbar" id="pdfToolbar">
+      <button class="pdf-tbtn" id="pdfClose">✕</button>
+      <div class="pdf-title">${escapeHtml(title||"")}</div>
+      <div class="pdf-tools">
+        <button class="pdf-tbtn" id="pdfZoomOut">−</button>
+        <span class="pdf-zoom-label" id="pdfZoomLabel">100%</span>
+        <button class="pdf-tbtn" id="pdfZoomIn">+</button>
+        <button class="pdf-tbtn" id="pdfFit">⤢</button>
+        <button class="pdf-tbtn" id="pdfBookmarkPage">☆</button>
+        <button class="pdf-tbtn" id="pdfAnnoToggle">✎</button>
+        <button class="pdf-tbtn" id="pdfPanelBtn">☰</button>
+        <button class="pdf-tbtn" id="pdfFullscreenBtn">⛶</button>
+      </div>
+    </div>
+    <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
+      <div class="pdf-canvas-stack" id="pdfCanvasStack">
+        <canvas id="pdfCanvas"></canvas>
+        <canvas id="pdfAnnoCanvas"></canvas>
+      </div>
+    </div>
+    <div class="pdf-annobar" id="pdfAnnoBar" style="display:none">
+      <button class="pdf-tbtn" id="toolPen">✎</button>
+      <button class="pdf-tbtn" id="toolHi">▮</button>
+      <button class="pdf-tbtn" id="toolEraser">⌫</button>
+      <div class="pdf-color selected" style="background:#5b9dff" data-c="#5b9dff"></div>
+      <div class="pdf-color" style="background:#f0b429" data-c="#f0b429"></div>
+      <div class="pdf-color" style="background:#3dd68c" data-c="#3dd68c"></div>
+      <div class="pdf-color" style="background:#ef5a5a" data-c="#ef5a5a"></div>
+      <div class="pdf-color" style="background:#ffffff" data-c="#ffffff"></div>
+      <button class="pdf-tbtn" id="toolUndo">↺</button>
+      <button class="pdf-tbtn" id="toolRedo">↻</button>
+    </div>
+    <div class="pdf-pagebar" id="pdfPagebar">
+      <button class="pdf-tbtn" id="pdfPrev">‹</button>
+      <input id="pdfPageInput" type="number" min="1"/> <span class="muted">/ <span id="pdfPageTotal"></span></span>
+      <button class="pdf-tbtn" id="pdfNext">›</button>
+    </div>
+    <div class="pdf-panel" id="pdfPanel">
+      <div class="pdf-panel-tabs">
+        <button class="pdf-panel-tab active" data-pt="pages">Pages</button>
+        <button class="pdf-panel-tab" data-pt="bookmarks">Bookmarks</button>
+        <button class="pdf-panel-tab" data-pt="notes">Notes</button>
+      </div>
+      <div class="pdf-panel-body" id="pdfPanelBody"></div>
+    </div>
+    <div class="toast" id="pdfToast"></div>
+  </div>`);
+  document.body.appendChild(modal);
+
+  try{
+    pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+    const pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;
+    const progress=lsGet("pdfprog_"+storageKey,{page:1,scale:null});
+    const bookmarks=lsGet("pdfpagebm_"+storageKey,{});
+    const annotations=lsGet("pdfanno_"+storageKey,{});
+    pr={pdfDoc,pageNum:Math.min(progress.page||1,pdfDoc.numPages),totalPages:pdfDoc.numPages,scale:progress.scale||1,fitMode:progress.scale?"custom":"width",storageKey,annotations,bookmarks,redoStack:{},tool:null,color:"#5b9dff",width:3,hideTimer:null};
+
+    await pr_renderPage();
+    pr_bindDrawing();
+    if(progress.page&&progress.page>1)pr_toast("Resumed from page "+progress.page);
+  }catch(e){
+    modal.remove();pr=null;
+    alert(e?.message||"Unable to load PDF");
+    return;
+  }
+
+  document.getElementById("pdfClose").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});modal.remove();pr=null};
+  document.getElementById("pdfZoomIn").onclick=()=>{pr.fitMode="custom";pr.scale=Math.min(4,pr.scale+0.25);pr_renderPage()};
+  document.getElementById("pdfZoomOut").onclick=()=>{pr.fitMode="custom";pr.scale=Math.max(0.4,pr.scale-0.25);pr_renderPage()};
+  document.getElementById("pdfFit").onclick=()=>{pr.fitMode="width";pr_renderPage()};
+  document.getElementById("pdfPrev").onclick=()=>pr_goToPage(pr.pageNum-1);
+  document.getElementById("pdfNext").onclick=()=>pr_goToPage(pr.pageNum+1);
+  document.getElementById("pdfPageInput").onchange=(e)=>pr_goToPage(parseInt(e.target.value)||1);
+  document.getElementById("pdfBookmarkPage").onclick=()=>{
+    if(pr.bookmarks[pr.pageNum]){delete pr.bookmarks[pr.pageNum];pr_toast("Bookmark removed")}
+    else{pr.bookmarks[pr.pageNum]={label:"Page "+pr.pageNum,at:Date.now()};pr_toast("Page bookmarked")}
+    lsSet("pdfpagebm_"+pr.storageKey,pr.bookmarks);
+    pr_renderPage();
+  };
+  document.getElementById("pdfAnnoToggle").onclick=()=>{
+    const bar=document.getElementById("pdfAnnoBar");
+    const showing=bar.style.display!=="none";
+    bar.style.display=showing?"none":"flex";
+    document.getElementById("pdfAnnoToggle").classList.toggle("active-tool",!showing);
+    if(showing){pr.tool=null;pr_setToolActive(false);pr_highlightToolBtn(null)}
+  };
+  document.getElementById("toolPen").onclick=()=>{pr.tool="pen";pr_setToolActive(true);pr_highlightToolBtn("toolPen")};
+  document.getElementById("toolHi").onclick=()=>{pr.tool="highlighter";pr_setToolActive(true);pr_highlightToolBtn("toolHi")};
+  document.getElementById("toolEraser").onclick=()=>{pr.tool="eraser";pr_setToolActive(true);pr_highlightToolBtn("toolEraser")};
+  document.getElementById("toolUndo").onclick=pr_undo;
+  document.getElementById("toolRedo").onclick=pr_redo;
+  document.querySelectorAll(".pdf-color").forEach(sw=>{sw.onclick=()=>{pr.color=sw.dataset.c;document.querySelectorAll(".pdf-color").forEach(x=>x.classList.remove("selected"));sw.classList.add("selected")}});
+  document.getElementById("pdfPanelBtn").onclick=()=>{
+    const panel=document.getElementById("pdfPanel");
+    panel.classList.toggle("open");
+    if(panel.classList.contains("open"))pr_renderPanel("pages");
+  };
+  document.querySelectorAll(".pdf-panel-tab").forEach(t=>{t.onclick=()=>{document.querySelectorAll(".pdf-panel-tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");pr_renderPanel(t.dataset.pt)}});
+  document.getElementById("pdfFullscreenBtn").onclick=async()=>{try{if(!document.fullscreenElement)await modal.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+  document.getElementById("pdfCanvasWrap").addEventListener("pointerdown",()=>{
+    document.getElementById("pdfToolbar")?.classList.remove("hidden");
+    document.getElementById("pdfPagebar")?.classList.remove("hidden");
+    pr_scheduleHide();
+  });
+  window.addEventListener("resize",()=>{if(pr&&pr.fitMode==="width")pr_renderPage()});
+}
+
+/* ---------------- BOOKMARKS (saved PDFs list) ---------------- */
+async function renderBookmarks(c){c.innerHTML=`<h2>My Bookmarks</h2><div id="bmList">${skelList(3)}</div>`;const list=document.getElementById("bmList");try{const{data,error}=await db.from("bookmarks").select("pdf_id, pdfs(title, id, file_path)").eq("user_id",session.user.id);if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No bookmarks yet.</div>`;return}list.innerHTML="";data.forEach(bm=>{if(!bm.pdfs)return;const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="open">${escapeHtml(bm.pdfs.title)}</span><button class="btn-small rm">Remove</button></div>`);row.querySelector(".open").onclick=()=>openPdf(bm.pdfs);row.querySelector(".rm").onclick=async e=>{e.stopPropagation();try{await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",bm.pdfs.id);renderBookmarks(c)}catch(err){alert(err?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
+
+/* ---------------- TESTS ---------------- */
+async function renderTests(c){c.innerHTML=`<h2>Tests</h2><div id="testList">${skelList(3)}</div>`;const list=document.getElementById("testList");try{const{data,error}=await db.from("tests").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No tests yet.</div>`;return}list.innerHTML="";data.forEach(test=>{const isCbt=test.type==="cbt"||!test.file_path;const row=el(`<div class="card row"><div><div style="font-weight:600">${escapeHtml(test.title)}</div><div class="muted">${test.duration_minutes||60} min · ${isCbt?"CBT Mode":"PDF Paper"}</div></div><button class="btn">Start</button></div>`);row.querySelector("button").onclick=()=>{if(isCbt)startCbtTest(test);else startPdfTest(test)};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
 
 async function startPdfTest(test){if(!test.file_path){alert("No paper uploaded");return}try{const{data,error}=await db.storage.from("content").createSignedUrl(test.file_path,7200);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){alert("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:920px"><div class="timer" id="tmr"></div><h3>${escapeHtml(test.title)}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div><button class="btn" style="width:100%;margin-top:14px" id="submitTest">Submit Test</button></div></div>`);document.body.appendChild(modal);let remaining=(Number(test.duration_minutes)||60)*60;const timerEl=document.getElementById("tmr");let timerRef=null;const finish=()=>{if(timerRef)clearInterval(timerRef);modal.remove();alert("Test submitted")};const tick=()=>{const m=Math.floor(remaining/60),s=remaining%60;timerEl.textContent=`${m}:${s<10?"0":""}${s} remaining`;if(remaining<=0){finish();return}remaining--};tick();timerRef=setInterval(tick,1000);document.getElementById("submitTest").onclick=()=>{if(confirm("Submit now?"))finish()};const pdfjsLib=window.pdfjsLib;pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;const pdfDoc=await pdfjsLib.getDocument({url:data.signedUrl,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){alert(e?.message||"Unable to start")}}
 
@@ -738,8 +1039,8 @@ async function renderAdminSettings(body){
 async function renderAdminContent(body){
   body.innerHTML=`<h3>Add Subject</h3><input id="newSubj" placeholder="Subject name"/><button class="btn" id="addSubj">Add Subject</button>
   <h3>Add Chapter</h3><select id="chSubj"></select><input id="newChap" placeholder="Chapter name"/><button class="btn" id="addChap">Add Chapter</button>
-  <h3>Add Video</h3><select id="vidSubj"></select><select id="vidChap"></select><input id="vidTitle" placeholder="Video title"/><input id="vidUrl" placeholder="YouTube link"/><button class="btn" id="addVid">Add Video</button>
-  <h3>Add Question PDF</h3><select id="pdfSubj"></select><select id="pdfChap"></select><select id="pdfCat"><option value="general">Practice</option><option value="ncert">Important</option><option value="pyq">PYQs</option></select><input id="pdfTitle" placeholder="PDF title"/><input type="file" id="pdfFile" accept="application/pdf"/><button class="btn" id="addPdf">Upload PDF</button>
+  <h3>Add Video</h3><select id="vidSubj"></select><select id="vidChap"></select><input id="vidChapNew" placeholder="Ya naya chapter naam type karo (optional)"/><input id="vidTitle" placeholder="Video title"/><input id="vidUrl" placeholder="YouTube link"/><button class="btn" id="addVid">Add Video</button>
+  <h3>Add Question PDF</h3><select id="pdfSubj"></select><select id="pdfChap"></select><input id="pdfChapNew" placeholder="Ya naya chapter naam type karo (optional)"/><select id="pdfCat"><option value="general">Practice</option><option value="ncert">Important</option><option value="pyq">PYQs</option></select><input id="pdfTitle" placeholder="PDF title"/><input type="file" id="pdfFile" accept="application/pdf"/><button class="btn" id="addPdf">Upload PDF</button>
   <h3>Add Test</h3><input id="testTitle" placeholder="Test title"/><input id="testDur" type="number" value="60" placeholder="Duration (min)"/><input type="file" id="testFile" accept="application/pdf"/><div class="muted" style="margin-bottom:8px">Leave file empty = CBT test</div><button class="btn" id="addTest">Create Test</button>`;
   try{
     const{data:subjects,error}=await db.from("subjects").select("*").order("sort_order");
@@ -750,10 +1051,42 @@ async function renderAdminContent(body){
     if(subjects?.length){await loadChapters("vidSubj","vidChap");await loadChapters("pdfSubj","pdfChap")}
     document.getElementById("vidSubj").onchange=()=>loadChapters("vidSubj","vidChap");
     document.getElementById("pdfSubj").onchange=()=>loadChapters("pdfSubj","pdfChap");
+
+    const resolveChapterId=async(subSelId,chapSelId,chapNewId)=>{
+      const subject_id=document.getElementById(subSelId).value;
+      const newName=document.getElementById(chapNewId).value.trim();
+      if(!subject_id){alert("Select a subject first");return null}
+      if(newName){
+        try{
+          const{data,error}=await db.from("chapters").insert({subject_id,name:newName}).select().single();
+          if(error)throw error;
+          await loadChapters(subSelId,chapSelId);
+          document.getElementById(chapNewId).value="";
+          return data.id;
+        }catch(e){alert(e?.message||"Chapter create failed");return null}
+      }
+      const sel=document.getElementById(chapSelId).value;
+      if(!sel){alert("Select a chapter, or type a new chapter name");return null}
+      return sel;
+    };
+
     document.getElementById("addSubj").onclick=async()=>{const name=document.getElementById("newSubj").value.trim();if(!name)return;try{await db.from("subjects").insert({name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
     document.getElementById("addChap").onclick=async()=>{const subject_id=document.getElementById("chSubj").value,name=document.getElementById("newChap").value.trim();if(!subject_id||!name)return;try{await db.from("chapters").insert({subject_id,name});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-    document.getElementById("addVid").onclick=async()=>{const chapter_id=document.getElementById("vidChap").value,title=document.getElementById("vidTitle").value.trim(),url=document.getElementById("vidUrl").value.trim(),youtubeId=ytId(url);if(!chapter_id||!title||!youtubeId){alert("Check fields + valid YouTube link");return}try{await db.from("videos").insert({chapter_id,title,youtube_id:youtubeId});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
-    document.getElementById("addPdf").onclick=async()=>{const chapter_id=document.getElementById("pdfChap").value,category=document.getElementById("pdfCat").value,title=document.getElementById("pdfTitle").value.trim(),file=document.getElementById("pdfFile").files[0];if(!chapter_id||!title||!file){alert("Fill all");return}if(file.type!=="application/pdf"){alert("PDF only");return}try{const path=`pdfs/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{error:insErr}=await db.from("pdfs").insert({chapter_id,category,title,file_path:path});if(insErr){try{await db.storage.from("content").remove([path])}catch(e){}throw insErr}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
+    document.getElementById("addVid").onclick=async()=>{
+      const title=document.getElementById("vidTitle").value.trim(),url=document.getElementById("vidUrl").value.trim(),youtubeId=ytId(url);
+      if(!title||!youtubeId){alert("Check title + valid YouTube link");return}
+      const chapter_id=await resolveChapterId("vidSubj","vidChap","vidChapNew");
+      if(!chapter_id)return;
+      try{await db.from("videos").insert({chapter_id,title,youtube_id:youtubeId});renderAdminContent(body)}catch(e){alert(e?.message||"Error")}
+    };
+    document.getElementById("addPdf").onclick=async()=>{
+      const category=document.getElementById("pdfCat").value,title=document.getElementById("pdfTitle").value.trim(),file=document.getElementById("pdfFile").files[0];
+      if(!title||!file){alert("Fill title and choose a file");return}
+      if(file.type!=="application/pdf"){alert("PDF only");return}
+      const chapter_id=await resolveChapterId("pdfSubj","pdfChap","pdfChapNew");
+      if(!chapter_id)return;
+      try{const path=`pdfs/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{error:insErr}=await db.from("pdfs").insert({chapter_id,category,title,file_path:path});if(insErr){try{await db.storage.from("content").remove([path])}catch(e){}throw insErr}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}
+    };
     document.getElementById("addTest").onclick=async()=>{const title=document.getElementById("testTitle").value.trim(),duration_minutes=parseInt(document.getElementById("testDur").value)||60,file=document.getElementById("testFile").files[0];if(!title){alert("Enter title");return}try{let file_path=null,type="cbt";if(file){if(file.type!=="application/pdf"){alert("PDF only");return}file_path=`tests/${crypto.randomUUID()}_${file.name}`;type="pdf";const{error:upErr}=await db.storage.from("content").upload(file_path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr}const payload={title,duration_minutes,file_path};try{const{error}=await db.from("tests").insert({...payload,type});if(error)throw error}catch(e){const{error}=await db.from("tests").insert(payload);if(error){if(file_path)try{await db.storage.from("content").remove([file_path])}catch(x){}throw error}}renderAdminContent(body)}catch(e){alert(e?.message||"Error")}};
 
     // Existing Tests Edit + Delete
