@@ -1,767 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>NEETrix</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060912;--panel:#0f1524;--panel2:#151d30;--border:#243049;
+  --text:#eef2fb;--muted:#8b97b3;--accent:#5b9dff;--accent2:#6b7cff;
+  --green:#3dd68c;--danger:#ef5a5a;--warn:#f0b429;--shadow:0 8px 32px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overscroll-behavior:none;letter-spacing:-.01em}
+#app{min-height:100vh;padding-bottom:52px}
+input,textarea,select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit;transition:border-color .15s ease,box-shadow .15s ease}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,157,255,.12)}
+textarea{min-height:90px;resize:vertical}
+button{cursor:pointer;font-family:inherit;transition:all .18s ease;-webkit-tap-highlight-color:transparent}
+.btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 4px 14px rgba(91,157,255,.25)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,157,255,.35)}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.45;pointer-events:none}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:9px;font-size:13px}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-danger{background:var(--danger);border:none;color:#fff;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
+.btn-good{background:var(--green);border:none;color:#06281a;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
+.btn-warn{background:var(--warn);border:none;color:#3a2a00;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600}
+.btn-small{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:12px}
+
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 0%,#121a2e 0%,var(--bg) 70%)}
+.auth-card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:var(--shadow)}
+.brand{font-size:26px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.03em}
+.sub{color:var(--muted);font-size:13.5px;margin:8px 0 22px}
+.msg{font-size:12.5px;margin:-4px 0 12px;min-height:16px}
+.link{color:var(--accent);background:none;border:none;font-size:13px;text-align:center;width:100%;margin-top:10px}
+
+.topbar{display:flex;align-items:center;gap:4px;padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(15,21,36,.92);backdrop-filter:blur(12px);overflow-x:auto;position:sticky;top:0;z-index:50}
+.topbar .brand{font-size:17px;margin:0;flex-shrink:0;margin-right:6px}
+.navbtn{background:none;border:1px solid transparent;color:var(--muted);padding:7px 12px;border-radius:8px;font-size:12.5px;white-space:nowrap;flex-shrink:0}
+.navbtn:hover{color:var(--text)}
+.navbtn.active{background:var(--panel2);color:var(--text);border-color:var(--border)}
+.spacer{flex:1;min-width:8px}
+.profile-wrap{position:relative;flex-shrink:0}
+.profile-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}
+
+.content{max-width:920px;margin:0 auto;padding:22px 16px 40px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+.subject-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px 18px;cursor:pointer;transition:.2s}
+.subject-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.subject-card h3{margin:0;font-size:15.5px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.row-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.muted{color:var(--muted);font-size:12.5px}
+.badge{font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
+.badge.admin{color:var(--accent);border-color:var(--accent)}
+.badge.active{color:var(--green);border-color:var(--green)}
+.back{background:none;border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:8px;font-size:12.5px;margin-bottom:16px}
+.tabs2{display:flex;gap:6px;margin:12px 0 16px;flex-wrap:wrap}
+.tab2{background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:8px 15px;border-radius:9px;font-size:12.5px;font-weight:500}
+.tab2.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
+h2{font-size:20px;margin:2px 0 10px;font-weight:700}
+h3{font-size:15px;margin:16px 0 10px;font-weight:600}
+.empty{color:var(--muted);font-size:13.5px;padding:32px 0;text-align:center}
+
+.home-hero{text-align:center;padding:32px 16px 28px;background:radial-gradient(ellipse at 30% 40%, rgba(91,157,255,.12) 0%, transparent 50%),radial-gradient(ellipse at 70% 40%, rgba(61,214,140,.08) 0%, transparent 50%),linear-gradient(180deg,rgba(91,157,255,.06) 0%,transparent 100%);border:1px solid var(--border);border-radius:20px;margin-bottom:18px}
+.anim-row{display:flex;justify-content:center;align-items:center;gap:56px;margin-bottom:20px;flex-wrap:wrap;min-height:180px}
+.atom-wrap{width:150px;height:150px;position:relative;flex-shrink:0;filter:drop-shadow(0 0 20px rgba(91,157,255,.35))}
+.atom-core{width:22px;height:22px;background:radial-gradient(circle at 35% 30%,#e8f4ff 0%,#7eb8ff 40%,#3b82f6 100%);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 12px #fff,0 0 28px var(--accent);z-index:5}
+.orbit{position:absolute;top:50%;left:50%;border:1.5px solid rgba(125,211,252,.35);border-radius:50%;transform:translate(-50%,-50%);animation:spin linear infinite}
+.orbit1{width:64px;height:40px;animation-duration:3.8s}
+.orbit2{width:94px;height:58px;animation-duration:6.2s;animation-direction:reverse}
+.orbit3{width:122px;height:76px;animation-duration:8.5s}
+.orbit4{width:140px;height:90px;animation-duration:11s;animation-direction:reverse;opacity:.5}
+.electron{width:9px;height:9px;background:radial-gradient(circle at 30% 30%,#fff,#7dd3fc 60%,#38bdf8);border-radius:50%;position:absolute;top:-4.5px;left:50%;margin-left:-4.5px;box-shadow:0 0 10px #7dd3fc}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.nerve-wrap{width:130px;height:170px;position:relative;flex-shrink:0}
+.nerve-brain{width:48px;height:36px;background:radial-gradient(ellipse at 40% 35%,#c7e0ff 0%,#6ba3f0 45%,#3b6fd4 100%);border-radius:50% 50% 42% 42%;position:absolute;top:0;left:50%;transform:translateX(-50%);box-shadow:0 0 16px rgba(91,157,255,.6);z-index:3}
+.nerve-spine{width:6px;height:100px;background:linear-gradient(180deg,#7eb8ff 0%,var(--accent) 40%,rgba(91,157,255,.35) 100%);position:absolute;top:32px;left:50%;transform:translateX(-50%);border-radius:4px;z-index:2}
+.nerve-wave{position:absolute;left:50%;width:8px;height:8px;background:radial-gradient(circle,#6ee7b7,var(--green));border-radius:50%;transform:translateX(-50%);animation:nerveDown 2.4s ease-in-out infinite;z-index:4}
+.nerve-wave:nth-child(3){animation-delay:.6s}
+.nerve-wave:nth-child(4){animation-delay:1.2s}
+.nerve-wave:nth-child(5){animation-delay:1.8s}
+.nerve-branch{position:absolute;height:2.5px;background:linear-gradient(90deg,rgba(91,157,255,.7),rgba(91,157,255,.15));border-radius:2px}
+.nerve-branch.arm-l{width:34px;top:52px;left:calc(50% - 34px);transform:rotate(-28deg)}
+.nerve-branch.arm-r{width:34px;top:52px;left:50%;transform:rotate(28deg);background:linear-gradient(90deg,rgba(91,157,255,.15),rgba(91,157,255,.7))}
+.nerve-branch.leg-l{width:26px;top:108px;left:calc(50% - 22px);transform:rotate(-38deg)}
+.nerve-branch.leg-r{width:26px;top:108px;left:50%;transform:rotate(38deg);background:linear-gradient(90deg,rgba(91,157,255,.15),rgba(91,157,255,.7))}
+.nerve-branch.org{width:18px;top:78px;left:calc(50% - 18px);transform:rotate(-14deg);opacity:.75}
+.nerve-branch.org2{width:18px;top:78px;left:50%;transform:rotate(14deg);opacity:.75;background:linear-gradient(90deg,rgba(91,157,255,.15),rgba(91,157,255,.55))}
+@keyframes nerveDown{0%{top:36px;opacity:0;transform:translateX(-50%) scale(.4)}15%{opacity:1}85%{opacity:1}100%{top:128px;opacity:0;transform:translateX(-50%) scale(.25)}}
+.welcome{font-size:22px;font-weight:700;margin-bottom:4px}
+.progress-box{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;cursor:pointer}
+.progress-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.progress-bar-bg{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:4px;transition:width .6s ease}
+.progress-stats{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px}
+.progress-stats span{color:var(--muted)}
+.progress-stats b{color:var(--text);font-weight:600}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:600px){.home-grid{grid-template-columns:1fr}}
+.home-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px 14px;text-align:center;cursor:pointer;transition:.22s}
+.home-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.home-card .icon{font-size:30px;margin-bottom:10px}
+.home-card h3{margin:0 0 4px;font-size:15px}
+
+.powered{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;color:var(--muted);padding:11px 0;background:rgba(6,9,18,.94);backdrop-filter:blur(10px);border-top:1px solid rgba(36,48,73,.6);z-index:40}
+.powered span{background:linear-gradient(90deg,var(--muted),var(--accent),var(--muted));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:500}
+
+.yt-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;background:#000;margin-bottom:14px;border:1px solid var(--border)}
+.yt-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px}
+.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:22px}
+.modal-close{background:none;border:none;color:var(--muted);float:right;font-size:24px;line-height:1;padding:0 4px}
+
+.timer{font-size:22px;font-weight:800;color:var(--warn);text-align:center;padding:12px;background:var(--panel2);border-radius:10px;margin-bottom:12px}
+.zoom-row{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.zoom-row button{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px}
+
+.cbt-layout{display:grid;grid-template-columns:1fr 220px;gap:16px}
+@media(max-width:720px){.cbt-layout{grid-template-columns:1fr}}
+.cbt-qbox{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px}
+.cbt-palette{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px;height:fit-content;position:sticky;top:70px}
+.cbt-palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.cbt-pbtn{width:100%;aspect-ratio:1;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:12px;font-weight:600}
+.cbt-pbtn.answered{background:rgba(91,157,255,.2);border-color:var(--accent);color:var(--accent)}
+.cbt-pbtn.marked{background:rgba(240,180,41,.2);border-color:var(--warn);color:var(--warn)}
+.cbt-pbtn.current{outline:2px solid var(--green);outline-offset:1px}
+.cbt-opt{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px}
+.cbt-opt.selected{border-color:var(--accent);background:rgba(91,157,255,.12)}
+.cbt-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.cbt-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--muted)}
+.cbt-legend span{display:flex;align-items:center;gap:4px}
+.cbt-dot{width:10px;height:10px;border-radius:3px}
+.score-card{text-align:center;padding:28px 16px}
+.score-num{font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+.profile-field{margin-bottom:14px}
+.profile-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+.q-img{max-width:100%;border-radius:10px;margin:10px 0;border:1px solid var(--border)}
+
+.skel{background:linear-gradient(90deg,var(--panel2) 25%,rgba(255,255,255,.05) 37%,var(--panel2) 63%);background-size:400% 100%;animation:skelShine 1.4s ease infinite;border-radius:12px}
+@keyframes skelShine{0%{background-position:100% 0}100%{background-position:0 0}}
+.skel-card{height:64px;margin-bottom:10px}
+.skel-subj{height:74px;border-radius:14px}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.page-fade{animation:fadeSlideIn .3s cubic-bezier(.2,.8,.2,1) both}
+
+.toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%) translateY(10px);background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;transition:opacity .25s ease,transform .25s ease;z-index:200;pointer-events:none;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.pdf-modal{position:fixed;inset:0;background:#000;z-index:100;display:flex;flex-direction:column}
+.pdf-toolbar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(15,21,36,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:5}
+.pdf-tbtn{background:var(--panel2);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:9px;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pdf-tbtn.active-tool{background:var(--accent);border-color:var(--accent);color:#fff}
+.pdf-title{flex:1;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pdf-tools{display:flex;align-items:center;gap:6px;flex-shrink:0;overflow-x:auto}
+.pdf-zoom-label{font-size:11.5px;color:var(--muted);min-width:34px;text-align:center}
+.pdf-canvas-wrap{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:16px;position:relative;-webkit-overflow-scrolling:touch}
+.pdf-canvas-stack{position:relative;flex-shrink:0}
+.pdf-canvas-stack canvas{display:block}
+#pdfAnnoCanvas{position:absolute;top:0;left:0;pointer-events:none}
+#pdfAnnoCanvas.tool-active{pointer-events:auto;touch-action:none}
+#pdfTextLayer{position:absolute;top:0;left:0;overflow:hidden;line-height:1;opacity:.2;pointer-events:auto;user-select:text}
+#pdfTextLayer span{position:absolute;white-space:pre;color:transparent;transform-origin:0% 0%}
+.pdf-pagebar{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:rgba(15,21,36,.96);backdrop-filter:blur(14px);border-top:1px solid var(--border);z-index:5}
+.pdf-pagebar input{width:52px;text-align:center;margin:0;padding:6px}
+.pdf-annobar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(15,21,36,.96);border-top:1px solid var(--border);overflow-x:auto}
+.pdf-color{width:22px;height:22px;border-radius:50%;border:2px solid transparent;flex-shrink:0}
+.pdf-color.selected{border-color:#fff;transform:scale(1.1)}
+.pdf-panel{position:absolute;right:0;top:0;bottom:0;width:280px;max-width:82vw;background:var(--panel);border-left:1px solid var(--border);z-index:10;transform:translateX(100%);transition:transform .25s ease;overflow:auto}
+.pdf-panel.open{transform:translateX(0)}
+.pdf-panel-tabs{display:flex;border-bottom:1px solid var(--border)}
+.pdf-panel-tab{flex:1;padding:12px;text-align:center;font-size:12px;color:var(--muted);background:none;border:none}
+.pdf-panel-tab.active{color:var(--accent);border-bottom:2px solid var(--accent)}
+.pdf-panel-body{padding:10px}
+.pdf-panel-item{padding:10px;border-radius:9px;background:var(--panel2);margin-bottom:8px;font-size:12.5px;cursor:pointer}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="powered"><span>Powered by Suraj Kumar</span></div>
+
 <script>
 const SUPABASE_URL = "https://qhggamgxfwlwtpmwxfwk.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_X9_aDiQcrKhYyPfuQdnKPA_K8F7RPjM";
 
-let db = null, session = null, profile = null, activeTab = "home";
-let selSubject = null, selChapter = null, selCategory = "general", adminTab = "dashboard";
-let cbtTest = null, cbtQuestions = [], cbtAnswers = {}, cbtMarked = new Set(), cbtBookmarks = new Set(), cbtIndex = 0, cbtTimerRef = null, cbtRemaining = 0;
-let pr = null;
+let db=null,session=null,profile=null,activeTab="home",selSubject=null,selChapter=null,selCategory="general",adminTab="dashboard";
+let cbtTest=null,cbtQuestions=[],cbtAnswers={},cbtMarked=new Set(),cbtBookmarks=new Set(),cbtIndex=0,cbtTimerRef=null,cbtRemaining=0;
+let pr=null;
 
-const app = document.getElementById("app");
-
-function escapeHtml(v){return (v??"").toString().replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+const app=document.getElementById("app");
+function escapeHtml(v){return(v??"").toString().replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function el(h){const d=document.createElement("div");d.innerHTML=h.trim();return d.firstElementChild}
 function fmtDate(iso){if(!iso)return"";const d=new Date(iso);if(Number.isNaN(d.getTime()))return"";return d.toLocaleString(undefined,{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})}
 function ytId(url){const m=(url||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);return m?m[1]:null}
-function showFatalError(m){document.body.innerHTML=`<div style="min-height:100vh;background:var(--bg);color:#fff;padding:24px"><div style="max-width:700px;margin:40px auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:24px"><h2 style="color:var(--danger)">NEETrix Error</h2><div style="color:#c5cada;line-height:1.6;white-space:pre-wrap">${escapeHtml(m)}</div></div></div>`}
+function showFatalError(m){document.body.innerHTML=`<div style="min-height:100vh;background:#060912;color:#fff;padding:24px"><div style="max-width:700px;margin:40px auto;background:#0f1524;border:1px solid #243049;border-radius:14px;padding:24px"><h2 style="color:#ef5a5a">NEETrix Error</h2><div style="color:#c5cada;line-height:1.6;white-space:pre-wrap">${escapeHtml(m)}</div></div></div>`}
 function getLastScore(){try{return JSON.parse(localStorage.getItem("neetrix_last_score")||"null")}catch(e){return null}}
 function saveLastScore(obj){try{localStorage.setItem("neetrix_last_score",JSON.stringify(obj))}catch(e){}}
 function lsGet(key,fallback){try{const v=localStorage.getItem(key);return v!=null?JSON.parse(v):fallback}catch(e){return fallback}}
 function lsSet(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch(e){}}
 function skelList(n,cls){let h="";for(let i=0;i<n;i++)h+=`<div class="skel ${cls||"skel-card"}"></div>`;return h}
-
-function toast(msg, ms=2500){
-  let t = document.getElementById("globalToast");
-  if(!t){ t = el(`<div class="toast" id="globalToast"></div>`); document.body.appendChild(t); }
-  t.textContent = msg;
-  t.classList.add("show");
-  clearTimeout(t._tm);
-  t._tm = setTimeout(()=>t.classList.remove("show"), ms);
-}
-
-function confirmAction(title, message){
-  return new Promise(resolve=>{
-    const modal = el(`<div class="modal-bg"><div class="modal-box" style="max-width:420px">
-      <h3 style="margin-bottom:10px">${escapeHtml(title)}</h3>
-      <p class="muted" style="line-height:1.55;margin-bottom:18px;white-space:pre-wrap">${escapeHtml(message)}</p>
-      <div style="display:flex;gap:10px">
-        <button class="btn-outline" style="flex:1" id="cNo">Cancel</button>
-        <button class="btn-danger" style="flex:1" id="cYes">Confirm</button>
-      </div>
-    </div></div>`);
-    document.body.appendChild(modal);
-    document.getElementById("cNo").onclick = ()=>{ modal.remove(); resolve(false); };
-    document.getElementById("cYes").onclick = ()=>{ modal.remove(); resolve(true); };
-    modal.onclick = e => { if(e.target===modal){ modal.remove(); resolve(false); } };
-  });
-}
+function toast(msg,ms=2500){let t=document.getElementById("globalToast");if(!t){t=el(`<div class="toast" id="globalToast"></div>`);document.body.appendChild(t)}t.textContent=msg;t.classList.add("show");clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove("show"),ms)}
+function confirmAction(title,message){return new Promise(resolve=>{const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:420px"><h3 style="margin-bottom:10px">${escapeHtml(title)}</h3><p class="muted" style="line-height:1.55;margin-bottom:18px;white-space:pre-wrap">${escapeHtml(message)}</p><div style="display:flex;gap:10px"><button class="btn-outline" style="flex:1" id="cNo">Cancel</button><button class="btn-danger" style="flex:1" id="cYes">Confirm</button></div></div></div>`);document.body.appendChild(modal);document.getElementById("cNo").onclick=()=>{modal.remove();resolve(false)};document.getElementById("cYes").onclick=()=>{modal.remove();resolve(true)};modal.onclick=e=>{if(e.target===modal){modal.remove();resolve(false)}}})}
 
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.async=true;s.onload=()=>res();s.onerror=()=>rej(new Error("Failed: "+src));document.head.appendChild(s)})}
 async function loadSupabase(){if(window.supabase)return true;const srcs=["https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2","https://unpkg.com/@supabase/supabase-js@2"];let last=null;for(const s of srcs){try{await loadScript(s);if(window.supabase)return true}catch(e){last=e}}throw last||new Error("Supabase load failed")}
 async function loadPdfJs(){if(window.pdfjsLib)return true;const srcs=["https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js","https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"];for(const s of srcs){try{await loadScript(s);if(window.pdfjsLib)return true}catch(e){}}return false}
 
-async function initializeApp(){
-  try{
-    await loadSupabase();
-    if(!SUPABASE_URL || !SUPABASE_ANON_KEY) throw new Error("Supabase not configured");
-    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    loadPdfJs().catch(()=>{});
-    await boot();
-  }catch(e){
-    console.error(e);
-    showFatalError(e?.message || "Could not start");
-  }
-}
+async function initializeApp(){try{await loadSupabase();if(!SUPABASE_URL||!SUPABASE_ANON_KEY)throw new Error("Supabase not configured");db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);loadPdfJs().catch(()=>{});await boot()}catch(e){console.error(e);showFatalError(e?.message||"Could not start")}}
 
-/* ===================== AUTH ===================== */
-function renderAuth(mode){
-  mode = mode || "login";
-  app.innerHTML = "";
-  app.appendChild(el(`<div class="auth-wrap"><div class="auth-card">
-    <div class="brand">NEETrix</div>
-    <div class="sub">The focused way to prepare.</div>
-    <div class="msg" id="msg"></div>
-    <div id="fields"></div>
-    <button class="btn" style="width:100%" id="mainBtn"></button>
-    <button class="link" id="link1"></button>
-    <button class="link" id="link2" style="display:none"></button>
-  </div></div>`));
+function renderAuth(mode){mode=mode||"login";if(!app)return;app.innerHTML="";app.appendChild(el(`<div class="auth-wrap"><div class="auth-card"><div class="brand">NEETrix</div><div class="sub">The focused way to prepare.</div><div class="msg" id="msg"></div><div id="fields"></div><button class="btn" style="width:100%" id="mainBtn"></button><button class="link" id="link1"></button><button class="link" id="link2" style="display:none"></button></div></div>`));
+const fields=document.getElementById("fields"),mainBtn=document.getElementById("mainBtn"),link1=document.getElementById("link1"),link2=document.getElementById("link2"),msg=document.getElementById("msg");
+if(mode==="login"||mode==="signup"){fields.innerHTML=`<input id="email" type="email" placeholder="Email address" autocomplete="email"/><input id="pass" type="password" placeholder="Password (8+ characters)" autocomplete="${mode==="login"?"current-password":"new-password"}"/>`;mainBtn.textContent=mode==="login"?"Log in":"Create account";link1.textContent=mode==="login"?"New here? Create an account":"Already have an account? Log in";link1.onclick=()=>renderAuth(mode==="login"?"signup":"login");link2.style.display=mode==="login"?"block":"none";link2.textContent="Forgot password?";link2.onclick=()=>renderAuth("forgot");
+mainBtn.onclick=async()=>{msg.textContent="";mainBtn.disabled=true;const email=document.getElementById("email").value.trim(),pass=document.getElementById("pass").value;if(!email||!pass){msg.style.color="var(--muted)";msg.textContent="Enter both fields.";mainBtn.disabled=false;return}try{if(mode==="signup"){const{error}=await db.auth.signUp({email,password:pass});if(error)throw error;msg.style.color="var(--green)";msg.textContent="Account created! Check email if needed, then log in.";setTimeout(()=>renderAuth("login"),1800)}else{const{data,error}=await db.auth.signInWithPassword({email,password:pass});if(error)throw error;session=data.session;await afterLogin()}}catch(e){msg.style.color="var(--danger)";msg.textContent=e?.message||"Something went wrong"}finally{mainBtn.disabled=false}}}
+else if(mode==="forgot"){fields.innerHTML=`<input id="email" type="email" placeholder="Email address"/>`;mainBtn.textContent="Send reset link";link1.textContent="Back to log in";link1.onclick=()=>renderAuth("login");mainBtn.onclick=async()=>{msg.textContent="";mainBtn.disabled=true;const email=document.getElementById("email").value.trim();if(!email){msg.style.color="var(--muted)";msg.textContent="Enter email";mainBtn.disabled=false;return}try{const{error}=await db.auth.resetPasswordForEmail(email);if(error)throw error;msg.style.color="var(--green)";msg.textContent="Reset link sent"}catch(e){msg.style.color="var(--danger)";msg.textContent=e?.message||"Error"}finally{mainBtn.disabled=false}}}}
 
-  const fields = document.getElementById("fields");
-  const mainBtn = document.getElementById("mainBtn");
-  const link1 = document.getElementById("link1");
-  const link2 = document.getElementById("link2");
-  const msg = document.getElementById("msg");
+function renderStatusScreen(status){if(!app)return;app.innerHTML="";const msgs={pending:["Request sent","Your access request has been sent. Wait for admin approval."],paused:["Account paused","Your account is paused by admin."],blocked:["Account blocked","Access blocked by admin."]};const[t,b]=msgs[status]||["Access unavailable","Contact admin."];app.appendChild(el(`<div class="auth-wrap"><div class="auth-card"><div class="brand">NEETrix</div><h2 style="margin-top:14px">${escapeHtml(t)}</h2><p class="muted" style="line-height:1.6;margin:10px 0 16px">${escapeHtml(b)}</p><button class="btn-outline" style="width:100%" id="out">Log out</button></div></div>`));document.getElementById("out").onclick=async()=>{try{await db.auth.signOut()}catch(e){}session=null;profile=null;renderAuth()}}
 
-  if(mode === "login" || mode === "signup"){
-    fields.innerHTML = `<input id="email" type="email" placeholder="Email address" autocomplete="email"/>
-      <input id="pass" type="password" placeholder="Password (8+ characters)" autocomplete="${mode==="login"?"current-password":"new-password"}"/>`;
-    mainBtn.textContent = mode === "login" ? "Log in" : "Create account";
-    link1.textContent = mode === "login" ? "New here? Create an account" : "Already have an account? Log in";
-    link1.onclick = () => renderAuth(mode === "login" ? "signup" : "login");
-    link2.style.display = mode === "login" ? "block" : "none";
-    link2.textContent = "Forgot password?";
-    link2.onclick = () => renderAuth("forgot");
+async function afterLogin(){if(!session?.user){renderAuth();return}try{try{await db.from("login_events").insert({user_id:session.user.id,email:session.user.email})}catch(e){}const{data,error}=await db.from("profiles").select("*").eq("id",session.user.id).single();if(error){if(error.code==="PGRST116"){profile=null;renderStatusScreen("pending");return}throw error}profile=data;if(!profile||profile.status!=="active"){renderStatusScreen(profile?profile.status:"pending");return}activeTab="home";selSubject=null;selChapter=null;renderShell()}catch(e){showFatalError(e?.message||"Unable to load account")}}
 
-    mainBtn.onclick = async () => {
-      msg.textContent = "";
-      mainBtn.disabled = true;
-      const email = document.getElementById("email").value.trim();
-      const pass = document.getElementById("pass").value;
-      if(!email || !pass){ msg.style.color="var(--muted)"; msg.textContent="Enter both fields."; mainBtn.disabled=false; return; }
-      try{
-        if(mode === "signup"){
-          const {error} = await db.auth.signUp({email, password: pass});
-          if(error) throw error;
-          msg.style.color = "var(--green)";
-          msg.textContent = "Account created! Check email if needed, then log in.";
-          setTimeout(() => renderAuth("login"), 1800);
-        } else {
-          const {data, error} = await db.auth.signInWithPassword({email, password: pass});
-          if(error) throw error;
-          session = data.session;
-          await afterLogin();
-        }
-      }catch(e){
-        msg.style.color = "var(--danger)";
-        msg.textContent = e?.message || "Something went wrong";
-      } finally {
-        mainBtn.disabled = false;
-      }
-    };
-  } else if(mode === "forgot"){
-    fields.innerHTML = `<input id="email" type="email" placeholder="Email address"/>`;
-    mainBtn.textContent = "Send reset link";
-    link1.textContent = "Back to log in";
-    link1.onclick = () => renderAuth("login");
-    mainBtn.onclick = async () => {
-      msg.textContent = "";
-      mainBtn.disabled = true;
-      const email = document.getElementById("email").value.trim();
-      if(!email){ msg.style.color="var(--muted)"; msg.textContent="Enter email"; mainBtn.disabled=false; return; }
-      try{
-        const {error} = await db.auth.resetPasswordForEmail(email);
-        if(error) throw error;
-        msg.style.color = "var(--green)";
-        msg.textContent = "Reset link sent";
-      }catch(e){
-        msg.style.color = "var(--danger)";
-        msg.textContent = e?.message || "Error";
-      } finally {
-        mainBtn.disabled = false;
-      }
-    };
-  }
-}
+function renderShell(){if(!app)return;app.innerHTML="";const isAdmin=profile?.role==="admin";const initial=(profile?.name||profile?.email||"U")[0].toUpperCase();app.appendChild(el(`<div><div class="topbar"><div class="brand">NEETrix</div><button class="navbtn" data-t="home">Home</button><button class="navbtn" data-t="content">Content</button><button class="navbtn" data-t="questions">Questions</button><button class="navbtn" data-t="bookmarks">Bookmarks</button><button class="navbtn" data-t="tests">Test</button>${isAdmin?`<button class="navbtn" data-t="admin">Admin</button>`:""}<div class="spacer"></div><div class="profile-wrap"><button class="profile-btn" id="profileBtn">${escapeHtml(initial)}</button></div></div><div class="content" id="content"></div></div>`));
+document.getElementById("profileBtn").onclick=()=>openProfileModal();
+document.querySelectorAll(".navbtn").forEach(btn=>{btn.onclick=()=>{activeTab=btn.dataset.t;selSubject=null;selChapter=null;if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}renderTabsUI();renderBody()}});
+renderTabsUI();renderBody()}
 
-function renderStatusScreen(status){
-  app.innerHTML = "";
-  const msgs = {
-    pending: ["Request sent", "Your access request has been sent. Wait for admin approval."],
-    paused: ["Account paused", "Your account is paused by admin."],
-    blocked: ["Account blocked", "Access blocked by admin."]
-  };
-  const [t,b] = msgs[status] || ["Access unavailable", "Contact admin."];
-  app.appendChild(el(`<div class="auth-wrap"><div class="auth-card">
-    <div class="brand">NEETrix</div>
-    <h2 style="margin-top:14px">${escapeHtml(t)}</h2>
-    <p class="muted" style="line-height:1.6;margin:10px 0 16px">${escapeHtml(b)}</p>
-    <button class="btn-outline" style="width:100%" id="out">Log out</button>
-  </div></div>`));
-  document.getElementById("out").onclick = async () => {
-    try{ await db.auth.signOut(); }catch(e){}
-    session = null; profile = null;
-    renderAuth();
-  };
-}
+function renderTabsUI(){document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.t===activeTab))}
+function renderBody(){const c=document.getElementById("content");if(!c)return;c.classList.remove("page-fade");void c.offsetWidth;c.classList.add("page-fade");if(activeTab==="home")renderHome(c);else if(activeTab==="content")renderSubjectBrowser(c,"video");else if(activeTab==="questions")renderSubjectBrowser(c,"pdf");else if(activeTab==="tests")renderTests(c);else if(activeTab==="bookmarks")renderBookmarks(c);else if(activeTab==="admin"){if(profile?.role==="admin")renderAdmin(c);else{activeTab="home";renderTabsUI();renderHome(c)}}}
 
-async function afterLogin(){
-  if(!session?.user){ renderAuth(); return; }
-  try{
-    try{ await db.from("login_events").insert({user_id: session.user.id, email: session.user.email}); }catch(e){}
-    const {data, error} = await db.from("profiles").select("*").eq("id", session.user.id).single();
-    if(error){
-      if(error.code === "PGRST116"){ profile = null; renderStatusScreen("pending"); return; }
-      throw error;
-    }
-    profile = data;
-    if(!profile || profile.status !== "active"){
-      renderStatusScreen(profile ? profile.status : "pending");
-      return;
-    }
-    activeTab = "home";
-    selSubject = null;
-    selChapter = null;
-    renderShell();
-  }catch(e){
-    showFatalError(e?.message || "Unable to load account");
-  }
-}
-
-/* ===================== SHELL ===================== */
-function renderShell(){
-  app.innerHTML = "";
-  const isAdmin = profile?.role === "admin";
-  const initial = (profile?.name || profile?.email || "U")[0].toUpperCase();
-  app.appendChild(el(`<div>
-    <div class="topbar">
-      <div class="brand">NEETrix</div>
-      <button class="navbtn" data-t="home">Home</button>
-      <button class="navbtn" data-t="content">Content</button>
-      <button class="navbtn" data-t="questions">Questions</button>
-      <button class="navbtn" data-t="bookmarks">Bookmarks</button>
-      <button class="navbtn" data-t="tests">Test</button>
-      ${isAdmin ? `<button class="navbtn" data-t="admin">Admin</button>` : ""}
-      <div class="spacer"></div>
-      <div class="profile-wrap"><button class="profile-btn" id="profileBtn">${escapeHtml(initial)}</button></div>
-    </div>
-    <div class="content" id="content"></div>
-  </div>`));
-
-  document.getElementById("profileBtn").onclick = () => openProfileModal();
-  document.querySelectorAll(".navbtn").forEach(btn => {
-    btn.onclick = () => {
-      activeTab = btn.dataset.t;
-      selSubject = null;
-      selChapter = null;
-      if(cbtTimerRef){ clearInterval(cbtTimerRef); cbtTimerRef = null; }
-      renderTabsUI();
-      renderBody();
-    };
-  });
-  renderTabsUI();
-  renderBody();
-}
-
-function renderTabsUI(){
-  document.querySelectorAll(".navbtn").forEach(b => b.classList.toggle("active", b.dataset.t === activeTab));
-}
-
-function renderBody(){
-  const c = document.getElementById("content");
-  if(!c) return;
-  c.classList.remove("page-fade");
-  void c.offsetWidth;
-  c.classList.add("page-fade");
-  if(activeTab === "home") renderHome(c);
-  else if(activeTab === "content") renderSubjectBrowser(c, "video");
-  else if(activeTab === "questions") renderSubjectBrowser(c, "pdf");
-  else if(activeTab === "tests") renderTests(c);
-  else if(activeTab === "bookmarks") renderBookmarks(c);
-  else if(activeTab === "admin"){
-    if(profile?.role === "admin") renderAdmin(c);
-    else { activeTab = "home"; renderTabsUI(); renderHome(c); }
-  }
-}
-
-/* ===================== PROFILE ===================== */
 function openProfileModal(){
-  const modal = el(`<div class="modal-bg" id="profileModal"><div class="modal-box">
-    <button class="modal-close" id="pmClose">×</button>
-    <h2 style="margin-bottom:16px">My Profile</h2>
-    <div class="profile-field"><label>Name</label><input id="pfName" value="${escapeHtml(profile?.name||"")}" placeholder="Your name"/></div>
-    <div class="profile-field"><label>Phone</label><input id="pfPhone" value="${escapeHtml(profile?.phone||"")}" placeholder="Phone number"/></div>
-    <div class="profile-field"><label>Email</label><input value="${escapeHtml(profile?.email||"")}" disabled style="opacity:.7"/></div>
-    <button class="btn" style="width:100%;margin-top:6px" id="pfSave">Save Profile</button>
-    <button class="btn-outline" style="width:100%;margin-top:10px" id="pfReport">Report to Owner</button>
-    <button class="btn-danger" style="width:100%;margin-top:10px" id="pfLogout">Log out</button>
-  </div></div>`);
+  const modal=el(`<div class="modal-bg" id="profileModal"><div class="modal-box"><button class="modal-close" id="pmClose">×</button><h2 style="margin-bottom:16px">My Profile</h2><div class="profile-field"><label>Name</label><input id="pfName" value="${escapeHtml(profile?.name||"")}" placeholder="Your name"/></div><div class="profile-field"><label>Phone</label><input id="pfPhone" value="${escapeHtml(profile?.phone||"")}" placeholder="Phone number"/></div><div class="profile-field"><label>Email</label><input value="${escapeHtml(profile?.email||"")}" disabled style="opacity:.7"/></div><button class="btn" style="width:100%;margin-top:6px" id="pfSave">Save Profile</button><button class="btn-outline" style="width:100%;margin-top:10px" id="pfReport">Report to Owner</button><button class="btn-danger" style="width:100%;margin-top:10px" id="pfLogout">Log out</button></div></div>`);
   document.body.appendChild(modal);
-  document.getElementById("pmClose").onclick = () => modal.remove();
-  modal.onclick = e => { if(e.target === modal) modal.remove(); };
-
-  document.getElementById("pfSave").onclick = async () => {
-    const name = document.getElementById("pfName").value.trim();
-    const phone = document.getElementById("pfPhone").value.trim();
-    try{
-      const {error} = await db.from("profiles").update({name, phone}).eq("id", session.user.id);
-      if(error) throw error;
-      profile.name = name;
-      profile.phone = phone;
-      toast("Profile saved");
-      modal.remove();
-      renderShell();
-    }catch(e){ toast(e?.message || "Error saving"); }
-  };
-
-  document.getElementById("pfReport").onclick = async () => {
-    if(!await confirmAction("Send Report", "Send report to owner?")) return;
-    try{
-      await db.from("reports").insert({user_id: session.user.id, email: profile?.email || session.user.email, message: "User reported from profile"});
-      toast("Report sent to owner");
-    }catch(e){ toast(e?.message || "Could not send report"); }
-  };
-
-  document.getElementById("pfLogout").onclick = async () => {
-    if(!await confirmAction("Log out", "Are you sure you want to log out?")) return;
-    modal.remove();
-    try{ await db.auth.signOut(); }catch(e){}
-    session = null; profile = null; activeTab = "home";
-    selSubject = null; selChapter = null;
-    renderAuth();
-  };
+  document.getElementById("pmClose").onclick=()=>modal.remove();
+  modal.onclick=e=>{if(e.target===modal)modal.remove()};
+  document.getElementById("pfSave").onclick=async()=>{const name=document.getElementById("pfName").value.trim();const phone=document.getElementById("pfPhone").value.trim();try{const{error}=await db.from("profiles").update({name,phone}).eq("id",session.user.id);if(error)throw error;profile.name=name;profile.phone=phone;toast("Profile saved");modal.remove();renderShell()}catch(e){toast(e?.message||"Error saving")}};
+  document.getElementById("pfReport").onclick=async()=>{if(!await confirmAction("Send Report","Send report to owner?"))return;try{await db.from("reports").insert({user_id:session.user.id,email:profile?.email||session.user.email,message:"User reported from profile"});toast("Report sent to owner")}catch(e){toast(e?.message||"Could not send report")}};
+  document.getElementById("pfLogout").onclick=async()=>{if(!await confirmAction("Log out","Are you sure you want to log out?"))return;modal.remove();try{await db.auth.signOut()}catch(e){}session=null;profile=null;activeTab="home";selSubject=null;selChapter=null;renderAuth()};
 }
 
-/* ===================== HOME ===================== */
 function renderHome(c){
-  const name = profile?.name || (profile?.email ? profile.email.split("@")[0] : "Student");
-  const last = getLastScore();
-  const pct = last ? Math.min(100, Math.round((last.score / (last.total || 1)) * 100)) : 0;
-
-  c.innerHTML = `<div class="home-hero">
-    <div class="anim-row">
-      <div class="atom-wrap">
-        <div class="atom-core"></div>
-        <div class="orbit orbit1"><div class="electron"></div></div>
-        <div class="orbit orbit2"><div class="electron"></div></div>
-        <div class="orbit orbit3"><div class="electron"></div></div>
-        <div class="orbit orbit4"><div class="electron"></div></div>
-      </div>
-      <div class="nerve-wrap">
-        <div class="nerve-brain"></div>
-        <div class="nerve-spine"></div>
-        <div class="nerve-wave"></div><div class="nerve-wave"></div>
-        <div class="nerve-wave"></div><div class="nerve-wave"></div>
-        <div class="nerve-branch arm-l"></div><div class="nerve-branch arm-r"></div>
-        <div class="nerve-branch leg-l"></div><div class="nerve-branch leg-r"></div>
-        <div class="nerve-branch org"></div><div class="nerve-branch org2"></div>
-      </div>
-    </div>
-    <div class="welcome">Hey ${escapeHtml(name)}</div>
-    <div class="muted">Ready to study today?</div>
-  </div>
-
-  <div class="progress-box" id="progressBox">
-    <div class="progress-head">
-      <div style="font-weight:600">Your Progress</div>
-      ${last ? `<div class="muted">Last: ${last.score}/${last.total}</div>` : ""}
-    </div>
-    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-    <div class="progress-stats">
-      ${last ? `
-        <span>Last score <b>${last.score}</b></span>
-        <span>Correct <b>${last.correct||0}</b></span>
-        <span>Accuracy <b>${pct}%</b></span>
-        <div class="muted" style="width:100%;margin-top:6px">Tap for detailed report →</div>
-      ` : `<span>Attempt tests to see progress here</span>`}
-    </div>
-  </div>
-
-  <div class="home-grid">
-    <div class="home-card" data-go="content"><div class="icon">▶</div><h3>Content</h3><div class="muted">Video lessons</div></div>
-    <div class="home-card" data-go="questions"><div class="icon">📑</div><h3>Questions</h3><div class="muted">Practice & PYQs</div></div>
-    <div class="home-card" data-go="tests"><div class="icon">📝</div><h3>Tests</h3><div class="muted">Mock tests</div></div>
-  </div>`;
-
-  c.querySelectorAll(".home-card").forEach(card => {
-    card.onclick = () => {
-      activeTab = card.dataset.go;
-      renderTabsUI();
-      renderBody();
-    };
-  });
-  if(last) document.getElementById("progressBox").onclick = () => showDetailedReport(last);
+  const name=profile?.name||(profile?.email?profile.email.split("@")[0]:"Student");
+  const last=getLastScore();
+  const pct=last?Math.min(100,Math.round((last.score/(last.total||1))*100)):0;
+  c.innerHTML=`<div class="home-hero"><div class="anim-row"><div class="atom-wrap"><div class="atom-core"></div><div class="orbit orbit1"><div class="electron"></div></div><div class="orbit orbit2"><div class="electron"></div></div><div class="orbit orbit3"><div class="electron"></div></div><div class="orbit orbit4"><div class="electron"></div></div></div><div class="nerve-wrap"><div class="nerve-brain"></div><div class="nerve-spine"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-wave"></div><div class="nerve-branch arm-l"></div><div class="nerve-branch arm-r"></div><div class="nerve-branch leg-l"></div><div class="nerve-branch leg-r"></div><div class="nerve-branch org"></div><div class="nerve-branch org2"></div></div></div><div class="welcome">Hey ${escapeHtml(name)}</div><div class="muted">Ready to study today?</div></div>
+<div class="progress-box" id="progressBox"><div class="progress-head"><div style="font-weight:600">Your Progress</div>${last?`<div class="muted">Last: ${last.score}/${last.total}</div>`:""}</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div><div class="progress-stats">${last?`<span>Last score <b>${last.score}</b></span><span>Correct <b>${last.correct||0}</b></span><span>Accuracy <b>${pct}%</b></span><div class="muted" style="width:100%;margin-top:6px">Tap for detailed report →</div>`:`<span>Attempt tests to see progress here</span>`}</div></div>
+<div class="home-grid"><div class="home-card" data-go="content"><div class="icon">▶</div><h3>Content</h3><div class="muted">Video lessons</div></div><div class="home-card" data-go="questions"><div class="icon">📑</div><h3>Questions</h3><div class="muted">Practice & PYQs</div></div><div class="home-card" data-go="tests"><div class="icon">📝</div><h3>Tests</h3><div class="muted">Mock tests</div></div></div>`;
+  c.querySelectorAll(".home-card").forEach(card=>{card.onclick=()=>{activeTab=card.dataset.go;renderTabsUI();renderBody()}});
+  if(last)document.getElementById("progressBox").onclick=()=>showDetailedReport(last);
 }
 
 function showDetailedReport(last){
-  if(last && last.review && last.review.length){
-    const c = document.getElementById("content");
-    if(c) renderQuestionReview(c, last);
-    return;
-  }
-  const modal = el(`<div class="modal-bg"><div class="modal-box" style="max-width:560px">
-    <button class="modal-close" id="drClose">×</button>
-    <h2 style="margin-bottom:8px">${escapeHtml(last.title||"Last Test")}</h2>
-    <div class="muted" style="margin-bottom:16px">${last.at ? new Date(last.at).toLocaleString() : ""}</div>
-    <div class="grid2" style="margin-bottom:18px">
-      <div class="card" style="margin:0;text-align:center"><div class="muted">Score</div><div style="font-size:24px;font-weight:700">${last.score}/${last.total}</div></div>
-      <div class="card" style="margin:0;text-align:center"><div class="muted">Accuracy</div><div style="font-size:24px;font-weight:700">${last.total ? Math.round((last.correct/(last.correct+last.wrong+last.unattempted||1))*100) : 0}%</div></div>
-      <div class="card" style="margin:0;text-align:center"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${last.correct||0}</div></div>
-      <div class="card" style="margin:0;text-align:center"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${last.wrong||0}</div></div>
-    </div>
-    <button class="btn" style="width:100%;margin-top:16px" id="drClose2">Close</button>
-  </div></div>`);
+  if(last&&last.review&&last.review.length){const c=document.getElementById("content");if(c)renderQuestionReview(c,last);return}
+  const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:560px"><button class="modal-close" id="drClose">×</button><h2 style="margin-bottom:8px">${escapeHtml(last.title||"Last Test")}</h2><div class="muted" style="margin-bottom:16px">${last.at?new Date(last.at).toLocaleString():""}</div><div class="grid2" style="margin-bottom:18px"><div class="card" style="margin:0;text-align:center"><div class="muted">Score</div><div style="font-size:24px;font-weight:700">${last.score}/${last.total}</div></div><div class="card" style="margin:0;text-align:center"><div class="muted">Accuracy</div><div style="font-size:24px;font-weight:700">${last.total?Math.round((last.correct/(last.correct+last.wrong+last.unattempted||1))*100):0}%</div></div><div class="card" style="margin:0;text-align:center"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${last.correct||0}</div></div><div class="card" style="margin:0;text-align:center"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${last.wrong||0}</div></div></div><button class="btn" style="width:100%;margin-top:16px" id="drClose2">Close</button></div></div>`);
   document.body.appendChild(modal);
-  document.getElementById("drClose").onclick = () => modal.remove();
-  document.getElementById("drClose2").onclick = () => modal.remove();
-  modal.onclick = e => { if(e.target === modal) modal.remove(); };
+  document.getElementById("drClose").onclick=()=>modal.remove();
+  document.getElementById("drClose2").onclick=()=>modal.remove();
+  modal.onclick=e=>{if(e.target===modal)modal.remove()};
 }
 
-/* ===================== SUBJECT BROWSER ===================== */
-async function renderSubjectBrowser(c, mode){
+async function renderSubjectBrowser(c,mode){
   if(!selSubject){
-    c.innerHTML = `<h2>${mode==="video"?"Video Lessons":"Question Bank"}</h2>
-      ${mode==="pdf" ? `<div class="tabs2">
-        <button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button>
-        <button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button>
-        <button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button>
-      </div>` : ""}
-      <div class="grid2" id="subjList">${skelList(4,"skel-subj")}</div>`;
-
-    if(mode === "pdf"){
-      c.querySelectorAll(".tab2").forEach(b => {
-        b.onclick = () => { selCategory = b.dataset.c; renderBody(); };
-      });
-    }
-
-    const {data, error} = await db.from("subjects").select("*").order("sort_order");
-    const wrap = document.getElementById("subjList");
-    if(error){ wrap.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
-    if(!data?.length){ wrap.innerHTML = `<div class="empty">No subjects yet.</div>`; return; }
-
-    wrap.innerHTML = "";
-    data.forEach(s => {
-      const card = el(`<div class="subject-card"><h3>${escapeHtml(s.name)}</h3></div>`);
-      card.onclick = () => { selSubject = s; selChapter = null; renderBody(); };
-      wrap.appendChild(card);
-    });
-    return;
+    c.innerHTML=`<h2>${mode==="video"?"Video Lessons":"Question Bank"}</h2>${mode==="pdf"?`<div class="tabs2"><button class="tab2 ${selCategory==="general"?"active":""}" data-c="general">Practice</button><button class="tab2 ${selCategory==="pyq"?"active":""}" data-c="pyq">PYQs</button><button class="tab2 ${selCategory==="ncert"?"active":""}" data-c="ncert">Important</button></div>`:""}<div class="grid2" id="subjList">${skelList(4,"skel-subj")}</div>`;
+    if(mode==="pdf")c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{selCategory=b.dataset.c;renderBody()}});
+    const{data,error}=await db.from("subjects").select("*").order("sort_order");
+    const wrap=document.getElementById("subjList");
+    if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
+    if(!data?.length){wrap.innerHTML=`<div class="empty">No subjects yet.</div>`;return}
+    wrap.innerHTML="";data.forEach(s=>{const card=el(`<div class="subject-card"><h3>${escapeHtml(s.name)}</h3></div>`);card.onclick=()=>{selSubject=s;selChapter=null;renderBody()};wrap.appendChild(card)});return;
   }
-
   if(!selChapter){
-    c.innerHTML = `<button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button>
-      <h2>Chapters</h2>
-      <div id="chapList">${skelList(3)}</div>`;
-    document.getElementById("b1").onclick = () => { selSubject = null; renderBody(); };
-
-    const {data, error} = await db.from("chapters").select("*").eq("subject_id", selSubject.id).order("sort_order");
-    const wrap = document.getElementById("chapList");
-    if(error){ wrap.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
-    if(!data?.length){ wrap.innerHTML = `<div class="empty">No chapters yet.</div>`; return; }
-
-    wrap.innerHTML = "";
-    data.forEach(ch => {
-      const row = el(`<div class="card row" style="cursor:pointer"><span>${escapeHtml(ch.name)}</span><span class="muted">→</span></div>`);
-      row.onclick = () => { selChapter = ch; renderBody(); };
-      wrap.appendChild(row);
-    });
-    return;
+    c.innerHTML=`<button class="back" id="b1">← ${escapeHtml(selSubject.name)}</button><h2>Chapters</h2><div id="chapList">${skelList(3)}</div>`;
+    document.getElementById("b1").onclick=()=>{selSubject=null;renderBody()};
+    const{data,error}=await db.from("chapters").select("*").eq("subject_id",selSubject.id).order("sort_order");
+    const wrap=document.getElementById("chapList");
+    if(error){wrap.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
+    if(!data?.length){wrap.innerHTML=`<div class="empty">No chapters yet.</div>`;return}
+    wrap.innerHTML="";data.forEach(ch=>{const row=el(`<div class="card row" style="cursor:pointer"><span>${escapeHtml(ch.name)}</span><span class="muted">→</span></div>`);row.onclick=()=>{selChapter=ch;renderBody()};wrap.appendChild(row)});return;
   }
-
-  c.innerHTML = `<button class="back" id="b2">← ${escapeHtml(selChapter.name)}</button>`;
-  document.getElementById("b2").onclick = () => { selChapter = null; renderBody(); };
-
-  if(mode === "video"){
-    const box = el(`<div id="vidBox">${skelList(2)}</div>`);
-    c.appendChild(box);
-    const {data, error} = await db.from("videos").select("*").eq("chapter_id", selChapter.id).order("sort_order");
-    if(error){ box.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
-    if(!data?.length){ box.innerHTML = `<div class="empty">No videos yet.</div>`; return; }
-    box.innerHTML = data.map(v => `
-      <h3>${escapeHtml(v.title)}</h3>
-      <div class="yt-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(v.youtube_id)}?modestbranding=1&rel=0" title="${escapeHtml(v.title)}" allowfullscreen></iframe>
-      </div>`).join("");
-  } else {
-    const list = el(`<div id="pdfList">${skelList(3)}</div>`);
-    c.appendChild(list);
-    const {data, error} = await db.from("pdfs").select("*").eq("chapter_id", selChapter.id).eq("category", selCategory).order("created_at", {ascending:false});
-    if(error){ list.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
-    if(!data?.length){ list.innerHTML = `<div class="empty">No content in this category yet.</div>`; return; }
-
-    let bmSet = new Set();
-    try{
-      const {data: bms} = await db.from("bookmarks").select("pdf_id").eq("user_id", session.user.id);
-      if(bms) bmSet = new Set(bms.map(b => b.pdf_id));
-    }catch(e){}
-
-    list.innerHTML = "";
-    data.forEach(pdf => {
-      const row = el(`<div class="card row">
-        <span style="cursor:pointer;flex:1" class="openPdf">${escapeHtml(pdf.title)}</span>
-        <button class="btn-small bmBtn">${bmSet.has(pdf.id) ? "★ Saved" : "☆ Save"}</button>
-      </div>`);
-      row.querySelector(".openPdf").onclick = () => openPdf(pdf);
-      row.querySelector(".bmBtn").onclick = async e => {
-        e.stopPropagation();
-        try{
-          if(bmSet.has(pdf.id)) await db.from("bookmarks").delete().eq("user_id", session.user.id).eq("pdf_id", pdf.id);
-          else await db.from("bookmarks").insert({user_id: session.user.id, pdf_id: pdf.id});
-          renderBody();
-        }catch(err){ toast(err?.message || "Error"); }
-      };
+  c.innerHTML=`<button class="back" id="b2">← ${escapeHtml(selChapter.name)}</button>`;
+  document.getElementById("b2").onclick=()=>{selChapter=null;renderBody()};
+  if(mode==="video"){
+    const box=el(`<div id="vidBox">${skelList(2)}</div>`);c.appendChild(box);
+    const{data,error}=await db.from("videos").select("*").eq("chapter_id",selChapter.id).order("sort_order");
+    if(error){box.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
+    if(!data?.length){box.innerHTML=`<div class="empty">No videos yet.</div>`;return}
+    box.innerHTML=data.map(v=>`<h3>${escapeHtml(v.title)}</h3><div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(v.youtube_id)}?modestbranding=1&rel=0" title="${escapeHtml(v.title)}" allowfullscreen></iframe></div>`).join("");
+  }else{
+    const list=el(`<div id="pdfList">${skelList(3)}</div>`);c.appendChild(list);
+    const{data,error}=await db.from("pdfs").select("*").eq("chapter_id",selChapter.id).eq("category",selCategory).order("created_at",{ascending:false});
+    if(error){list.innerHTML=`<div class="empty">${escapeHtml(error.message)}</div>`;return}
+    if(!data?.length){list.innerHTML=`<div class="empty">No content in this category yet.</div>`;return}
+    let bmSet=new Set();
+    try{const{data:bms}=await db.from("bookmarks").select("pdf_id").eq("user_id",session.user.id);if(bms)bmSet=new Set(bms.map(b=>b.pdf_id))}catch(e){}
+    list.innerHTML="";data.forEach(pdf=>{
+      const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="openPdf">${escapeHtml(pdf.title)}</span><button class="btn-small bmBtn">${bmSet.has(pdf.id)?"★ Saved":"☆ Save"}</button></div>`);
+      row.querySelector(".openPdf").onclick=()=>openPdf(pdf);
+      row.querySelector(".bmBtn").onclick=async e=>{e.stopPropagation();try{if(bmSet.has(pdf.id))await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",pdf.id);else await db.from("bookmarks").insert({user_id:session.user.id,pdf_id:pdf.id});renderBody()}catch(err){toast(err?.message||"Error")}};
       list.appendChild(row);
     });
   }
 }
 
-/* ===================== PDF OPEN ===================== */
-async function openPdf(pdf){
-  try{
-    const {data, error} = await db.storage.from("content").createSignedUrl(pdf.file_path, 3600);
-    if(error) throw error;
-    if(!data?.signedUrl) throw new Error("No link");
-    await openPdfReader(data.signedUrl, pdf.title, "pdf_" + pdf.id, pdf);
-  }catch(e){
-    toast(e?.message || "Unable to open PDF");
-  }
-}
+async function openPdf(pdf){try{const{data,error}=await db.storage.from("content").createSignedUrl(pdf.file_path,3600);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");await openPdfReader(data.signedUrl,pdf.title,"pdf_"+pdf.id)}catch(e){toast(e?.message||"Unable to open PDF")}}
 
-/* =========================================================
-   PROFESSIONAL PDF READER (Complete)
-   ========================================================= */
-function pr_toast(msg){
-  const t = document.getElementById("pdfToast");
-  if(!t) return;
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2200);
-}
-
-function pr_setToolActive(active){
-  const c = document.getElementById("pdfAnnoCanvas");
-  if(c) c.classList.toggle("tool-active", !!active);
-}
-
-function pr_highlightToolBtn(id){
-  ["toolPen","toolHi","toolEraser"].forEach(x => {
-    const b = document.getElementById(x);
-    if(b) b.classList.toggle("active-tool", x === id);
-  });
-}
-
-function pr_saveAnno(){ lsSet("pdfanno_" + pr.storageKey, pr.annotations); }
-
-function pr_scheduleHide(){
-  clearTimeout(pr.hideTimer);
-  pr.hideTimer = setTimeout(() => {
-    if(document.fullscreenElement){
-      document.getElementById("pdfToolbar")?.classList.add("hidden");
-      document.getElementById("pdfPagebar")?.classList.add("hidden");
-    }
-  }, 3000);
-}
+function pr_toast(msg){const t=document.getElementById("pdfToast");if(!t)return;t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+function pr_setToolActive(active){const c=document.getElementById("pdfAnnoCanvas");if(c)c.classList.toggle("tool-active",!!active)}
+function pr_highlightToolBtn(id){["toolPen","toolHi","toolEraser"].forEach(x=>{const b=document.getElementById(x);if(b)b.classList.toggle("active-tool",x===id)})}
+function pr_saveAnno(){lsSet("pdfanno_"+pr.storageKey,pr.annotations)}
+function pr_scheduleHide(){clearTimeout(pr.hideTimer);pr.hideTimer=setTimeout(()=>{if(document.fullscreenElement){document.getElementById("pdfToolbar")?.classList.add("hidden");document.getElementById("pdfPagebar")?.classList.add("hidden")}},3000)}
 
 function pr_drawAnnotations(){
-  const anno = document.getElementById("pdfAnnoCanvas");
-  if(!anno) return;
-  const ctx = anno.getContext("2d");
-  ctx.clearRect(0, 0, anno.width, anno.height);
-  const strokes = pr.annotations[pr.pageNum] || [];
-  strokes.forEach(s => {
-    ctx.strokeStyle = s.color;
-    ctx.lineWidth = s.width * pr.scale;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.globalAlpha = s.alpha || 1;
-    ctx.beginPath();
-    s.points.forEach((p, i) => {
-      const x = p[0] * pr.scale, y = p[1] * pr.scale;
-      if(i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-  });
-  ctx.globalAlpha = 1;
+  const anno=document.getElementById("pdfAnnoCanvas");if(!anno)return;
+  const ctx=anno.getContext("2d");ctx.clearRect(0,0,anno.width,anno.height);
+  const strokes=pr.annotations[pr.pageNum]||[];
+  strokes.forEach(s=>{ctx.strokeStyle=s.color;ctx.lineWidth=s.width*pr.scale;ctx.lineCap="round";ctx.lineJoin="round";ctx.globalAlpha=s.alpha||1;ctx.beginPath();s.points.forEach((p,i)=>{const x=p[0]*pr.scale,y=p[1]*pr.scale;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke()});
+  ctx.globalAlpha=1;
 }
 
-function pr_eraseAt(pos){
-  const strokes = pr.annotations[pr.pageNum] || [];
-  const idx = strokes.findIndex(s => s.points.some(p => Math.hypot(p[0]-pos[0], p[1]-pos[1]) < 14/pr.scale));
-  if(idx > -1){
-    strokes.splice(idx, 1);
-    pr_drawAnnotations();
-    pr_saveAnno();
-  }
-}
-
-function pr_undo(){
-  const strokes = pr.annotations[pr.pageNum] || [];
-  if(!strokes.length) return;
-  const s = strokes.pop();
-  if(!pr.redoStack[pr.pageNum]) pr.redoStack[pr.pageNum] = [];
-  pr.redoStack[pr.pageNum].push(s);
-  pr_drawAnnotations();
-  pr_saveAnno();
-}
-
-function pr_redo(){
-  const redo = pr.redoStack[pr.pageNum] || [];
-  if(!redo.length) return;
-  const s = redo.pop();
-  if(!pr.annotations[pr.pageNum]) pr.annotations[pr.pageNum] = [];
-  pr.annotations[pr.pageNum].push(s);
-  pr_drawAnnotations();
-  pr_saveAnno();
-}
+function pr_eraseAt(pos){const strokes=pr.annotations[pr.pageNum]||[];const idx=strokes.findIndex(s=>s.points.some(p=>Math.hypot(p[0]-pos[0],p[1]-pos[1])<14/pr.scale));if(idx>-1){strokes.splice(idx,1);pr_drawAnnotations();pr_saveAnno()}}
+function pr_undo(){const strokes=pr.annotations[pr.pageNum]||[];if(!strokes.length)return;const s=strokes.pop();if(!pr.redoStack[pr.pageNum])pr.redoStack[pr.pageNum]=[];pr.redoStack[pr.pageNum].push(s);pr_drawAnnotations();pr_saveAnno()}
+function pr_redo(){const redo=pr.redoStack[pr.pageNum]||[];if(!redo.length)return;const s=redo.pop();if(!pr.annotations[pr.pageNum])pr.annotations[pr.pageNum]=[];pr.annotations[pr.pageNum].push(s);pr_drawAnnotations();pr_saveAnno()}
 
 function pr_bindDrawing(){
-  const anno = document.getElementById("pdfAnnoCanvas");
-  let drawing = false, stroke = null;
-  const getPos = (e) => {
-    const rect = anno.getBoundingClientRect();
-    return [(e.clientX - rect.left)/pr.scale, (e.clientY - rect.top)/pr.scale];
-  };
-
-  anno.addEventListener("pointerdown", e => {
-    if(!pr.tool) return;
-    e.preventDefault();
-    if(pr.tool === "eraser"){
-      pr_eraseAt(getPos(e));
-      return;
-    }
-    drawing = true;
-    stroke = {
-      color: pr.color,
-      width: pr.tool === "highlighter" ? 18 : 3,
-      alpha: pr.tool === "highlighter" ? 0.35 : 1,
-      points: [getPos(e)]
-    };
-    anno.setPointerCapture(e.pointerId);
-  });
-
-  anno.addEventListener("pointermove", e => {
-    if(!drawing || !stroke) return;
-    stroke.points.push(getPos(e));
-    pr_drawAnnotations();
-    const ctx = anno.getContext("2d");
-    ctx.strokeStyle = stroke.color;
-    ctx.lineWidth = stroke.width * pr.scale;
-    ctx.lineCap = "round";
-    ctx.globalAlpha = stroke.alpha;
-    ctx.beginPath();
-    const pts = stroke.points;
-    pts.forEach((p,i) => {
-      const x = p[0]*pr.scale, y = p[1]*pr.scale;
-      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    });
-    ctx.stroke();
-    ctx.globalAlpha = 1;
-  });
-
-  anno.addEventListener("pointerup", e => {
-    if(!drawing || !stroke) return;
-    drawing = false;
-    if(!pr.annotations[pr.pageNum]) pr.annotations[pr.pageNum] = [];
-    pr.annotations[pr.pageNum].push(stroke);
-    stroke = null;
-    pr_drawAnnotations();
-    pr_saveAnno();
-  });
+  const anno=document.getElementById("pdfAnnoCanvas");let drawing=false,stroke=null;
+  const getPos=e=>{const rect=anno.getBoundingClientRect();return[(e.clientX-rect.left)/pr.scale,(e.clientY-rect.top)/pr.scale]};
+  anno.addEventListener("pointerdown",e=>{if(!pr.tool)return;e.preventDefault();if(pr.tool==="eraser"){pr_eraseAt(getPos(e));return}drawing=true;stroke={color:pr.color,width:pr.tool==="highlighter"?18:3,alpha:pr.tool==="highlighter"?0.35:1,points:[getPos(e)]};anno.setPointerCapture(e.pointerId)});
+  anno.addEventListener("pointermove",e=>{if(!drawing||!stroke)return;stroke.points.push(getPos(e));pr_drawAnnotations();const ctx=anno.getContext("2d");ctx.strokeStyle=stroke.color;ctx.lineWidth=stroke.width*pr.scale;ctx.lineCap="round";ctx.globalAlpha=stroke.alpha;ctx.beginPath();stroke.points.forEach((p,i)=>{const x=p[0]*pr.scale,y=p[1]*pr.scale;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke();ctx.globalAlpha=1});
+  anno.addEventListener("pointerup",e=>{if(!drawing||!stroke)return;drawing=false;if(!pr.annotations[pr.pageNum])pr.annotations[pr.pageNum]=[];pr.annotations[pr.pageNum].push(stroke);stroke=null;pr_drawAnnotations();pr_saveAnno()});
 }
 
 async function pr_renderPage(){
-  if(!pr) return;
-  const page = await pr.pdfDoc.getPage(pr.pageNum);
-  const canvas = document.getElementById("pdfCanvas");
-  const anno = document.getElementById("pdfAnnoCanvas");
-  const wrap = document.getElementById("pdfCanvasWrap");
-  if(!canvas || !anno || !wrap) return;
+  if(!pr)return;
+  const page=await pr.pdfDoc.getPage(pr.pageNum);
+  const canvas=document.getElementById("pdfCanvas");
+  const anno=document.getElementById("pdfAnnoCanvas");
+  const wrap=document.getElementById("pdfCanvasWrap");
+  if(!canvas||!anno||!wrap)return;
 
-  let scale = pr.scale;
-  if(pr.fitMode === "width"){
-    const avail = wrap.clientWidth - 32;
-    const vp1 = page.getViewport({scale: 1});
-    scale = avail / vp1.width;
-    pr.scale = scale;
-  } else if(pr.fitMode === "page"){
-    const availW = wrap.clientWidth - 32;
-    const availH = wrap.clientHeight - 32;
-    const vp1 = page.getViewport({scale: 1});
-    scale = Math.min(availW / vp1.width, availH / vp1.height);
-    pr.scale = scale;
-  }
+  if(pr.fitMode==="width"){const avail=wrap.clientWidth-32;const vp1=page.getViewport({scale:1});pr.scale=avail/vp1.width}
+  else if(pr.fitMode==="page"){const availW=wrap.clientWidth-32;const availH=wrap.clientHeight-32;const vp1=page.getViewport({scale:1});pr.scale=Math.min(availW/vp1.width,availH/vp1.height)}
 
-  const outputScale = window.devicePixelRatio || 1;
-  const viewport = page.getViewport({scale: pr.scale * outputScale});
+  const outputScale=window.devicePixelRatio||1;
+  const viewport=page.getViewport({scale:pr.scale*outputScale});
+  canvas.width=viewport.width;canvas.height=viewport.height;
+  canvas.style.width=(viewport.width/outputScale)+"px";canvas.style.height=(viewport.height/outputScale)+"px";
+  anno.width=viewport.width;anno.height=viewport.height;
+  anno.style.width=canvas.style.width;anno.style.height=canvas.style.height;
 
-  canvas.width = viewport.width;
-  canvas.height = viewport.height;
-  canvas.style.width = (viewport.width / outputScale) + "px";
-  canvas.style.height = (viewport.height / outputScale) + "px";
-
-  anno.width = viewport.width;
-  anno.height = viewport.height;
-  anno.style.width = canvas.style.width;
-  anno.style.height = canvas.style.height;
-
-  const ctx = canvas.getContext("2d");
-  await page.render({
-    canvasContext: ctx,
-    viewport,
-    transform: outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null
-  }).promise;
-
-  // Text layer
-  const textLayerDiv = document.getElementById("pdfTextLayer");
-  if(textLayerDiv){
-    textLayerDiv.innerHTML = "";
-    textLayerDiv.style.width = canvas.style.width;
-    textLayerDiv.style.height = canvas.style.height;
-    try{
-      const textContent = await page.getTextContent();
-      await pdfjsLib.renderTextLayer({
-        textContentSource: textContent,
-        container: textLayerDiv,
-        viewport: page.getViewport({scale: pr.scale}),
-        textDivs: []
-      }).promise;
-    }catch(e){}
-  }
-
+  await page.render({canvasContext:canvas.getContext("2d"),viewport}).promise;
   pr_drawAnnotations();
 
-  const zl = document.getElementById("pdfZoomLabel");
-  if(zl) zl.textContent = Math.round(pr.scale * 100) + "%";
-  const pi = document.getElementById("pdfPageInput");
-  if(pi) pi.value = pr.pageNum;
-  const pt = document.getElementById("pdfPageTotal");
-  if(pt) pt.textContent = pr.totalPages;
-
-  const bm = pr.bookmarks[pr.pageNum];
-  const bb = document.getElementById("pdfBookmarkPage");
-  if(bb){
-    bb.textContent = bm ? "★" : "☆";
-    bb.classList.toggle("active-tool", !!bm);
-  }
-
-  // Info update
-  const infoPage = document.getElementById("pdfInfoPage");
-  if(infoPage) infoPage.textContent = `Page ${pr.pageNum} / ${pr.totalPages}`;
-
-  lsSet("pdfprog_" + pr.storageKey, {
-    page: pr.pageNum,
-    scale: pr.fitMode === "width" || pr.fitMode === "page" ? null : pr.scale
-  });
+  const zl=document.getElementById("pdfZoomLabel");if(zl)zl.textContent=Math.round(pr.scale*100)+"%";
+  const pi=document.getElementById("pdfPageInput");if(pi)pi.value=pr.pageNum;
+  const pt=document.getElementById("pdfPageTotal");if(pt)pt.textContent=pr.totalPages;
+  const bm=pr.bookmarks[pr.pageNum];const bb=document.getElementById("pdfBookmarkPage");
+  if(bb){bb.textContent=bm?"★":"☆";bb.classList.toggle("active-tool",!!bm)}
+  lsSet("pdfprog_"+pr.storageKey,{page:pr.pageNum,scale:(pr.fitMode==="width"||pr.fitMode==="page")?null:pr.scale});
 }
 
-async function pr_goToPage(n){
-  if(!pr) return;
-  n = Math.max(1, Math.min(pr.totalPages, n));
-  pr.pageNum = n;
-  await pr_renderPage();
-}
+async function pr_goToPage(n){if(!pr)return;n=Math.max(1,Math.min(pr.totalPages,n));pr.pageNum=n;await pr_renderPage()}
 
 function pr_renderPanel(tab){
-  const body = document.getElementById("pdfPanelBody");
-  if(!body) return;
-  if(tab === "pages"){
-    let h = "";
-    for(let i=1; i<=pr.totalPages; i++) h += `<div class="pdf-panel-item" data-p="${i}">Page ${i}${pr.bookmarks[i]?" ★":""}</div>`;
-    body.innerHTML = h || `<div class="empty">No pages</div>`;
-  } else if(tab === "bookmarks"){
-    const keys = Object.keys(pr.bookmarks);
-    if(!keys.length){ body.innerHTML = `<div class="empty">No bookmarks yet</div>`; return; }
-    body.innerHTML = keys.map(k => `<div class="pdf-panel-item" data-p="${k}">${escapeHtml(pr.bookmarks[k].label || ("Page "+k))}</div>`).join("");
-  } else if(tab === "info"){
-    body.innerHTML = `
-      <div class="pdf-panel-item" style="cursor:default">
-        <div style="font-weight:600;margin-bottom:6px">${escapeHtml(pr.title || "Document")}</div>
-        <div class="muted" id="pdfInfoPage">Page ${pr.pageNum} / ${pr.totalPages}</div>
-        <div class="muted" style="margin-top:8px">Reading progress is saved automatically.</div>
-      </div>`;
-  } else {
-    const keys = Object.keys(pr.annotations).filter(k => (pr.annotations[k]||[]).length);
-    if(!keys.length){ body.innerHTML = `<div class="empty">No notes/drawings yet</div>`; return; }
-    body.innerHTML = keys.map(k => `<div class="pdf-panel-item" data-p="${k}">Page ${k} — ${pr.annotations[k].length} stroke(s)</div>`).join("");
-  }
-  body.querySelectorAll(".pdf-panel-item[data-p]").forEach(it => {
-    it.onclick = () => {
-      pr_goToPage(parseInt(it.dataset.p));
-      document.getElementById("pdfPanel")?.classList.remove("open");
-    };
-  });
+  const body=document.getElementById("pdfPanelBody");if(!body)return;
+  if(tab==="pages"){let h="";for(let i=1;i<=pr.totalPages;i++)h+=`<div class="pdf-panel-item" data-p="${i}">Page ${i}${pr.bookmarks[i]?" ★":""}</div>`;body.innerHTML=h||`<div class="empty">No pages</div>`}
+  else if(tab==="bookmarks"){const keys=Object.keys(pr.bookmarks);if(!keys.length){body.innerHTML=`<div class="empty">No bookmarks yet</div>`;return}body.innerHTML=keys.map(k=>`<div class="pdf-panel-item" data-p="${k}">${escapeHtml(pr.bookmarks[k].label||("Page "+k))}</div>`).join("")}
+  else{const keys=Object.keys(pr.annotations).filter(k=>(pr.annotations[k]||[]).length);if(!keys.length){body.innerHTML=`<div class="empty">No notes/drawings yet</div>`;return}body.innerHTML=keys.map(k=>`<div class="pdf-panel-item" data-p="${k}">Page ${k} — ${pr.annotations[k].length} stroke(s)</div>`).join("")}
+  body.querySelectorAll(".pdf-panel-item").forEach(it=>{it.onclick=()=>{pr_goToPage(parseInt(it.dataset.p));document.getElementById("pdfPanel")?.classList.remove("open")}});
 }
 
-async function openPdfReader(url, title, storageKeyRaw, pdfMeta){
-  if(!window.pdfjsLib) await loadPdfJs();
-  if(!window.pdfjsLib){ toast("PDF viewer failed to load"); return; }
-
-  const storageKey = encodeURIComponent(storageKeyRaw || url).slice(0, 180);
-
-  const modal = el(`<div class="pdf-modal" id="pdfModal">
+async function openPdfReader(url,title,storageKeyRaw){
+  if(!window.pdfjsLib)await loadPdfJs();
+  if(!window.pdfjsLib){toast("PDF viewer failed to load");return}
+  const storageKey=encodeURIComponent(storageKeyRaw||url).slice(0,180);
+  const modal=el(`<div class="pdf-modal" id="pdfModal">
     <div class="pdf-toolbar" id="pdfToolbar">
       <button class="pdf-tbtn" id="pdfClose">✕</button>
-      <div class="pdf-title">${escapeHtml(title || "")}</div>
+      <div class="pdf-title">${escapeHtml(title||"")}</div>
       <div class="pdf-tools">
         <button class="pdf-tbtn" id="pdfZoomOut">−</button>
         <span class="pdf-zoom-label" id="pdfZoomLabel">100%</span>
@@ -776,7 +399,6 @@ async function openPdfReader(url, title, storageKeyRaw, pdfMeta){
         <button class="pdf-tbtn" id="pdfFullscreenBtn">⛶</button>
       </div>
     </div>
-
     <div id="pdfSearchBar" style="display:none;padding:8px 12px;background:rgba(15,21,36,.96);border-bottom:1px solid var(--border);gap:8px;align-items:center">
       <input id="pdfSearchInput" placeholder="Search in PDF..." style="margin:0;flex:1"/>
       <button class="pdf-tbtn" id="pdfSearchPrev">‹</button>
@@ -784,15 +406,12 @@ async function openPdfReader(url, title, storageKeyRaw, pdfMeta){
       <span class="muted" id="pdfSearchCount" style="font-size:12px;min-width:60px"></span>
       <button class="pdf-tbtn" id="pdfSearchClose">✕</button>
     </div>
-
     <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
-      <div class="pdf-canvas-stack" id="pdfCanvasStack" style="position:relative">
+      <div class="pdf-canvas-stack" id="pdfCanvasStack">
         <canvas id="pdfCanvas"></canvas>
-        <div id="pdfTextLayer" class="textLayer" style="position:absolute;top:0;left:0;line-height:1;overflow:hidden;opacity:0.2;pointer-events:auto;user-select:text"></div>
         <canvas id="pdfAnnoCanvas"></canvas>
       </div>
     </div>
-
     <div class="pdf-annobar" id="pdfAnnoBar" style="display:none">
       <button class="pdf-tbtn" id="toolPen">✎</button>
       <button class="pdf-tbtn" id="toolHi">▮</button>
@@ -805,1400 +424,171 @@ async function openPdfReader(url, title, storageKeyRaw, pdfMeta){
       <button class="pdf-tbtn" id="toolUndo">↺</button>
       <button class="pdf-tbtn" id="toolRedo">↻</button>
     </div>
-
     <div class="pdf-pagebar" id="pdfPagebar">
       <button class="pdf-tbtn" id="pdfPrev">‹</button>
       <input id="pdfPageInput" type="number" min="1"/> <span class="muted">/ <span id="pdfPageTotal"></span></span>
       <button class="pdf-tbtn" id="pdfNext">›</button>
     </div>
-
     <div class="pdf-panel" id="pdfPanel">
       <div class="pdf-panel-tabs">
         <button class="pdf-panel-tab active" data-pt="pages">Pages</button>
         <button class="pdf-panel-tab" data-pt="bookmarks">Bookmarks</button>
         <button class="pdf-panel-tab" data-pt="notes">Notes</button>
-        <button class="pdf-panel-tab" data-pt="info">Info</button>
       </div>
       <div class="pdf-panel-body" id="pdfPanelBody"></div>
     </div>
     <div class="toast" id="pdfToast"></div>
   </div>`);
-
   document.body.appendChild(modal);
 
-  // Swipe
-  let touchStartX = 0;
-  const canvasWrap = document.getElementById("pdfCanvasWrap");
-  canvasWrap.addEventListener("touchstart", e => { touchStartX = e.changedTouches[0].screenX; }, {passive:true});
-  canvasWrap.addEventListener("touchend", e => {
-    const dx = e.changedTouches[0].screenX - touchStartX;
-    if(Math.abs(dx) > 70){
-      if(dx < 0) pr_goToPage(pr.pageNum + 1);
-      else pr_goToPage(pr.pageNum - 1);
-    }
-  }, {passive:true});
+  let touchStartX=0;
+  const canvasWrap=document.getElementById("pdfCanvasWrap");
+  canvasWrap.addEventListener("touchstart",e=>{touchStartX=e.changedTouches[0].screenX},{passive:true});
+  canvasWrap.addEventListener("touchend",e=>{const dx=e.changedTouches[0].screenX-touchStartX;if(Math.abs(dx)>60){if(dx<0)pr_goToPage(pr.pageNum+1);else pr_goToPage(pr.pageNum-1)}},{passive:true});
 
   try{
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-    const pdfDoc = await pdfjsLib.getDocument({url, withCredentials:false}).promise;
-    const progress = lsGet("pdfprog_" + storageKey, {page:1, scale:null});
-    const bookmarks = lsGet("pdfpagebm_" + storageKey, {});
-    const annotations = lsGet("pdfanno_" + storageKey, {});
-
-    pr = {
-      pdfDoc,
-      pageNum: Math.min(progress.page || 1, pdfDoc.numPages),
-      totalPages: pdfDoc.numPages,
-      scale: progress.scale || 1,
-      fitMode: progress.scale ? "custom" : "width",
-      storageKey,
-      annotations,
-      bookmarks,
-      redoStack: {},
-      tool: null,
-      color: "#5b9dff",
-      width: 3,
-      hideTimer: null,
-      searchMatches: [],
-      searchIndex: -1,
-      originalUrl: url,
-      title: title || "Document"
-    };
-
+    pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+    const pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;
+    const progress=lsGet("pdfprog_"+storageKey,{page:1,scale:null});
+    const bookmarks=lsGet("pdfpagebm_"+storageKey,{});
+    const annotations=lsGet("pdfanno_"+storageKey,{});
+    pr={pdfDoc,pageNum:Math.min(progress.page||1,pdfDoc.numPages),totalPages:pdfDoc.numPages,scale:progress.scale||1,fitMode:progress.scale?"custom":"width",storageKey,annotations,bookmarks,redoStack:{},tool:null,color:"#5b9dff",width:3,hideTimer:null,searchMatches:[],searchIndex:-1,originalUrl:url};
     await pr_renderPage();
     pr_bindDrawing();
+    if(progress.page&&progress.page>1)pr_toast("Resumed from page "+progress.page);
+  }catch(e){modal.remove();pr=null;toast(e?.message||"Unable to load PDF");return}
 
-    if(progress.page && progress.page > 1){
-      pr_toast("Resumed from page " + progress.page);
-    }
-  }catch(e){
-    modal.remove();
-    pr = null;
-    toast(e?.message || "Unable to load PDF");
-    return;
-  }
-
-  // Controls
-  document.getElementById("pdfClose").onclick = () => {
-    if(document.fullscreenElement) document.exitFullscreen().catch(()=>{});
-    modal.remove();
-    pr = null;
-  };
-
-  document.getElementById("pdfZoomIn").onclick = () => {
-    pr.fitMode = "custom";
-    pr.scale = Math.min(4, pr.scale + 0.25);
-    pr_renderPage();
-  };
-  document.getElementById("pdfZoomOut").onclick = () => {
-    pr.fitMode = "custom";
-    pr.scale = Math.max(0.4, pr.scale - 0.25);
-    pr_renderPage();
-  };
-  document.getElementById("pdfFitWidth").onclick = () => { pr.fitMode = "width"; pr_renderPage(); };
-  document.getElementById("pdfFitPage").onclick = () => { pr.fitMode = "page"; pr_renderPage(); };
-
-  document.getElementById("pdfPrev").onclick = () => pr_goToPage(pr.pageNum - 1);
-  document.getElementById("pdfNext").onclick = () => pr_goToPage(pr.pageNum + 1);
-  document.getElementById("pdfPageInput").onchange = e => pr_goToPage(parseInt(e.target.value) || 1);
-
-  document.getElementById("pdfBookmarkPage").onclick = () => {
-    if(pr.bookmarks[pr.pageNum]){
-      delete pr.bookmarks[pr.pageNum];
-      pr_toast("Bookmark removed");
-    } else {
-      pr.bookmarks[pr.pageNum] = {label: "Page " + pr.pageNum, at: Date.now()};
-      pr_toast("Page bookmarked");
-    }
-    lsSet("pdfpagebm_" + pr.storageKey, pr.bookmarks);
-    pr_renderPage();
-  };
-
-  document.getElementById("pdfAnnoToggle").onclick = () => {
-    const bar = document.getElementById("pdfAnnoBar");
-    const showing = bar.style.display !== "none";
-    bar.style.display = showing ? "none" : "flex";
-    document.getElementById("pdfAnnoToggle").classList.toggle("active-tool", !showing);
-    if(showing){ pr.tool = null; pr_setToolActive(false); pr_highlightToolBtn(null); }
-  };
-
-  document.getElementById("toolPen").onclick = () => { pr.tool = "pen"; pr_setToolActive(true); pr_highlightToolBtn("toolPen"); };
-  document.getElementById("toolHi").onclick = () => { pr.tool = "highlighter"; pr_setToolActive(true); pr_highlightToolBtn("toolHi"); };
-  document.getElementById("toolEraser").onclick = () => { pr.tool = "eraser"; pr_setToolActive(true); pr_highlightToolBtn("toolEraser"); };
-  document.getElementById("toolUndo").onclick = pr_undo;
-  document.getElementById("toolRedo").onclick = pr_redo;
-
-  document.querySelectorAll(".pdf-color").forEach(sw => {
-    sw.onclick = () => {
-      pr.color = sw.dataset.c;
-      document.querySelectorAll(".pdf-color").forEach(x => x.classList.remove("selected"));
-      sw.classList.add("selected");
-    };
-  });
-
-  document.getElementById("pdfPanelBtn").onclick = () => {
-    const panel = document.getElementById("pdfPanel");
-    panel.classList.toggle("open");
-    if(panel.classList.contains("open")) pr_renderPanel("pages");
-  };
-
-  document.querySelectorAll(".pdf-panel-tab").forEach(t => {
-    t.onclick = () => {
-      document.querySelectorAll(".pdf-panel-tab").forEach(x => x.classList.remove("active"));
-      t.classList.add("active");
-      pr_renderPanel(t.dataset.pt);
-    };
-  });
-
-  document.getElementById("pdfFullscreenBtn").onclick = async () => {
-    try{
-      if(!document.fullscreenElement) await modal.requestFullscreen();
-      else await document.exitFullscreen();
-    }catch(e){}
-  };
-
-  document.getElementById("pdfDownload").onclick = () => {
-    const a = document.createElement("a");
-    a.href = pr.originalUrl;
-    a.download = (title || "document") + ".pdf";
-    a.target = "_blank";
-    a.click();
-  };
-
-  // Search
-  document.getElementById("pdfSearchBtn").onclick = () => {
-    const bar = document.getElementById("pdfSearchBar");
-    bar.style.display = bar.style.display === "none" ? "flex" : "none";
-    if(bar.style.display === "flex") document.getElementById("pdfSearchInput").focus();
-  };
-  document.getElementById("pdfSearchClose").onclick = () => {
-    document.getElementById("pdfSearchBar").style.display = "none";
-  };
-
+  document.getElementById("pdfClose").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});modal.remove();pr=null};
+  document.getElementById("pdfZoomIn").onclick=()=>{pr.fitMode="custom";pr.scale=Math.min(4,pr.scale+0.25);pr_renderPage()};
+  document.getElementById("pdfZoomOut").onclick=()=>{pr.fitMode="custom";pr.scale=Math.max(0.4,pr.scale-0.25);pr_renderPage()};
+  document.getElementById("pdfFitWidth").onclick=()=>{pr.fitMode="width";pr_renderPage()};
+  document.getElementById("pdfFitPage").onclick=()=>{pr.fitMode="page";pr_renderPage()};
+  document.getElementById("pdfPrev").onclick=()=>pr_goToPage(pr.pageNum-1);
+  document.getElementById("pdfNext").onclick=()=>pr_goToPage(pr.pageNum+1);
+  document.getElementById("pdfPageInput").onchange=e=>pr_goToPage(parseInt(e.target.value)||1);
+  document.getElementById("pdfBookmarkPage").onclick=()=>{if(pr.bookmarks[pr.pageNum]){delete pr.bookmarks[pr.pageNum];pr_toast("Bookmark removed")}else{pr.bookmarks[pr.pageNum]={label:"Page "+pr.pageNum,at:Date.now()};pr_toast("Page bookmarked")}lsSet("pdfpagebm_"+pr.storageKey,pr.bookmarks);pr_renderPage()};
+  document.getElementById("pdfAnnoToggle").onclick=()=>{const bar=document.getElementById("pdfAnnoBar");const showing=bar.style.display!=="none";bar.style.display=showing?"none":"flex";document.getElementById("pdfAnnoToggle").classList.toggle("active-tool",!showing);if(showing){pr.tool=null;pr_setToolActive(false);pr_highlightToolBtn(null)}};
+  document.getElementById("toolPen").onclick=()=>{pr.tool="pen";pr_setToolActive(true);pr_highlightToolBtn("toolPen")};
+  document.getElementById("toolHi").onclick=()=>{pr.tool="highlighter";pr_setToolActive(true);pr_highlightToolBtn("toolHi")};
+  document.getElementById("toolEraser").onclick=()=>{pr.tool="eraser";pr_setToolActive(true);pr_highlightToolBtn("toolEraser")};
+  document.getElementById("toolUndo").onclick=pr_undo;
+  document.getElementById("toolRedo").onclick=pr_redo;
+  document.querySelectorAll(".pdf-color").forEach(sw=>{sw.onclick=()=>{pr.color=sw.dataset.c;document.querySelectorAll(".pdf-color").forEach(x=>x.classList.remove("selected"));sw.classList.add("selected")}});
+  document.getElementById("pdfPanelBtn").onclick=()=>{const panel=document.getElementById("pdfPanel");panel.classList.toggle("open");if(panel.classList.contains("open"))pr_renderPanel("pages")};
+  document.querySelectorAll(".pdf-panel-tab").forEach(t=>{t.onclick=()=>{document.querySelectorAll(".pdf-panel-tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");pr_renderPanel(t.dataset.pt)}});
+  document.getElementById("pdfFullscreenBtn").onclick=async()=>{try{if(!document.fullscreenElement)await modal.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+  document.getElementById("pdfDownload").onclick=()=>{const a=document.createElement("a");a.href=pr.originalUrl;a.download=(title||"document")+".pdf";a.target="_blank";a.click()};
+  document.getElementById("pdfSearchBtn").onclick=()=>{const bar=document.getElementById("pdfSearchBar");bar.style.display=bar.style.display==="none"?"flex":"none";if(bar.style.display==="flex")document.getElementById("pdfSearchInput").focus()};
+  document.getElementById("pdfSearchClose").onclick=()=>{document.getElementById("pdfSearchBar").style.display="none"};
   let searchTimeout;
-  document.getElementById("pdfSearchInput").oninput = (e) => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(async () => {
-      const q = e.target.value.trim().toLowerCase();
-      pr.searchMatches = [];
-      pr.searchIndex = -1;
-      if(!q){ document.getElementById("pdfSearchCount").textContent = ""; return; }
-
-      for(let i=1; i<=pr.totalPages; i++){
-        const page = await pr.pdfDoc.getPage(i);
-        const tc = await page.getTextContent();
-        const text = tc.items.map(it => it.str).join(" ").toLowerCase();
-        if(text.includes(q)) pr.searchMatches.push(i);
-      }
-      document.getElementById("pdfSearchCount").textContent = pr.searchMatches.length ? `1/${pr.searchMatches.length}` : "0 found";
-      if(pr.searchMatches.length){
-        pr.searchIndex = 0;
-        pr_goToPage(pr.searchMatches[0]);
-      }
-    }, 450);
-  };
-
-  document.getElementById("pdfSearchNext").onclick = () => {
-    if(!pr.searchMatches.length) return;
-    pr.searchIndex = (pr.searchIndex + 1) % pr.searchMatches.length;
-    pr_goToPage(pr.searchMatches[pr.searchIndex]);
-    document.getElementById("pdfSearchCount").textContent = `${pr.searchIndex+1}/${pr.searchMatches.length}`;
-  };
-  document.getElementById("pdfSearchPrev").onclick = () => {
-    if(!pr.searchMatches.length) return;
-    pr.searchIndex = (pr.searchIndex - 1 + pr.searchMatches.length) % pr.searchMatches.length;
-    pr_goToPage(pr.searchMatches[pr.searchIndex]);
-    document.getElementById("pdfSearchCount").textContent = `${pr.searchIndex+1}/${pr.searchMatches.length}`;
-  };
-
-  document.getElementById("pdfCanvasWrap").addEventListener("pointerdown", () => {
-    document.getElementById("pdfToolbar")?.classList.remove("hidden");
-    document.getElementById("pdfPagebar")?.classList.remove("hidden");
-    pr_scheduleHide();
-  });
-
-  window.addEventListener("resize", () => {
-    if(pr && (pr.fitMode === "width" || pr.fitMode === "page")) pr_renderPage();
-  });
+  document.getElementById("pdfSearchInput").oninput=e=>{clearTimeout(searchTimeout);searchTimeout=setTimeout(async()=>{const q=e.target.value.trim().toLowerCase();pr.searchMatches=[];pr.searchIndex=-1;if(!q){document.getElementById("pdfSearchCount").textContent="";return}for(let i=1;i<=pr.totalPages;i++){const page=await pr.pdfDoc.getPage(i);const tc=await page.getTextContent();const text=tc.items.map(it=>it.str).join(" ").toLowerCase();if(text.includes(q))pr.searchMatches.push(i)}document.getElementById("pdfSearchCount").textContent=pr.searchMatches.length?`1/${pr.searchMatches.length}`:"0 found";if(pr.searchMatches.length){pr.searchIndex=0;pr_goToPage(pr.searchMatches[0])}},400)};
+  document.getElementById("pdfSearchNext").onclick=()=>{if(!pr.searchMatches.length)return;pr.searchIndex=(pr.searchIndex+1)%pr.searchMatches.length;pr_goToPage(pr.searchMatches[pr.searchIndex]);document.getElementById("pdfSearchCount").textContent=`${pr.searchIndex+1}/${pr.searchMatches.length}`};
+  document.getElementById("pdfSearchPrev").onclick=()=>{if(!pr.searchMatches.length)return;pr.searchIndex=(pr.searchIndex-1+pr.searchMatches.length)%pr.searchMatches.length;pr_goToPage(pr.searchMatches[pr.searchIndex]);document.getElementById("pdfSearchCount").textContent=`${pr.searchIndex+1}/${pr.searchMatches.length}`};
+  document.getElementById("pdfCanvasWrap").addEventListener("pointerdown",()=>{document.getElementById("pdfToolbar")?.classList.remove("hidden");document.getElementById("pdfPagebar")?.classList.remove("hidden");pr_scheduleHide()});
+  window.addEventListener("resize",()=>{if(pr&&(pr.fitMode==="width"||pr.fitMode==="page"))pr_renderPage()});
 }
 
-/* ===================== BOOKMARKS ===================== */
-async function renderBookmarks(c){
-  c.innerHTML = `<h2>My Bookmarks</h2><div id="bmList">${skelList(3)}</div>`;
-  const list = document.getElementById("bmList");
-  try{
-    const {data, error} = await db.from("bookmarks").select("pdf_id, pdfs(title, id, file_path)").eq("user_id", session.user.id);
-    if(error) throw error;
-    if(!data?.length){ list.innerHTML = `<div class="empty">No bookmarks yet.</div>`; return; }
-    list.innerHTML = "";
-    data.forEach(bm => {
-      if(!bm.pdfs) return;
-      const row = el(`<div class="card row">
-        <span style="cursor:pointer;flex:1" class="open">${escapeHtml(bm.pdfs.title)}</span>
-        <button class="btn-small rm">Remove</button>
-      </div>`);
-      row.querySelector(".open").onclick = () => openPdf(bm.pdfs);
-      row.querySelector(".rm").onclick = async e => {
-        e.stopPropagation();
-        try{
-          await db.from("bookmarks").delete().eq("user_id", session.user.id).eq("pdf_id", bm.pdfs.id);
-          renderBookmarks(c);
-        }catch(err){ toast(err?.message || "Error"); }
-      };
-      list.appendChild(row);
-    });
-  }catch(e){
-    list.innerHTML = `<div class="empty">${escapeHtml(e?.message || "Error")}</div>`;
-  }
-}
+async function renderBookmarks(c){c.innerHTML=`<h2>My Bookmarks</h2><div id="bmList">${skelList(3)}</div>`;const list=document.getElementById("bmList");try{const{data,error}=await db.from("bookmarks").select("pdf_id, pdfs(title, id, file_path)").eq("user_id",session.user.id);if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No bookmarks yet.</div>`;return}list.innerHTML="";data.forEach(bm=>{if(!bm.pdfs)return;const row=el(`<div class="card row"><span style="cursor:pointer;flex:1" class="open">${escapeHtml(bm.pdfs.title)}</span><button class="btn-small rm">Remove</button></div>`);row.querySelector(".open").onclick=()=>openPdf(bm.pdfs);row.querySelector(".rm").onclick=async e=>{e.stopPropagation();try{await db.from("bookmarks").delete().eq("user_id",session.user.id).eq("pdf_id",bm.pdfs.id);renderBookmarks(c)}catch(err){toast(err?.message||"Error")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
 
-/* ===================== TESTS (same as before) ===================== */
-async function renderTests(c){
-  c.innerHTML = `<h2>Tests</h2><div id="testList">${skelList(3)}</div>`;
-  const list = document.getElementById("testList");
-  try{
-    const {data, error} = await db.from("tests").select("*").order("created_at", {ascending:false});
-    if(error) throw error;
-    if(!data?.length){ list.innerHTML = `<div class="empty">No tests yet.</div>`; return; }
-    list.innerHTML = "";
-    data.forEach(test => {
-      const isCbt = test.type === "cbt" || !test.file_path;
-      const row = el(`<div class="card row">
-        <div>
-          <div style="font-weight:600">${escapeHtml(test.title)}</div>
-          <div class="muted">${test.duration_minutes || 60} min · ${isCbt ? "CBT Mode" : "PDF Paper"}</div>
-        </div>
-        <button class="btn">Start</button>
-      </div>`);
-      row.querySelector("button").onclick = () => {
-        if(isCbt) startCbtTest(test);
-        else startPdfTest(test);
-      };
-      list.appendChild(row);
-    });
-  }catch(e){
-    list.innerHTML = `<div class="empty">${escapeHtml(e?.message || "Error")}</div>`;
-  }
-}
+async function renderTests(c){c.innerHTML=`<h2>Tests</h2><div id="testList">${skelList(3)}</div>`;const list=document.getElementById("testList");try{const{data,error}=await db.from("tests").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No tests yet.</div>`;return}list.innerHTML="";data.forEach(test=>{const isCbt=test.type==="cbt"||!test.file_path;const row=el(`<div class="card row"><div><div style="font-weight:600">${escapeHtml(test.title)}</div><div class="muted">${test.duration_minutes||60} min · ${isCbt?"CBT Mode":"PDF Paper"}</div></div><button class="btn">Start</button></div>`);row.querySelector("button").onclick=()=>{if(isCbt)startCbtTest(test);else startPdfTest(test)};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
 
-async function startPdfTest(test){
-  if(!test.file_path){ toast("No paper uploaded"); return; }
-  try{
-    const {data, error} = await db.storage.from("content").createSignedUrl(test.file_path, 7200);
-    if(error) throw error;
-    if(!data?.signedUrl) throw new Error("No link");
-    if(!window.pdfjsLib) await loadPdfJs();
-    if(!window.pdfjsLib){ toast("PDF viewer failed"); return; }
+async function startPdfTest(test){if(!test.file_path){toast("No paper uploaded");return}try{const{data,error}=await db.storage.from("content").createSignedUrl(test.file_path,7200);if(error)throw error;if(!data?.signedUrl)throw new Error("No link");if(!window.pdfjsLib)await loadPdfJs();if(!window.pdfjsLib){toast("PDF viewer failed");return}const modal=el(`<div class="modal-bg"><div class="modal-box" style="max-width:920px"><div class="timer" id="tmr"></div><h3>${escapeHtml(test.title)}</h3><div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div><div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div><button class="btn" style="width:100%;margin-top:14px" id="submitTest">Submit Test</button></div></div>`);document.body.appendChild(modal);let remaining=(Number(test.duration_minutes)||60)*60;const timerEl=document.getElementById("tmr");let timerRef=null;const finish=()=>{if(timerRef)clearInterval(timerRef);modal.remove();toast("Test submitted")};const tick=()=>{const m=Math.floor(remaining/60),s=remaining%60;timerEl.textContent=`${m}:${s<10?"0":""}${s} remaining`;if(remaining<=0){finish();return}remaining--};tick();timerRef=setInterval(tick,1000);document.getElementById("submitTest").onclick=()=>{if(confirm("Submit now?"))finish()};pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";let scale=1.2;const pdfDoc=await pdfjsLib.getDocument({url:data.signedUrl,withCredentials:false}).promise;const page=await pdfDoc.getPage(1);const render=async()=>{const vp=page.getViewport({scale});const canvas=document.getElementById("pc");if(!canvas)return;canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;const zl=document.getElementById("zl");if(zl)zl.textContent=Math.round(scale/1.2*100)+"%"};await render();document.getElementById("zi").onclick=()=>{scale+=0.3;render().catch(console.error)};document.getElementById("zo").onclick=()=>{scale=Math.max(0.5,scale-0.3);render().catch(console.error)}}catch(e){toast(e?.message||"Unable to start")}}
 
-    const modal = el(`<div class="modal-bg"><div class="modal-box" style="max-width:920px">
-      <div class="timer" id="tmr"></div>
-      <h3>${escapeHtml(test.title)}</h3>
-      <div style="overflow:auto;text-align:center"><canvas id="pc"></canvas></div>
-      <div class="zoom-row"><button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button></div>
-      <button class="btn" style="width:100%;margin-top:14px" id="submitTest">Submit Test</button>
-    </div></div>`);
-    document.body.appendChild(modal);
+async function startCbtTest(test){try{const isAdmin=profile?.role==="admin";const cols=isAdmin?"*":"id, question_text, option_a, option_b, option_c, option_d, sort_order, question_image";const{data,error}=await db.from("test_questions").select(cols).eq("test_id",test.id).order("sort_order");if(error)throw error;if(!data?.length){toast("No questions for this CBT yet.");return}cbtTest=test;cbtQuestions=data;cbtAnswers={};cbtMarked=new Set();cbtBookmarks=new Set();cbtIndex=0;cbtRemaining=(Number(test.duration_minutes)||60)*60;if(cbtTimerRef)clearInterval(cbtTimerRef);cbtTimerRef=setInterval(()=>{cbtRemaining--;const tEl=document.getElementById("cbtTimer");if(tEl){const m=Math.floor(cbtRemaining/60),s=cbtRemaining%60;tEl.textContent=`${m}:${s<10?"0":""}${s}`}if(cbtRemaining<=0){clearInterval(cbtTimerRef);cbtTimerRef=null;finishCbt(true)}},1000);renderCbtUI()}catch(e){toast(e?.message||"Unable to start CBT")}}
 
-    let remaining = (Number(test.duration_minutes) || 60) * 60;
-    const timerEl = document.getElementById("tmr");
-    let timerRef = null;
-    const finish = () => { if(timerRef) clearInterval(timerRef); modal.remove(); toast("Test submitted"); };
-    const tick = () => {
-      const m = Math.floor(remaining/60), s = remaining % 60;
-      timerEl.textContent = `${m}:${s<10?"0":""}${s} remaining`;
-      if(remaining <= 0){ finish(); return; }
-      remaining--;
-    };
-    tick();
-    timerRef = setInterval(tick, 1000);
-    document.getElementById("submitTest").onclick = () => { if(confirm("Submit now?")) finish(); };
+function renderCbtUI(){const c=document.getElementById("content");if(!c||!cbtQuestions.length)return;const q=cbtQuestions[cbtIndex];const selected=cbtAnswers[q.id]||null;const imgHtml=q.question_image?`<img class="q-img" src="${escapeHtml(q.question_image)}" alt="Question image"/>`:"";c.innerHTML=`<div class="timer" id="cbtTimer">${Math.floor(cbtRemaining/60)}:${(cbtRemaining%60)<10?"0":""}${cbtRemaining%60}</div><div class="cbt-layout"><div class="cbt-qbox"><div class="muted" style="margin-bottom:8px">Question ${cbtIndex+1} of ${cbtQuestions.length}</div><div style="font-size:15.5px;line-height:1.55;margin-bottom:12px">${escapeHtml(q.question_text)}</div>${imgHtml}<button class="cbt-opt ${selected==="A"?"selected":""}" data-o="A">A. ${escapeHtml(q.option_a)}</button><button class="cbt-opt ${selected==="B"?"selected":""}" data-o="B">B. ${escapeHtml(q.option_b)}</button><button class="cbt-opt ${selected==="C"?"selected":""}" data-o="C">C. ${escapeHtml(q.option_c)}</button><button class="cbt-opt ${selected==="D"?"selected":""}" data-o="D">D. ${escapeHtml(q.option_d)}</button><div class="cbt-nav"><button class="btn-outline" id="cbtPrev" ${cbtIndex===0?"disabled":""}>← Previous</button><button class="btn-outline" id="cbtMark">${cbtMarked.has(q.id)?"Unmark":"Mark for Review"}</button><button class="btn-outline" id="cbtBm">${cbtBookmarks.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button><button class="btn" id="cbtNext">${cbtIndex===cbtQuestions.length-1?"Review":"Next →"}</button></div><button class="btn-danger" style="width:100%;margin-top:14px" id="cbtSubmit">Submit Test</button></div><div class="cbt-palette"><div style="font-weight:600;font-size:13px">Question Palette</div><div class="cbt-palette-grid" id="palette"></div><div class="cbt-legend"><span><div class="cbt-dot" style="background:rgba(91,157,255,.35);border:1px solid var(--accent)"></div> Answered</span><span><div class="cbt-dot" style="background:rgba(240,180,41,.35);border:1px solid var(--warn)"></div> Marked</span><span><div class="cbt-dot" style="background:var(--panel2);border:1px solid var(--border)"></div> Not visited</span></div></div></div>`;
+c.querySelectorAll(".cbt-opt").forEach(btn=>{btn.onclick=()=>{cbtAnswers[q.id]=btn.dataset.o;renderCbtUI()}});
+document.getElementById("cbtPrev").onclick=()=>{if(cbtIndex>0){cbtIndex--;renderCbtUI()}};
+document.getElementById("cbtNext").onclick=()=>{if(cbtIndex<cbtQuestions.length-1){cbtIndex++;renderCbtUI()}};
+document.getElementById("cbtMark").onclick=()=>{if(cbtMarked.has(q.id))cbtMarked.delete(q.id);else cbtMarked.add(q.id);renderCbtUI()};
+document.getElementById("cbtBm").onclick=()=>{if(cbtBookmarks.has(q.id))cbtBookmarks.delete(q.id);else cbtBookmarks.add(q.id);renderCbtUI()};
+document.getElementById("cbtSubmit").onclick=async()=>{if(await confirmAction("Submit Test","Submit test? Answers cannot be changed."))finishCbt(false)};
+const palette=document.getElementById("palette");cbtQuestions.forEach((qq,i)=>{const btn=el(`<button class="cbt-pbtn">${i+1}</button>`);if(cbtAnswers[qq.id])btn.classList.add("answered");if(cbtMarked.has(qq.id))btn.classList.add("marked");if(i===cbtIndex)btn.classList.add("current");btn.onclick=()=>{cbtIndex=i;renderCbtUI()};palette.appendChild(btn)})}
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-    let scale = 1.2;
-    const pdfDoc = await pdfjsLib.getDocument({url: data.signedUrl, withCredentials:false}).promise;
-    const page = await pdfDoc.getPage(1);
-    const render = async () => {
-      const vp = page.getViewport({scale});
-      const canvas = document.getElementById("pc");
-      if(!canvas) return;
-      canvas.width = vp.width;
-      canvas.height = vp.height;
-      await page.render({canvasContext: canvas.getContext("2d"), viewport: vp}).promise;
-      const zl = document.getElementById("zl");
-      if(zl) zl.textContent = Math.round(scale / 1.2 * 100) + "%";
-    };
-    await render();
-    document.getElementById("zi").onclick = () => { scale += 0.3; render().catch(console.error); };
-    document.getElementById("zo").onclick = () => { scale = Math.max(0.5, scale - 0.3); render().catch(console.error); };
-  }catch(e){
-    toast(e?.message || "Unable to start");
-  }
-}
+async function finishCbt(auto){if(cbtTimerRef){clearInterval(cbtTimerRef);cbtTimerRef=null}const c=document.getElementById("content");c.innerHTML=`<div class="card score-card"><div class="muted">Calculating score...</div></div>`;
+let score=0,total=cbtQuestions.length*4,correct=0,wrong=0,unattempted=0,reviewQs=[];
+try{const{data:fullQs}=await db.from("test_questions").select("id, question_text, option_a, option_b, option_c, option_d, correct_option, sort_order").eq("test_id",cbtTest.id).order("sort_order");if(fullQs?.length)cbtQuestions=fullQs}catch(e){}
+cbtQuestions.forEach(q=>{const ans=cbtAnswers[q.id]||null;const corr=(q.correct_option||"").toUpperCase();let status="unattempted";if(!ans)unattempted++;else if(corr&&ans===corr){correct++;status="correct"}else{wrong++;status="wrong"}reviewQs.push({id:q.id,question_text:q.question_text,option_a:q.option_a,option_b:q.option_b,option_c:q.option_c,option_d:q.option_d,correct_option:corr||null,user_answer:ans,status})});
+score=(correct*4)+(wrong*-1);total=cbtQuestions.length*4;
+try{const answersPayload={};Object.keys(cbtAnswers).forEach(id=>{answersPayload[id]=cbtAnswers[id]});const{data,error}=await db.rpc("score_cbt_test",{p_test_id:cbtTest.id,p_answers:answersPayload});if(!error&&data){score=data.score??score;total=data.total??total;correct=data.correct??correct;wrong=data.wrong??wrong;unattempted=data.unattempted??unattempted}}catch(e){}
+const lastScoreData={score,total,correct,wrong,unattempted,title:cbtTest?.title,at:Date.now(),review:reviewQs};saveLastScore(lastScoreData);showScoreAndReview(c,lastScoreData,auto)}
 
-async function startCbtTest(test){
-  try{
-    const isAdmin = profile?.role === "admin";
-    const cols = isAdmin ? "*" : "id, question_text, option_a, option_b, option_c, option_d, sort_order, question_image";
-    const {data, error} = await db.from("test_questions").select(cols).eq("test_id", test.id).order("sort_order");
-    if(error) throw error;
-    if(!data?.length){ toast("No questions for this CBT yet."); return; }
+function showScoreAndReview(c,data,auto){const den=(data.correct||0)+(data.wrong||0)+(data.unattempted||0);const accuracy=den?Math.round(((data.correct||0)/den)*100):0;c.innerHTML=`<div class="card score-card"><div class="muted" style="margin-bottom:6px">${auto?"Time's up!":"Test Submitted"}</div><h2 style="margin-bottom:4px">${escapeHtml(data.title||"Test")}</h2><div class="score-num">${data.score}</div><div class="muted" style="margin-bottom:18px">out of ${data.total}</div><div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left"><div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${data.correct||0}</div></div><div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${data.wrong||0}</div></div><div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${data.unattempted||0}</div></div><div class="card" style="margin:0"><div class="muted">Accuracy</div><div style="font-weight:700">${accuracy}%</div></div></div><button class="btn" style="width:100%;margin-bottom:10px" id="viewReview">Question-wise Review</button><button class="btn-outline" style="width:100%" id="backTests">Back to Tests</button></div>`;document.getElementById("backTests").onclick=()=>{cbtTest=null;cbtQuestions=[];cbtAnswers={};renderTests(c)};document.getElementById("viewReview").onclick=()=>renderQuestionReview(c,data)}
 
-    cbtTest = test;
-    cbtQuestions = data;
-    cbtAnswers = {};
-    cbtMarked = new Set();
-    cbtBookmarks = new Set();
-    cbtIndex = 0;
-    cbtRemaining = (Number(test.duration_minutes) || 60) * 60;
+function renderQuestionReview(c,data){if(!data.review||!data.review.length){c.innerHTML=`<div class="empty">Review data not available.</div><button class="btn" id="backScore">Back</button>`;document.getElementById("backScore").onclick=()=>showScoreAndReview(c,data,false);return}let html=`<button class="back" id="backScore">Score Summary</button><h2>${escapeHtml(data.title||"Review")}</h2><div class="muted" style="margin-bottom:16px">${data.correct||0} correct · ${data.wrong||0} wrong · ${data.unattempted||0} skipped</div>`;data.review.forEach((q,i)=>{const statusColor=q.status==="correct"?"var(--green)":q.status==="wrong"?"var(--danger)":"var(--muted)";const statusText=q.status==="correct"?"Correct":q.status==="wrong"?"Wrong":"Not Attempted";const optHtml=(letter,text)=>{let extra="";if(q.user_answer===letter)extra+=` <span style="color:var(--accent);font-weight:600">(Your answer)</span>`;if(q.correct_option===letter)extra+=` <span style="color:var(--green);font-weight:600">(Correct)</span>`;let bg="var(--panel2)";if(q.correct_option===letter)bg="rgba(61,214,140,.12)";else if(q.user_answer===letter&&q.status==="wrong")bg="rgba(239,90,90,.12)";return`<div style="padding:10px 12px;margin:6px 0;border-radius:8px;border:1px solid var(--border);background:${bg}"><b>${letter}.</b> ${escapeHtml(text||"")}${extra}</div>`};html+=`<div class="card" style="margin-bottom:14px"><div class="row" style="margin-bottom:8px"><div style="font-weight:600">Q${i+1}</div><div style="color:${statusColor};font-weight:600;font-size:13px">${statusText}</div></div><div style="line-height:1.5;margin-bottom:10px">${escapeHtml(q.question_text)}</div>${optHtml("A",q.option_a)}${optHtml("B",q.option_b)}${optHtml("C",q.option_c)}${optHtml("D",q.option_d)}</div>`});html+=`<button class="btn" style="width:100%;margin-top:10px" id="backTests2">Back to Tests</button>`;c.innerHTML=html;document.getElementById("backScore").onclick=()=>showScoreAndReview(c,data,false);document.getElementById("backTests2").onclick=()=>{cbtTest=null;cbtQuestions=[];cbtAnswers={};renderTests(c)}}
 
-    if(cbtTimerRef) clearInterval(cbtTimerRef);
-    cbtTimerRef = setInterval(() => {
-      cbtRemaining--;
-      const tEl = document.getElementById("cbtTimer");
-      if(tEl){
-        const m = Math.floor(cbtRemaining/60), s = cbtRemaining % 60;
-        tEl.textContent = `${m}:${s<10?"0":""}${s}`;
-      }
-      if(cbtRemaining <= 0){
-        clearInterval(cbtTimerRef);
-        cbtTimerRef = null;
-        finishCbt(true);
-      }
-    }, 1000);
-    renderCbtUI();
-  }catch(e){
-    toast(e?.message || "Unable to start CBT");
-  }
-}
+async function renderAdmin(c){c.innerHTML=`<h2>Admin</h2><div class="tabs2"><button class="tab2 ${adminTab==="dashboard"?"active":""}" data-a="dashboard">Dashboard</button><button class="tab2 ${adminTab==="subjects"?"active":""}" data-a="subjects">Subjects</button><button class="tab2 ${adminTab==="content"?"active":""}" data-a="content">Content</button><button class="tab2 ${adminTab==="users"?"active":""}" data-a="users">Users</button><button class="tab2 ${adminTab==="cbt"?"active":""}" data-a="cbt">CBT Questions</button><button class="tab2 ${adminTab==="logins"?"active":""}" data-a="logins">Logins</button></div><div id="adminBody"></div>`;c.querySelectorAll(".tab2").forEach(b=>{b.onclick=()=>{adminTab=b.dataset.a;renderAdmin(c)}});const body=document.getElementById("adminBody");if(adminTab==="dashboard")await renderAdminDashboard(body);else if(adminTab==="subjects")await renderAdminSubjects(body);else if(adminTab==="content")await renderAdminContent(body);else if(adminTab==="users")await renderAdminUsers(body);else if(adminTab==="cbt")await renderAdminCbt(body);else if(adminTab==="logins")await renderAdminLogins(body)}
 
-function renderCbtUI(){
-  const c = document.getElementById("content");
-  if(!c || !cbtQuestions.length) return;
-  const q = cbtQuestions[cbtIndex];
-  const selected = cbtAnswers[q.id] || null;
-  const imgHtml = q.question_image ? `<img class="q-img" src="${escapeHtml(q.question_image)}" alt="Question image"/>` : "";
+async function renderAdminDashboard(body){body.innerHTML=`<div class="grid2" id="dashStats">${skelList(6,"skel-card")}</div><h3 style="margin-top:24px">Quick Actions</h3><div class="row-wrap" style="gap:10px"><button class="btn" id="goSubjects">Manage Subjects</button><button class="btn-outline" id="goContent">Content Manager</button><button class="btn-outline" id="goUsers">Users</button></div>`;try{const[subjects,chapters,pdfs,videos,tests,users]=await Promise.all([db.from("subjects").select("id",{count:"exact",head:true}),db.from("chapters").select("id",{count:"exact",head:true}),db.from("pdfs").select("id",{count:"exact",head:true}),db.from("videos").select("id",{count:"exact",head:true}),db.from("tests").select("id",{count:"exact",head:true}),db.from("profiles").select("id",{count:"exact",head:true})]);const stats=[{label:"Subjects",value:subjects.count||0},{label:"Chapters",value:chapters.count||0},{label:"PDFs",value:pdfs.count||0},{label:"Videos",value:videos.count||0},{label:"Tests",value:tests.count||0},{label:"Users",value:users.count||0}];document.getElementById("dashStats").innerHTML=stats.map(s=>`<div class="card" style="text-align:center;margin:0"><div class="muted">${s.label}</div><div style="font-size:28px;font-weight:700;margin-top:6px">${s.value}</div></div>`).join("")}catch(e){document.getElementById("dashStats").innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}document.getElementById("goSubjects").onclick=()=>{adminTab="subjects";renderAdmin(document.getElementById("content"))};document.getElementById("goContent").onclick=()=>{adminTab="content";renderAdmin(document.getElementById("content"))};document.getElementById("goUsers").onclick=()=>{adminTab="users";renderAdmin(document.getElementById("content"))}}
 
-  c.innerHTML = `<div class="timer" id="cbtTimer">${Math.floor(cbtRemaining/60)}:${(cbtRemaining%60)<10?"0":""}${cbtRemaining%60}</div>
-  <div class="cbt-layout">
-    <div class="cbt-qbox">
-      <div class="muted" style="margin-bottom:8px">Question ${cbtIndex+1} of ${cbtQuestions.length}</div>
-      <div style="font-size:15.5px;line-height:1.55;margin-bottom:12px">${escapeHtml(q.question_text)}</div>
-      ${imgHtml}
-      <button class="cbt-opt ${selected==="A"?"selected":""}" data-o="A">A. ${escapeHtml(q.option_a)}</button>
-      <button class="cbt-opt ${selected==="B"?"selected":""}" data-o="B">B. ${escapeHtml(q.option_b)}</button>
-      <button class="cbt-opt ${selected==="C"?"selected":""}" data-o="C">C. ${escapeHtml(q.option_c)}</button>
-      <button class="cbt-opt ${selected==="D"?"selected":""}" data-o="D">D. ${escapeHtml(q.option_d)}</button>
-      <div class="cbt-nav">
-        <button class="btn-outline" id="cbtPrev" ${cbtIndex===0?"disabled":""}>← Previous</button>
-        <button class="btn-outline" id="cbtMark">${cbtMarked.has(q.id)?"Unmark":"Mark for Review"}</button>
-        <button class="btn-outline" id="cbtBm">${cbtBookmarks.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button>
-        <button class="btn" id="cbtNext">${cbtIndex===cbtQuestions.length-1?"Review":"Next →"}</button>
-      </div>
-      <button class="btn-danger" style="width:100%;margin-top:14px" id="cbtSubmit">Submit Test</button>
-    </div>
-    <div class="cbt-palette">
-      <div style="font-weight:600;font-size:13px">Question Palette</div>
-      <div class="cbt-palette-grid" id="palette"></div>
-      <div class="cbt-legend">
-        <span><div class="cbt-dot" style="background:rgba(91,157,255,.35);border:1px solid var(--accent)"></div> Answered</span>
-        <span><div class="cbt-dot" style="background:rgba(240,180,41,.35);border:1px solid var(--warn)"></div> Marked</span>
-        <span><div class="cbt-dot" style="background:var(--panel2);border:1px solid var(--border)"></div> Not visited</span>
-      </div>
-    </div>
-  </div>`;
+async function renderAdminSubjects(body){body.innerHTML=`<div class="card"><h3 style="margin-top:0">Add Subject</h3><input id="newSubj" placeholder="Subject name"/><button class="btn" id="addSubj">Add Subject</button></div><h3>All Subjects</h3><div id="subjManageList">${skelList(4)}</div>`;document.getElementById("addSubj").onclick=async()=>{const name=document.getElementById("newSubj").value.trim();if(!name)return toast("Enter subject name");try{await db.from("subjects").insert({name});toast("Subject added");renderAdminSubjects(body)}catch(e){toast(e?.message||"Error")}};try{const{data,error}=await db.from("subjects").select("*").order("sort_order");if(error)throw error;const list=document.getElementById("subjManageList");if(!data?.length){list.innerHTML=`<div class="empty">No subjects yet.</div>`;return}list.innerHTML="";for(const s of data){const{count:chapCount}=await db.from("chapters").select("id",{count:"exact",head:true}).eq("subject_id",s.id);const row=el(`<div class="card"><div class="row"><div style="flex:1"><div style="font-weight:600">${escapeHtml(s.name)}</div><div class="muted">${chapCount||0} chapters</div></div><div class="row-wrap"><button class="btn-small editS">Rename</button><button class="btn-danger delS">Delete</button></div></div></div>`);row.querySelector(".editS").onclick=async()=>{const newName=prompt("New subject name:",s.name);if(newName===null||!newName.trim())return;try{await db.from("subjects").update({name:newName.trim()}).eq("id",s.id);toast("Subject renamed");renderAdminSubjects(body)}catch(e){toast(e?.message||"Error")}};row.querySelector(".delS").onclick=async()=>{const ok=await confirmAction("Delete Subject",`Delete "${s.name}"?\n\nThis subject has ${chapCount||0} chapters.\nAll related content will be deleted.`);if(!ok)return;try{const{data:chs}=await db.from("chapters").select("id").eq("subject_id",s.id);if(chs?.length){for(const ch of chs){const{data:pdfs}=await db.from("pdfs").select("file_path").eq("chapter_id",ch.id);if(pdfs?.length){const paths=pdfs.map(p=>p.file_path).filter(Boolean);if(paths.length)await db.storage.from("content").remove(paths)}await db.from("pdfs").delete().eq("chapter_id",ch.id);await db.from("videos").delete().eq("chapter_id",ch.id)}await db.from("chapters").delete().eq("subject_id",s.id)}await db.from("subjects").delete().eq("id",s.id);toast("Subject deleted");renderAdminSubjects(body)}catch(e){toast(e?.message||"Delete failed")}};list.appendChild(row)}}catch(e){document.getElementById("subjManageList").innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
 
-  c.querySelectorAll(".cbt-opt").forEach(btn => {
-    btn.onclick = () => { cbtAnswers[q.id] = btn.dataset.o; renderCbtUI(); };
-  });
-  document.getElementById("cbtPrev").onclick = () => { if(cbtIndex > 0){ cbtIndex--; renderCbtUI(); } };
-  document.getElementById("cbtNext").onclick = () => { if(cbtIndex < cbtQuestions.length-1){ cbtIndex++; renderCbtUI(); } };
-  document.getElementById("cbtMark").onclick = () => {
-    if(cbtMarked.has(q.id)) cbtMarked.delete(q.id); else cbtMarked.add(q.id);
-    renderCbtUI();
-  };
-  document.getElementById("cbtBm").onclick = () => {
-    if(cbtBookmarks.has(q.id)) cbtBookmarks.delete(q.id); else cbtBookmarks.add(q.id);
-    renderCbtUI();
-  };
-  document.getElementById("cbtSubmit").onclick = async () => {
-    if(await confirmAction("Submit Test", "Submit test? Answers cannot be changed.")) finishCbt(false);
-  };
-
-  const palette = document.getElementById("palette");
-  cbtQuestions.forEach((qq, i) => {
-    const btn = el(`<button class="cbt-pbtn">${i+1}</button>`);
-    if(cbtAnswers[qq.id]) btn.classList.add("answered");
-    if(cbtMarked.has(qq.id)) btn.classList.add("marked");
-    if(i === cbtIndex) btn.classList.add("current");
-    btn.onclick = () => { cbtIndex = i; renderCbtUI(); };
-    palette.appendChild(btn);
-  });
-}
-
-async function finishCbt(auto){
-  if(cbtTimerRef){ clearInterval(cbtTimerRef); cbtTimerRef = null; }
-  const c = document.getElementById("content");
-  c.innerHTML = `<div class="card score-card"><div class="muted">Calculating score...</div></div>`;
-
-  let score = 0, total = cbtQuestions.length * 4, correct = 0, wrong = 0, unattempted = 0;
-  let reviewQs = [];
-
-  try{
-    const {data: fullQs} = await db.from("test_questions")
-      .select("id, question_text, option_a, option_b, option_c, option_d, correct_option, sort_order")
-      .eq("test_id", cbtTest.id)
-      .order("sort_order");
-    if(fullQs?.length) cbtQuestions = fullQs;
-  }catch(e){}
-
-  cbtQuestions.forEach(q => {
-    const ans = cbtAnswers[q.id] || null;
-    const corr = (q.correct_option || "").toUpperCase();
-    let status = "unattempted";
-    if(!ans) unattempted++;
-    else if(corr && ans === corr){ correct++; status = "correct"; }
-    else { wrong++; status = "wrong"; }
-
-    reviewQs.push({
-      id: q.id,
-      question_text: q.question_text,
-      option_a: q.option_a,
-      option_b: q.option_b,
-      option_c: q.option_c,
-      option_d: q.option_d,
-      correct_option: corr || null,
-      user_answer: ans,
-      status
-    });
-  });
-
-  score = (correct * 4) + (wrong * -1);
-  total = cbtQuestions.length * 4;
-
-  try{
-    const answersPayload = {};
-    Object.keys(cbtAnswers).forEach(id => { answersPayload[id] = cbtAnswers[id]; });
-    const {data, error} = await db.rpc("score_cbt_test", {
-      p_test_id: cbtTest.id,
-      p_answers: answersPayload
-    });
-    if(!error && data){
-      score = data.score ?? score;
-      total = data.total ?? total;
-      correct = data.correct ?? correct;
-      wrong = data.wrong ?? wrong;
-      unattempted = data.unattempted ?? unattempted;
-    }
-  }catch(e){}
-
-  const lastScoreData = {
-    score, total, correct, wrong, unattempted,
-    title: cbtTest?.title,
-    at: Date.now(),
-    review: reviewQs
-  };
-  saveLastScore(lastScoreData);
-  showScoreAndReview(c, lastScoreData, auto);
-}
-
-function showScoreAndReview(c, data, auto){
-  const den = (data.correct||0) + (data.wrong||0) + (data.unattempted||0);
-  const accuracy = den ? Math.round(((data.correct||0) / den) * 100) : 0;
-
-  c.innerHTML = `<div class="card score-card">
-    <div class="muted" style="margin-bottom:6px">${auto ? "Time's up!" : "Test Submitted"}</div>
-    <h2 style="margin-bottom:4px">${escapeHtml(data.title || "Test")}</h2>
-    <div class="score-num">${data.score}</div>
-    <div class="muted" style="margin-bottom:18px">out of ${data.total}</div>
-    <div class="grid2" style="max-width:360px;margin:0 auto 20px;text-align:left">
-      <div class="card" style="margin:0"><div class="muted">Correct</div><div style="font-weight:700;color:var(--green)">${data.correct||0}</div></div>
-      <div class="card" style="margin:0"><div class="muted">Wrong</div><div style="font-weight:700;color:var(--danger)">${data.wrong||0}</div></div>
-      <div class="card" style="margin:0"><div class="muted">Unattempted</div><div style="font-weight:700">${data.unattempted||0}</div></div>
-      <div class="card" style="margin:0"><div class="muted">Accuracy</div><div style="font-weight:700">${accuracy}%</div></div>
-    </div>
-    <button class="btn" style="width:100%;margin-bottom:10px" id="viewReview">Question-wise Review</button>
-    <button class="btn-outline" style="width:100%" id="backTests">Back to Tests</button>
-  </div>`;
-
-  document.getElementById("backTests").onclick = () => {
-    cbtTest = null; cbtQuestions = []; cbtAnswers = {};
-    renderTests(c);
-  };
-  document.getElementById("viewReview").onclick = () => renderQuestionReview(c, data);
-}
-
-function renderQuestionReview(c, data){
-  if(!data.review || !data.review.length){
-    c.innerHTML = `<div class="empty">Review data not available.</div>
-      <button class="btn" id="backScore">Back</button>`;
-    document.getElementById("backScore").onclick = () => showScoreAndReview(c, data, false);
-    return;
-  }
-
-  let html = `<button class="back" id="backScore">Score Summary</button>
-    <h2>${escapeHtml(data.title || "Review")}</h2>
-    <div class="muted" style="margin-bottom:16px">${data.correct||0} correct · ${data.wrong||0} wrong · ${data.unattempted||0} skipped</div>`;
-
-  data.review.forEach((q, i) => {
-    const statusColor = q.status === "correct" ? "var(--green)" : q.status === "wrong" ? "var(--danger)" : "var(--muted)";
-    const statusText = q.status === "correct" ? "Correct" : q.status === "wrong" ? "Wrong" : "Not Attempted";
-
-    const optHtml = (letter, text) => {
-      let extra = "";
-      if(q.user_answer === letter) extra += ` <span style="color:var(--accent);font-weight:600">(Your answer)</span>`;
-      if(q.correct_option === letter) extra += ` <span style="color:var(--green);font-weight:600">(Correct)</span>`;
-      let bg = "var(--panel2)";
-      if(q.correct_option === letter) bg = "rgba(61,214,140,.12)";
-      else if(q.user_answer === letter && q.status === "wrong") bg = "rgba(239,90,90,.12)";
-      return `<div style="padding:10px 12px;margin:6px 0;border-radius:8px;border:1px solid var(--border);background:${bg}">
-        <b>${letter}.</b> ${escapeHtml(text||"")}${extra}
-      </div>`;
-    };
-
-    html += `<div class="card" style="margin-bottom:14px">
-      <div class="row" style="margin-bottom:8px">
-        <div style="font-weight:600">Q${i+1}</div>
-        <div style="color:${statusColor};font-weight:600;font-size:13px">${statusText}</div>
-      </div>
-      <div style="line-height:1.5;margin-bottom:10px">${escapeHtml(q.question_text)}</div>
-      ${optHtml("A", q.option_a)}
-      ${optHtml("B", q.option_b)}
-      ${optHtml("C", q.option_c)}
-      ${optHtml("D", q.option_d)}
-    </div>`;
-  });
-
-  html += `<button class="btn" style="width:100%;margin-top:10px" id="backTests2">Back to Tests</button>`;
-  c.innerHTML = html;
-  document.getElementById("backScore").onclick = () => showScoreAndReview(c, data, false);
-  document.getElementById("backTests2").onclick = () => {
-    cbtTest = null; cbtQuestions = []; cbtAnswers = {};
-    renderTests(c);
-  };
-}
-
-/* ===================== ADMIN (Complete) ===================== */
-async function renderAdmin(c){
-  c.innerHTML = `<h2>Admin</h2>
-  <div class="tabs2">
-    <button class="tab2 ${adminTab==="dashboard"?"active":""}" data-a="dashboard">Dashboard</button>
-    <button class="tab2 ${adminTab==="subjects"?"active":""}" data-a="subjects">Subjects</button>
-    <button class="tab2 ${adminTab==="content"?"active":""}" data-a="content">Content</button>
-    <button class="tab2 ${adminTab==="users"?"active":""}" data-a="users">Users</button>
-    <button class="tab2 ${adminTab==="cbt"?"active":""}" data-a="cbt">CBT Questions</button>
-    <button class="tab2 ${adminTab==="logins"?"active":""}" data-a="logins">Logins</button>
-  </div>
-  <div id="adminBody"></div>`;
-
-  c.querySelectorAll(".tab2").forEach(b => {
-    b.onclick = () => { adminTab = b.dataset.a; renderAdmin(c); };
-  });
-
-  const body = document.getElementById("adminBody");
-  if(adminTab === "dashboard") await renderAdminDashboard(body);
-  else if(adminTab === "subjects") await renderAdminSubjects(body);
-  else if(adminTab === "content") await renderAdminContent(body);
-  else if(adminTab === "users") await renderAdminUsers(body);
-  else if(adminTab === "cbt") await renderAdminCbt(body);
-  else if(adminTab === "logins") await renderAdminLogins(body);
-}
-
-async function renderAdminDashboard(body){
-  body.innerHTML = `<div class="grid2" id="dashStats">${skelList(6,"skel-card")}</div>
-    <h3 style="margin-top:24px">Quick Actions</h3>
-    <div class="row-wrap" style="gap:10px">
-      <button class="btn" id="goSubjects">Manage Subjects</button>
-      <button class="btn-outline" id="goContent">Content Manager</button>
-      <button class="btn-outline" id="goUsers">Users</button>
-    </div>`;
-
-  try{
-    const [subjects, chapters, pdfs, videos, tests, users] = await Promise.all([
-      db.from("subjects").select("id", {count:"exact", head:true}),
-      db.from("chapters").select("id", {count:"exact", head:true}),
-      db.from("pdfs").select("id", {count:"exact", head:true}),
-      db.from("videos").select("id", {count:"exact", head:true}),
-      db.from("tests").select("id", {count:"exact", head:true}),
-      db.from("profiles").select("id", {count:"exact", head:true})
-    ]);
-
-    const stats = [
-      {label:"Subjects", value: subjects.count||0},
-      {label:"Chapters", value: chapters.count||0},
-      {label:"PDFs", value: pdfs.count||0},
-      {label:"Videos", value: videos.count||0},
-      {label:"Tests", value: tests.count||0},
-      {label:"Users", value: users.count||0}
-    ];
-
-    document.getElementById("dashStats").innerHTML = stats.map(s => `
-      <div class="card" style="text-align:center;margin:0">
-        <div class="muted">${s.label}</div>
-        <div style="font-size:28px;font-weight:700;margin-top:6px">${s.value}</div>
-      </div>`).join("");
-  }catch(e){
-    document.getElementById("dashStats").innerHTML = `<div class="empty">${escapeHtml(e?.message||"Error")}</div>`;
-  }
-
-  document.getElementById("goSubjects").onclick = () => { adminTab = "subjects"; renderAdmin(document.getElementById("content")); };
-  document.getElementById("goContent").onclick = () => { adminTab = "content"; renderAdmin(document.getElementById("content")); };
-  document.getElementById("goUsers").onclick = () => { adminTab = "users"; renderAdmin(document.getElementById("content")); };
-}
-
-/* ---------- SUBJECTS + REORDER ---------- */
-async function renderAdminSubjects(body){
-  body.innerHTML = `
-    <div class="card">
-      <h3 style="margin-top:0">Add Subject</h3>
-      <input id="newSubj" placeholder="Subject name"/>
-      <button class="btn" id="addSubj">Add Subject</button>
-    </div>
-    <h3>All Subjects</h3>
-    <div id="subjManageList">${skelList(4)}</div>`;
-
-  document.getElementById("addSubj").onclick = async () => {
-    const name = document.getElementById("newSubj").value.trim();
-    if(!name) return toast("Enter subject name");
-    try{
-      const {data: existing} = await db.from("subjects").select("sort_order").order("sort_order",{ascending:false}).limit(1);
-      const nextOrder = (existing?.[0]?.sort_order || 0) + 1;
-      await db.from("subjects").insert({name, sort_order: nextOrder});
-      toast("Subject added");
-      renderAdminSubjects(body);
-    }catch(e){ toast(e?.message || "Error"); }
-  };
-
-  try{
-    const {data, error} = await db.from("subjects").select("*").order("sort_order");
-    if(error) throw error;
-    const list = document.getElementById("subjManageList");
-    if(!data?.length){ list.innerHTML = `<div class="empty">No subjects yet.</div>`; return; }
-
-    list.innerHTML = "";
-    for(let i=0; i<data.length; i++){
-      const s = data[i];
-      const {count: chapCount} = await db.from("chapters").select("id", {count:"exact", head:true}).eq("subject_id", s.id);
-
-      const row = el(`<div class="card">
-        <div class="row">
-          <div style="flex:1">
-            <div style="font-weight:600">${escapeHtml(s.name)}</div>
-            <div class="muted">${chapCount||0} chapters</div>
-          </div>
-          <div class="row-wrap">
-            <button class="btn-small upS" ${i===0?"disabled":""}>↑</button>
-            <button class="btn-small downS" ${i===data.length-1?"disabled":""}>↓</button>
-            <button class="btn-small editS">Rename</button>
-            <button class="btn-danger delS">Delete</button>
-          </div>
-        </div>
-      </div>`);
-
-      row.querySelector(".upS").onclick = async () => {
-        if(i===0) return;
-        const prev = data[i-1];
-        try{
-          await db.from("subjects").update({sort_order: prev.sort_order}).eq("id", s.id);
-          await db.from("subjects").update({sort_order: s.sort_order}).eq("id", prev.id);
-          toast("Moved up");
-          renderAdminSubjects(body);
-        }catch(e){ toast(e?.message||"Error"); }
-      };
-
-      row.querySelector(".downS").onclick = async () => {
-        if(i===data.length-1) return;
-        const next = data[i+1];
-        try{
-          await db.from("subjects").update({sort_order: next.sort_order}).eq("id", s.id);
-          await db.from("subjects").update({sort_order: s.sort_order}).eq("id", next.id);
-          toast("Moved down");
-          renderAdminSubjects(body);
-        }catch(e){ toast(e?.message||"Error"); }
-      };
-
-      row.querySelector(".editS").onclick = async () => {
-        const newName = prompt("New subject name:", s.name);
-        if(newName === null || !newName.trim()) return;
-        try{
-          await db.from("subjects").update({name: newName.trim()}).eq("id", s.id);
-          toast("Subject renamed");
-          renderAdminSubjects(body);
-        }catch(e){ toast(e?.message || "Error"); }
-      };
-
-      row.querySelector(".delS").onclick = async () => {
-        const ok = await confirmAction("Delete Subject", 
-          `Delete "${s.name}"?\n\nThis subject has ${chapCount||0} chapters.\nAll chapters + PDFs + videos under it will be deleted.`);
-        if(!ok) return;
-        try{
-          const {data: chs} = await db.from("chapters").select("id").eq("subject_id", s.id);
-          if(chs?.length){
-            for(const ch of chs){
-              const {data: pdfs} = await db.from("pdfs").select("file_path").eq("chapter_id", ch.id);
-              if(pdfs?.length){
-                const paths = pdfs.map(p => p.file_path).filter(Boolean);
-                if(paths.length) await db.storage.from("content").remove(paths);
-              }
-              await db.from("pdfs").delete().eq("chapter_id", ch.id);
-              await db.from("videos").delete().eq("chapter_id", ch.id);
-            }
-            await db.from("chapters").delete().eq("subject_id", s.id);
-          }
-          await db.from("subjects").delete().eq("id", s.id);
-          toast("Subject deleted");
-          renderAdminSubjects(body);
-        }catch(e){ toast(e?.message || "Delete failed"); }
-      };
-
-      list.appendChild(row);
-    }
-  }catch(e){
-    document.getElementById("subjManageList").innerHTML = `<div class="empty">${escapeHtml(e?.message||"Error")}</div>`;
-  }
-}
-
-/* ---------- CONTENT MANAGER ---------- */
 async function renderAdminContent(body){
-  body.innerHTML = `
-    <div class="card">
-      <h3 style="margin-top:0">Add Chapter</h3>
-      <select id="chSubj"></select>
-      <input id="newChap" placeholder="Chapter name"/>
-      <button class="btn" id="addChap">Add Chapter</button>
-    </div>
-
-    <div class="card">
-      <h3>Add Video</h3>
-      <select id="vidSubj"></select>
-      <select id="vidChap"></select>
-      <input id="vidTitle" placeholder="Video title"/>
-      <input id="vidUrl" placeholder="YouTube link"/>
-      <button class="btn" id="addVid">Add Video</button>
-    </div>
-
-    <div class="card">
-      <h3>Add PDF</h3>
-      <select id="pdfSubj"></select>
-      <select id="pdfChap"></select>
-      <select id="pdfCat">
-        <option value="general">Practice</option>
-        <option value="ncert">Important</option>
-        <option value="pyq">PYQs</option>
-      </select>
-      <input id="pdfTitle" placeholder="PDF title"/>
-      <input type="file" id="pdfFile" accept="application/pdf"/>
-      <button class="btn" id="addPdf">Upload PDF</button>
-    </div>
-
-    <div class="card">
-      <h3>Add Test</h3>
-      <input id="testTitle" placeholder="Test title"/>
-      <input id="testDur" type="number" value="60" placeholder="Duration (min)"/>
-      <input type="file" id="testFile" accept="application/pdf"/>
-      <div class="muted" style="margin-bottom:8px">Leave file empty = CBT test</div>
-      <button class="btn" id="addTest">Create Test</button>
-    </div>
-
-    <h3 style="margin-top:28px">Manage Chapters</h3>
-    <div id="chapManageList">${skelList(3)}</div>
-
-    <h3 style="margin-top:28px">Manage PDFs</h3>
-    <div id="pdfManageList">${skelList(3)}</div>
-
-    <h3 style="margin-top:28px">Manage Videos</h3>
-    <div id="vidManageList">${skelList(3)}</div>
-
-    <h3 style="margin-top:28px">Existing Tests</h3>
-    <div id="existingTestsList">${skelList(2)}</div>
-  `;
-
+  body.innerHTML=`<div class="card"><h3 style="margin-top:0">Add Chapter</h3><select id="chSubj"></select><input id="newChap" placeholder="Chapter name"/><button class="btn" id="addChap">Add Chapter</button></div>
+  <div class="card"><h3>Add Video</h3><select id="vidSubj"></select><select id="vidChap"></select><input id="vidTitle" placeholder="Video title"/><input id="vidUrl" placeholder="YouTube link"/><button class="btn" id="addVid">Add Video</button></div>
+  <div class="card"><h3>Add PDF</h3><select id="pdfSubj"></select><select id="pdfChap"></select><select id="pdfCat"><option value="general">Practice</option><option value="ncert">Important</option><option value="pyq">PYQs</option></select><input id="pdfTitle" placeholder="PDF title"/><input type="file" id="pdfFile" accept="application/pdf"/><button class="btn" id="addPdf">Upload PDF</button></div>
+  <div class="card"><h3>Add Test</h3><input id="testTitle" placeholder="Test title"/><input id="testDur" type="number" value="60" placeholder="Duration (min)"/><input type="file" id="testFile" accept="application/pdf"/><div class="muted" style="margin-bottom:8px">Leave file empty = CBT test</div><button class="btn" id="addTest">Create Test</button></div>
+  <h3 style="margin-top:28px">Manage Chapters</h3><div id="chapManageList">${skelList(3)}</div>
+  <h3 style="margin-top:28px">Manage PDFs</h3><div id="pdfManageList">${skelList(3)}</div>
+  <h3 style="margin-top:28px">Manage Videos</h3><div id="vidManageList">${skelList(3)}</div>
+  <h3 style="margin-top:28px">Existing Tests</h3><div id="existingTestsList">${skelList(2)}</div>`;
   try{
-    const {data: subjects} = await db.from("subjects").select("*").order("sort_order");
-    const opts = (subjects||[]).map(s => `<option value="${escapeHtml(s.id)}">${escapeHtml(s.name)}</option>`).join("") || `<option value="">No subjects</option>`;
-    ["chSubj","vidSubj","pdfSubj"].forEach(id => {
-      const sel = document.getElementById(id);
-      if(sel) sel.innerHTML = opts;
-    });
+    const{data:subjects}=await db.from("subjects").select("*").order("sort_order");
+    const opts=(subjects||[]).map(s=>`<option value="${escapeHtml(s.id)}">${escapeHtml(s.name)}</option>`).join("")||`<option value="">No subjects</option>`;
+    ["chSubj","vidSubj","pdfSubj"].forEach(id=>{const sel=document.getElementById(id);if(sel)sel.innerHTML=opts});
+    const loadChapters=async(subId,chapId)=>{const subSel=document.getElementById(subId),chapSel=document.getElementById(chapId);if(!subSel||!chapSel)return;const sid=subSel.value;if(!sid){chapSel.innerHTML=`<option value="">No chapters</option>`;return}const{data:chs}=await db.from("chapters").select("*").eq("subject_id",sid).order("sort_order");chapSel.innerHTML=(chs||[]).map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("")||`<option value="">No chapters</option>`};
+    if(subjects?.length){await loadChapters("vidSubj","vidChap");await loadChapters("pdfSubj","pdfChap")}
+    document.getElementById("vidSubj").onchange=()=>loadChapters("vidSubj","vidChap");
+    document.getElementById("pdfSubj").onchange=()=>loadChapters("pdfSubj","pdfChap");
+    document.getElementById("addChap").onclick=async()=>{const subject_id=document.getElementById("chSubj").value,name=document.getElementById("newChap").value.trim();if(!subject_id||!name)return toast("Select subject and enter name");try{await db.from("chapters").insert({subject_id,name});toast("Chapter added");renderAdminContent(body)}catch(e){toast(e?.message||"Error")}};
+    document.getElementById("addVid").onclick=async()=>{const title=document.getElementById("vidTitle").value.trim(),url=document.getElementById("vidUrl").value.trim(),youtubeId=ytId(url),chapter_id=document.getElementById("vidChap").value;if(!title||!youtubeId||!chapter_id)return toast("Fill all fields + valid YouTube link");try{await db.from("videos").insert({chapter_id,title,youtube_id:youtubeId});toast("Video added");renderAdminContent(body)}catch(e){toast(e?.message||"Error")}};
+    document.getElementById("addPdf").onclick=async()=>{const category=document.getElementById("pdfCat").value,title=document.getElementById("pdfTitle").value.trim(),file=document.getElementById("pdfFile").files[0],chapter_id=document.getElementById("pdfChap").value;if(!title||!file||!chapter_id)return toast("Fill title, select chapter and choose PDF");if(file.type!=="application/pdf")return toast("PDF only");try{const path=`pdfs/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{error:insErr}=await db.from("pdfs").insert({chapter_id,category,title,file_path:path});if(insErr){try{await db.storage.from("content").remove([path])}catch(e){}throw insErr}toast("PDF uploaded");renderAdminContent(body)}catch(e){toast(e?.message||"Upload failed")}};
+    document.getElementById("addTest").onclick=async()=>{const title=document.getElementById("testTitle").value.trim(),duration_minutes=parseInt(document.getElementById("testDur").value)||60,file=document.getElementById("testFile").files[0];if(!title)return toast("Enter title");try{let file_path=null,type="cbt";if(file){if(file.type!=="application/pdf")return toast("PDF only");file_path=`tests/${crypto.randomUUID()}_${file.name}`;type="pdf";const{error:upErr}=await db.storage.from("content").upload(file_path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr}const payload={title,duration_minutes,file_path};try{const{error}=await db.from("tests").insert({...payload,type});if(error)throw error}catch(e){const{error}=await db.from("tests").insert(payload);if(error){if(file_path)try{await db.storage.from("content").remove([file_path])}catch(x){}throw error}}toast("Test created");renderAdminContent(body)}catch(e){toast(e?.message||"Error")}};
 
-    const loadChapters = async (subId, chapId) => {
-      const subSel = document.getElementById(subId);
-      const chapSel = document.getElementById(chapId);
-      if(!subSel || !chapSel) return;
-      const sid = subSel.value;
-      if(!sid){ chapSel.innerHTML = `<option value="">No chapters</option>`; return; }
-      const {data: chs} = await db.from("chapters").select("*").eq("subject_id", sid).order("sort_order");
-      chapSel.innerHTML = (chs||[]).map(c => `<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("") || `<option value="">No chapters</option>`;
-    };
+    const chapList=document.getElementById("chapManageList");
+    const{data:allChaps}=await db.from("chapters").select("*, subjects(name)").order("sort_order");
+    if(!allChaps?.length)chapList.innerHTML=`<div class="empty">No chapters</div>`;
+    else{chapList.innerHTML="";for(const ch of allChaps){const{count:pdfCount}=await db.from("pdfs").select("id",{count:"exact",head:true}).eq("chapter_id",ch.id);const{count:vidCount}=await db.from("videos").select("id",{count:"exact",head:true}).eq("chapter_id",ch.id);const row=el(`<div class="card"><div class="row"><div style="flex:1"><div style="font-weight:600">${escapeHtml(ch.name)}</div><div class="muted">${escapeHtml(ch.subjects?.name||"")} · ${pdfCount||0} PDFs · ${vidCount||0} Videos</div></div><div class="row-wrap"><button class="btn-small renChap">Rename</button><button class="btn-danger delChap">Delete</button></div></div></div>`);row.querySelector(".renChap").onclick=async()=>{const nn=prompt("New chapter name:",ch.name);if(nn===null||!nn.trim())return;try{await db.from("chapters").update({name:nn.trim()}).eq("id",ch.id);toast("Chapter renamed");renderAdminContent(body)}catch(e){toast(e?.message||"Error")}};row.querySelector(".delChap").onclick=async()=>{const ok=await confirmAction("Delete Chapter",`Delete "${ch.name}"?\n\nContains:\n• ${pdfCount||0} PDFs\n• ${vidCount||0} Videos`);if(!ok)return;try{const{data:pdfs}=await db.from("pdfs").select("file_path").eq("chapter_id",ch.id);if(pdfs?.length){const paths=pdfs.map(p=>p.file_path).filter(Boolean);if(paths.length)await db.storage.from("content").remove(paths)}await db.from("pdfs").delete().eq("chapter_id",ch.id);await db.from("videos").delete().eq("chapter_id",ch.id);await db.from("chapters").delete().eq("id",ch.id);toast("Chapter deleted");renderAdminContent(body)}catch(e){toast(e?.message||"Delete failed")}};chapList.appendChild(row)}}
 
-    if(subjects?.length){
-      await loadChapters("vidSubj","vidChap");
-      await loadChapters("pdfSubj","pdfChap");
-    }
-    document.getElementById("vidSubj").onchange = () => loadChapters("vidSubj","vidChap");
-    document.getElementById("pdfSubj").onchange = () => loadChapters("pdfSubj","pdfChap");
+    const pdfList=document.getElementById("pdfManageList");
+    const{data:allPdfs}=await db.from("pdfs").select("*, chapters(name, subject_id, subjects(name))").order("created_at",{ascending:false}).limit(100);
+    if(!allPdfs?.length)pdfList.innerHTML=`<div class="empty">No PDFs</div>`;
+    else{pdfList.innerHTML="";allPdfs.forEach(pdf=>{const row=el(`<div class="card"><div class="row"><div style="flex:1"><div style="font-weight:600">${escapeHtml(pdf.title)}</div><div class="muted">${escapeHtml(pdf.chapters?.subjects?.name||"")} → ${escapeHtml(pdf.chapters?.name||"")} · ${pdf.category}</div></div><div class="row-wrap"><button class="btn-small renPdf">Rename</button><button class="btn-small movPdf">Move</button><button class="btn-danger delPdf">Delete</button></div></div></div>`);row.querySelector(".renPdf").onclick=async()=>{const nn=prompt("New PDF title:",pdf.title);if(nn===null||!nn.trim())return;try{await db.from("pdfs").update({title:nn.trim()}).eq("id",pdf.id);toast("PDF renamed");renderAdminContent(body)}catch(e){toast(e?.message||"Error")}};row.querySelector(".movPdf").onclick=async()=>{const{data:chs}=await db.from("chapters").select("id, name, subjects(name)").order("name");if(!chs?.length)return toast("No chapters");let msg="Enter chapter number:\n\n";chs.forEach((c,i)=>msg+=`${i+1}. ${c.subjects?.name} → ${c.name}\n`);const choice=prompt(msg);const idx=parseInt(choice)-1;if(isNaN(idx)||idx<0||idx>=chs.length)return;try{await db.from("pdfs").update({chapter_id:chs[idx].id}).eq("id",pdf.id);toast("PDF moved");renderAdminContent(body)}catch(e){toast(e?.message||"Error")}};row.querySelector(".delPdf").onclick=async()=>{const ok=await confirmAction("Delete PDF",`Delete "${pdf.title}"?`);if(!ok)return;try{if(pdf.file_path)await db.storage.from("content").remove([pdf.file_path]);await db.from("pdfs").delete().eq("id",pdf.id);toast("PDF deleted");renderAdminContent(body)}catch(e){toast(e?.message||"Delete failed")}};pdfList.appendChild(row)})}
 
-    document.getElementById("addChap").onclick = async () => {
-      const subject_id = document.getElementById("chSubj").value;
-      const name = document.getElementById("newChap").value.trim();
-      if(!subject_id || !name) return toast("Select subject and enter name");
-      try{
-        const {data: existing} = await db.from("chapters").select("sort_order").eq("subject_id", subject_id).order("sort_order",{ascending:false}).limit(1);
-        const nextOrder = (existing?.[0]?.sort_order || 0) + 1;
-        await db.from("chapters").insert({subject_id, name, sort_order: nextOrder});
-        toast("Chapter added");
-        renderAdminContent(body);
-      }catch(e){ toast(e?.message || "Error"); }
-    };
+    const vidList=document.getElementById("vidManageList");
+    const{data:allVids}=await db.from("videos").select("*, chapters(name, subjects(name))").order("created_at",{ascending:false}).limit(100);
+    if(!allVids?.length)vidList.innerHTML=`<div class="empty">No videos</div>`;
+    else{vidList.innerHTML="";allVids.forEach(v=>{const row=el(`<div class="card"><div class="row"><div style="flex:1"><div style="font-weight:600">${escapeHtml(v.title)}</div><div class="muted">${escapeHtml(v.chapters?.subjects?.name||"")} → ${escapeHtml(v.chapters?.name||"")}</div></div><div class="row-wrap"><button class="btn-small renVid">Rename</button><button class="btn-danger delVid">Delete</button></div></div></div>`);row.querySelector(".renVid").onclick=async()=>{const nn=prompt("New video title:",v.title);if(nn===null||!nn.trim())return;try{await db.from("videos").update({title:nn.trim()}).eq("id",v.id);toast("Video renamed");renderAdminContent(body)}catch(e){toast(e?.message||"Error")}};row.querySelector(".delVid").onclick=async()=>{const ok=await confirmAction("Delete Video",`Delete "${v.title}"?`);if(!ok)return;try{await db.from("videos").delete().eq("id",v.id);toast("Video deleted");renderAdminContent(body)}catch(e){toast(e?.message||"Error")}};vidList.appendChild(row)})}
 
-    document.getElementById("addVid").onclick = async () => {
-      const title = document.getElementById("vidTitle").value.trim();
-      const url = document.getElementById("vidUrl").value.trim();
-      const youtubeId = ytId(url);
-      const chapter_id = document.getElementById("vidChap").value;
-      if(!title || !youtubeId || !chapter_id) return toast("Fill all fields + valid YouTube link");
-      try{
-        await db.from("videos").insert({chapter_id, title, youtube_id: youtubeId});
-        toast("Video added");
-        renderAdminContent(body);
-      }catch(e){ toast(e?.message || "Error"); }
-    };
-
-    document.getElementById("addPdf").onclick = async () => {
-      const category = document.getElementById("pdfCat").value;
-      const title = document.getElementById("pdfTitle").value.trim();
-      const file = document.getElementById("pdfFile").files[0];
-      const chapter_id = document.getElementById("pdfChap").value;
-      if(!title || !file || !chapter_id) return toast("Fill title, select chapter and choose PDF");
-      if(file.type !== "application/pdf") return toast("PDF only");
-      try{
-        const path = `pdfs/${crypto.randomUUID()}_${file.name}`;
-        const {error: upErr} = await db.storage.from("content").upload(path, file, {cacheControl:"3600", upsert:false});
-        if(upErr) throw upErr;
-        const {error: insErr} = await db.from("pdfs").insert({chapter_id, category, title, file_path: path});
-        if(insErr){
-          try{ await db.storage.from("content").remove([path]); }catch(e){}
-          throw insErr;
-        }
-        toast("PDF uploaded");
-        renderAdminContent(body);
-      }catch(e){ toast(e?.message || "Upload failed"); }
-    };
-
-    document.getElementById("addTest").onclick = async () => {
-      const title = document.getElementById("testTitle").value.trim();
-      const duration_minutes = parseInt(document.getElementById("testDur").value) || 60;
-      const file = document.getElementById("testFile").files[0];
-      if(!title) return toast("Enter title");
-      try{
-        let file_path = null, type = "cbt";
-        if(file){
-          if(file.type !== "application/pdf") return toast("PDF only");
-          file_path = `tests/${crypto.randomUUID()}_${file.name}`;
-          type = "pdf";
-          const {error: upErr} = await db.storage.from("content").upload(file_path, file, {cacheControl:"3600", upsert:false});
-          if(upErr) throw upErr;
-        }
-        const payload = {title, duration_minutes, file_path};
-        try{
-          const {error} = await db.from("tests").insert({...payload, type});
-          if(error) throw error;
-        }catch(e){
-          const {error} = await db.from("tests").insert(payload);
-          if(error){
-            if(file_path) try{ await db.storage.from("content").remove([file_path]); }catch(x){}
-            throw error;
-          }
-        }
-        toast("Test created");
-        renderAdminContent(body);
-      }catch(e){ toast(e?.message || "Error"); }
-    };
-
-    // Manage Chapters
-    const chapList = document.getElementById("chapManageList");
-    const {data: allChaps} = await db.from("chapters").select("*, subjects(name)").order("sort_order");
-    if(!allChaps?.length) chapList.innerHTML = `<div class="empty">No chapters</div>`;
-    else {
-      chapList.innerHTML = "";
-      for(const ch of allChaps){
-        const {count: pdfCount} = await db.from("pdfs").select("id",{count:"exact",head:true}).eq("chapter_id", ch.id);
-        const {count: vidCount} = await db.from("videos").select("id",{count:"exact",head:true}).eq("chapter_id", ch.id);
-
-        const row = el(`<div class="card">
-          <div class="row">
-            <div style="flex:1">
-              <div style="font-weight:600">${escapeHtml(ch.name)}</div>
-              <div class="muted">${escapeHtml(ch.subjects?.name||"")} · ${pdfCount||0} PDFs · ${vidCount||0} Videos</div>
-            </div>
-            <div class="row-wrap">
-              <button class="btn-small renChap">Rename</button>
-              <button class="btn-danger delChap">Delete</button>
-            </div>
-          </div>
-        </div>`);
-
-        row.querySelector(".renChap").onclick = async () => {
-          const nn = prompt("New chapter name:", ch.name);
-          if(nn === null || !nn.trim()) return;
-          try{
-            await db.from("chapters").update({name: nn.trim()}).eq("id", ch.id);
-            toast("Chapter renamed");
-            renderAdminContent(body);
-          }catch(e){ toast(e?.message||"Error"); }
-        };
-
-        row.querySelector(".delChap").onclick = async () => {
-          const ok = await confirmAction("Delete Chapter",
-            `Delete "${ch.name}"?\n\nContains:\n• ${pdfCount||0} PDFs\n• ${vidCount||0} Videos\n\nAll content will be deleted.`);
-          if(!ok) return;
-          try{
-            const {data: pdfs} = await db.from("pdfs").select("file_path").eq("chapter_id", ch.id);
-            if(pdfs?.length){
-              const paths = pdfs.map(p => p.file_path).filter(Boolean);
-              if(paths.length) await db.storage.from("content").remove(paths);
-            }
-            await db.from("pdfs").delete().eq("chapter_id", ch.id);
-            await db.from("videos").delete().eq("chapter_id", ch.id);
-            await db.from("chapters").delete().eq("id", ch.id);
-            toast("Chapter deleted");
-            renderAdminContent(body);
-          }catch(e){ toast(e?.message||"Delete failed"); }
-        };
-        chapList.appendChild(row);
-      }
-    }
-
-    // Manage PDFs
-    const pdfList = document.getElementById("pdfManageList");
-    const {data: allPdfs} = await db.from("pdfs").select("*, chapters(name, subject_id, subjects(name))").order("created_at",{ascending:false}).limit(150);
-    if(!allPdfs?.length) pdfList.innerHTML = `<div class="empty">No PDFs</div>`;
-    else {
-      pdfList.innerHTML = "";
-      allPdfs.forEach(pdf => {
-        const row = el(`<div class="card">
-          <div class="row">
-            <div style="flex:1">
-              <div style="font-weight:600">${escapeHtml(pdf.title)}</div>
-              <div class="muted">${escapeHtml(pdf.chapters?.subjects?.name||"")} → ${escapeHtml(pdf.chapters?.name||"")} · ${pdf.category}</div>
-            </div>
-            <div class="row-wrap">
-              <button class="btn-small renPdf">Rename</button>
-              <button class="btn-small movPdf">Move</button>
-              <button class="btn-small repPdf">Replace</button>
-              <button class="btn-danger delPdf">Delete</button>
-            </div>
-          </div>
-        </div>`);
-
-        row.querySelector(".renPdf").onclick = async () => {
-          const nn = prompt("New PDF title:", pdf.title);
-          if(nn === null || !nn.trim()) return;
-          try{
-            await db.from("pdfs").update({title: nn.trim()}).eq("id", pdf.id);
-            toast("PDF renamed");
-            renderAdminContent(body);
-          }catch(e){ toast(e?.message||"Error"); }
-        };
-
-        row.querySelector(".movPdf").onclick = async () => {
-          const {data: chs} = await db.from("chapters").select("id, name, subjects(name)").order("name");
-          if(!chs?.length) return toast("No chapters");
-
-          const modal = el(`<div class="modal-bg"><div class="modal-box" style="max-width:480px">
-            <h3 style="margin-bottom:12px">Move PDF</h3>
-            <div class="muted" style="margin-bottom:10px">${escapeHtml(pdf.title)}</div>
-            <select id="moveChapSel" style="margin-bottom:14px">
-              ${chs.map(c => `<option value="${c.id}">${escapeHtml(c.subjects?.name||"")} → ${escapeHtml(c.name)}</option>`).join("")}
-            </select>
-            <div style="display:flex;gap:10px">
-              <button class="btn-outline" style="flex:1" id="moveCancel">Cancel</button>
-              <button class="btn" style="flex:1" id="moveConfirm">Move</button>
-            </div>
-          </div></div>`);
-          document.body.appendChild(modal);
-          document.getElementById("moveCancel").onclick = () => modal.remove();
-          document.getElementById("moveConfirm").onclick = async () => {
-            const newChap = document.getElementById("moveChapSel").value;
-            try{
-              await db.from("pdfs").update({chapter_id: newChap}).eq("id", pdf.id);
-              toast("PDF moved");
-              modal.remove();
-              renderAdminContent(body);
-            }catch(e){ toast(e?.message||"Error"); }
-          };
-        };
-
-        row.querySelector(".repPdf").onclick = async () => {
-          const input = document.createElement("input");
-          input.type = "file";
-          input.accept = "application/pdf";
-          input.onchange = async () => {
-            const file = input.files[0];
-            if(!file) return;
-            if(file.type !== "application/pdf") return toast("PDF only");
-            try{
-              const path = `pdfs/${crypto.randomUUID()}_${file.name}`;
-              const {error: upErr} = await db.storage.from("content").upload(path, file, {cacheControl:"3600", upsert:false});
-              if(upErr) throw upErr;
-              // remove old file
-              if(pdf.file_path) try{ await db.storage.from("content").remove([pdf.file_path]); }catch(e){}
-              await db.from("pdfs").update({file_path: path}).eq("id", pdf.id);
-              toast("PDF replaced successfully");
-              renderAdminContent(body);
-            }catch(e){ toast(e?.message||"Replace failed"); }
-          };
-          input.click();
-        };
-
-        row.querySelector(".delPdf").onclick = async () => {
-          const ok = await confirmAction("Delete PDF", `Delete "${pdf.title}"?\n\nFile will also be removed from storage.`);
-          if(!ok) return;
-          try{
-            if(pdf.file_path) await db.storage.from("content").remove([pdf.file_path]);
-            await db.from("pdfs").delete().eq("id", pdf.id);
-            toast("PDF deleted");
-            renderAdminContent(body);
-          }catch(e){ toast(e?.message||"Delete failed"); }
-        };
-        pdfList.appendChild(row);
-      });
-    }
-
-    // Manage Videos
-    const vidList = document.getElementById("vidManageList");
-    const {data: allVids} = await db.from("videos").select("*, chapters(name, subjects(name))").order("created_at",{ascending:false}).limit(100);
-    if(!allVids?.length) vidList.innerHTML = `<div class="empty">No videos</div>`;
-    else {
-      vidList.innerHTML = "";
-      allVids.forEach(v => {
-        const row = el(`<div class="card">
-          <div class="row">
-            <div style="flex:1">
-              <div style="font-weight:600">${escapeHtml(v.title)}</div>
-              <div class="muted">${escapeHtml(v.chapters?.subjects?.name||"")} → ${escapeHtml(v.chapters?.name||"")}</div>
-            </div>
-            <div class="row-wrap">
-              <button class="btn-small renVid">Rename</button>
-              <button class="btn-danger delVid">Delete</button>
-            </div>
-          </div>
-        </div>`);
-
-        row.querySelector(".renVid").onclick = async () => {
-          const nn = prompt("New video title:", v.title);
-          if(nn === null || !nn.trim()) return;
-          try{
-            await db.from("videos").update({title: nn.trim()}).eq("id", v.id);
-            toast("Video renamed");
-            renderAdminContent(body);
-          }catch(e){ toast(e?.message||"Error"); }
-        };
-
-        row.querySelector(".delVid").onclick = async () => {
-          const ok = await confirmAction("Delete Video", `Delete "${v.title}"?`);
-          if(!ok) return;
-          try{
-            await db.from("videos").delete().eq("id", v.id);
-            toast("Video deleted");
-            renderAdminContent(body);
-          }catch(e){ toast(e?.message||"Error"); }
-        };
-        vidList.appendChild(row);
-      });
-    }
-
-    // Existing Tests
-    const loadExistingTests = async () => {
-      const list = document.getElementById("existingTestsList");
-      try{
-        const {data, error} = await db.from("tests").select("*").order("created_at",{ascending:false});
-        if(error) throw error;
-        if(!data?.length){ list.innerHTML = `<div class="empty">No tests yet.</div>`; return; }
-        list.innerHTML = "";
-        data.forEach(t => {
-          const typeLabel = (t.type === "cbt" || !t.file_path) ? "CBT" : "PDF";
-          const row = el(`<div class="card" style="margin-bottom:10px">
-            <div class="row">
-              <div style="flex:1">
-                <div style="font-weight:600">${escapeHtml(t.title)}</div>
-                <div class="muted">${t.duration_minutes||60} min · ${typeLabel}</div>
-              </div>
-              <div class="row-wrap">
-                <button class="btn-small editT">Edit</button>
-                <button class="btn-danger delT">Delete</button>
-              </div>
-            </div>
-          </div>`);
-
-          row.querySelector(".editT").onclick = () => {
-            const newTitle = prompt("New title:", t.title);
-            if(newTitle === null) return;
-            const newDur = prompt("Duration (minutes):", String(t.duration_minutes||60));
-            if(newDur === null) return;
-            (async () => {
-              try{
-                await db.from("tests").update({
-                  title: (newTitle.trim() || t.title),
-                  duration_minutes: parseInt(newDur) || 60
-                }).eq("id", t.id);
-                toast("Updated");
-                loadExistingTests();
-              }catch(e){ toast(e?.message||"Update failed"); }
-            })();
-          };
-
-          row.querySelector(".delT").onclick = async () => {
-            const ok = await confirmAction("Delete Test", `Delete test "${t.title}"?\nAll its questions will also be deleted.`);
-            if(!ok) return;
-            try{
-              await db.from("test_questions").delete().eq("test_id", t.id);
-              await db.from("tests").delete().eq("id", t.id);
-              if(t.file_path) try{ await db.storage.from("content").remove([t.file_path]); }catch(e){}
-              toast("Test deleted");
-              loadExistingTests();
-            }catch(e){ toast(e?.message||"Delete failed"); }
-          };
-          list.appendChild(row);
-        });
-      }catch(e){
-        list.innerHTML = `<div class="empty">${escapeHtml(e?.message||"Error")}</div>`;
-      }
-    };
+    const loadExistingTests=async()=>{const list=document.getElementById("existingTestsList");try{const{data,error}=await db.from("tests").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No tests yet.</div>`;return}list.innerHTML="";data.forEach(t=>{const typeLabel=(t.type==="cbt"||!t.file_path)?"CBT":"PDF";const row=el(`<div class="card" style="margin-bottom:10px"><div class="row"><div style="flex:1"><div style="font-weight:600">${escapeHtml(t.title)}</div><div class="muted">${t.duration_minutes||60} min · ${typeLabel}</div></div><div class="row-wrap"><button class="btn-small editT">Edit</button><button class="btn-danger delT">Delete</button></div></div></div>`);row.querySelector(".editT").onclick=()=>{const newTitle=prompt("New title:",t.title);if(newTitle===null)return;const newDur=prompt("Duration (minutes):",String(t.duration_minutes||60));if(newDur===null)return;(async()=>{try{await db.from("tests").update({title:(newTitle.trim()||t.title),duration_minutes:parseInt(newDur)||60}).eq("id",t.id);toast("Updated");loadExistingTests()}catch(e){toast(e?.message||"Update failed")}})()};row.querySelector(".delT").onclick=async()=>{const ok=await confirmAction("Delete Test",`Delete test "${t.title}"?\nAll questions will also be deleted.`);if(!ok)return;try{await db.from("test_questions").delete().eq("test_id",t.id);await db.from("tests").delete().eq("id",t.id);if(t.file_path)try{await db.storage.from("content").remove([t.file_path])}catch(e){}toast("Test deleted");loadExistingTests()}catch(e){toast(e?.message||"Delete failed")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}};
     loadExistingTests();
-
-  }catch(e){
-    body.innerHTML += `<div class="empty">${escapeHtml(e?.message||"Error")}</div>`;
-  }
+  }catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
 }
 
-/* ---------- USERS + LOGINS + CBT (same improved versions) ---------- */
-async function renderAdminUsers(body){
-  try{
-    const {data, error} = await db.from("profiles").select("*").order("created_at",{ascending:false});
-    if(error) throw error;
-    if(!data?.length){ body.innerHTML = `<div class="empty">No users yet.</div>`; return; }
+async function renderAdminUsers(body){try{const{data,error}=await db.from("profiles").select("*").order("created_at",{ascending:false});if(error)throw error;if(!data?.length){body.innerHTML=`<div class="empty">No users yet.</div>`;return}body.innerHTML=`<table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;const rows=document.getElementById("uRows");data.forEach(user=>{const tr=el(`<tr><td>${escapeHtml(user.email)}</td><td><span class="badge ${user.role==="admin"?"admin":""}">${escapeHtml(user.role)}</span></td><td><span class="badge ${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td><td class="row-wrap" id="act-${escapeHtml(user.id)}"></td></tr>`);rows.appendChild(tr);const act=tr.querySelector(`#act-${CSS.escape(user.id)}`);if(user.role==="admin"){act.innerHTML=`<span class="muted">—</span>`;return}const setStatus=async st=>{try{await db.from("profiles").update({status:st}).eq("id",user.id);renderAdmin(document.getElementById("content"))}catch(e){toast(e?.message||"Error")}};if(user.status==="pending"){const a=el(`<button class="btn-good">Approve</button>`);a.onclick=()=>setStatus("active");act.appendChild(a);const r=el(`<button class="btn-danger">Reject</button>`);r.onclick=()=>setStatus("blocked");act.appendChild(r)}else{const p=el(`<button class="btn-warn">${user.status==="paused"?"Resume":"Pause"}</button>`);p.onclick=()=>setStatus(user.status==="paused"?"active":"paused");act.appendChild(p);const b=el(`<button class="btn-danger">${user.status==="blocked"?"Unblock":"Block"}</button>`);b.onclick=()=>setStatus(user.status==="blocked"?"active":"blocked");act.appendChild(b)}})}catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
 
-    body.innerHTML = `<table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="uRows"></tbody></table>`;
-    const rows = document.getElementById("uRows");
-
-    data.forEach(user => {
-      const tr = el(`<tr>
-        <td>${escapeHtml(user.email)}</td>
-        <td><span class="badge ${user.role==="admin"?"admin":""}">${escapeHtml(user.role)}</span></td>
-        <td><span class="badge ${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td>
-        <td class="row-wrap" id="act-${escapeHtml(user.id)}"></td>
-      </tr>`);
-      rows.appendChild(tr);
-      const act = tr.querySelector(`#act-${CSS.escape(user.id)}`);
-      if(user.role === "admin"){ act.innerHTML = `<span class="muted">—</span>`; return; }
-
-      const setStatus = async st => {
-        try{
-          await db.from("profiles").update({status: st}).eq("id", user.id);
-          renderAdmin(document.getElementById("content"));
-        }catch(e){ toast(e?.message||"Error"); }
-      };
-
-      if(user.status === "pending"){
-        const a = el(`<button class="btn-good">Approve</button>`); a.onclick = () => setStatus("active"); act.appendChild(a);
-        const r = el(`<button class="btn-danger">Reject</button>`); r.onclick = () => setStatus("blocked"); act.appendChild(r);
-      } else {
-        const p = el(`<button class="btn-warn">${user.status==="paused"?"Resume":"Pause"}</button>`);
-        p.onclick = () => setStatus(user.status==="paused"?"active":"paused");
-        act.appendChild(p);
-        const b = el(`<button class="btn-danger">${user.status==="blocked"?"Unblock":"Block"}</button>`);
-        b.onclick = () => setStatus(user.status==="blocked"?"active":"blocked");
-        act.appendChild(b);
-      }
-    });
-  }catch(e){
-    body.innerHTML = `<div class="empty">${escapeHtml(e?.message||"Error")}</div>`;
-  }
-}
-
-async function renderAdminLogins(body){
-  try{
-    const {data, error} = await db.from("login_events").select("*").order("logged_in_at",{ascending:false}).limit(200);
-    if(error) throw error;
-    if(!data?.length){ body.innerHTML = `<div class="empty">No login activity.</div>`; return; }
-    body.innerHTML = `<table><thead><tr><th>Email</th><th>Logged in at</th></tr></thead>
-      <tbody>${data.map(l => `<tr><td>${escapeHtml(l.email)}</td><td>${escapeHtml(fmtDate(l.logged_in_at))}</td></tr>`).join("")}</tbody></table>`;
-  }catch(e){
-    body.innerHTML = `<div class="empty">${escapeHtml(e?.message||"Error")}</div>`;
-  }
-}
+async function renderAdminLogins(body){try{const{data,error}=await db.from("login_events").select("*").order("logged_in_at",{ascending:false}).limit(200);if(error)throw error;if(!data?.length){body.innerHTML=`<div class="empty">No login activity.</div>`;return}body.innerHTML=`<table><thead><tr><th>Email</th><th>Logged in at</th></tr></thead><tbody>${data.map(l=>`<tr><td>${escapeHtml(l.email)}</td><td>${escapeHtml(fmtDate(l.logged_in_at))}</td></tr>`).join("")}</tbody></table>`}catch(e){body.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}}
 
 async function renderAdminCbt(body){
-  body.innerHTML = `
-    <h3>1. Select Test</h3>
-    <select id="cbtTestSel"><option value="">Select test…</option></select>
-
-    <h3 style="margin-top:20px">2. Bulk Add Questions</h3>
-    <div class="muted" style="margin-bottom:8px">Format (blank line se alag):<br>
-    Question text<br>A) option<br>B) option<br>C) option<br>D) option</div>
-    <textarea id="bulkText" style="min-height:150px" placeholder="Paste multiple questions here..."></textarea>
-    <button class="btn" id="bulkAdd">Add All Questions</button>
-
-    <h3 style="margin-top:22px">3. Set Correct Answers</h3>
-    <div class="muted" style="margin-bottom:8px">Example:<br>1. B<br>2. A<br>3. D</div>
-    <textarea id="ansText" style="min-height:100px" placeholder="1. A&#10;2. B&#10;3. C..."></textarea>
-    <button class="btn" id="setAnswers">Update Answers</button>
-
-    <h3 style="margin-top:22px">4. Existing Questions</h3>
-    <div id="cbtQList" class="muted">Select a test first</div>
-  `;
-
+  body.innerHTML=`<h3>1. Select Test</h3><select id="cbtTestSel"><option value="">Select test…</option></select>
+  <h3 style="margin-top:20px">2. Bulk Add Questions</h3><div class="muted" style="margin-bottom:8px">Format (blank line se alag):<br>Question text<br>A) option<br>B) option<br>C) option<br>D) option</div>
+  <textarea id="bulkText" style="min-height:150px" placeholder="Paste multiple questions here..."></textarea><button class="btn" id="bulkAdd">Add All Questions</button>
+  <h3 style="margin-top:22px">3. Set Correct Answers</h3><div class="muted" style="margin-bottom:8px">Example:<br>1. B<br>2. A<br>3. D</div>
+  <textarea id="ansText" style="min-height:100px" placeholder="1. A&#10;2. B&#10;3. C..."></textarea><button class="btn" id="setAnswers">Update Answers</button>
+  <h3 style="margin-top:22px">4. Existing Questions</h3><div id="cbtQList" class="muted">Select a test first</div>`;
   try{
-    const {data: tests} = await db.from("tests").select("id,title,file_path").order("created_at",{ascending:false});
-    const sel = document.getElementById("cbtTestSel");
-    (tests||[]).forEach(t => {
-      const o = document.createElement("option");
-      o.value = t.id;
-      o.textContent = t.title + (t.file_path ? " (PDF)" : " (CBT)");
-      sel.appendChild(o);
-    });
-
-    const loadQs = async () => {
-      const testId = sel.value;
-      const list = document.getElementById("cbtQList");
-      if(!testId){ list.innerHTML = `<div class="muted">Select a test</div>`; return; }
-      try{
-        const {data, error} = await db.from("test_questions").select("*").eq("test_id", testId).order("sort_order");
-        if(error) throw error;
-        if(!data?.length){ list.innerHTML = `<div class="empty">No questions yet</div>`; return; }
-        list.innerHTML = "";
-        data.forEach((q, i) => {
-          const imgPreview = q.question_image ? `<img src="${escapeHtml(q.question_image)}" style="max-width:120px;border-radius:8px;margin-top:8px;border:1px solid var(--border)"/>` : "";
-          const row = el(`<div class="card">
-            <div class="row">
-              <div style="flex:1">
-                <div class="muted">Q${i+1} · Correct: 
-                  <select class="corrSel" data-id="${q.id}" style="width:auto;display:inline;padding:4px 8px;margin:0">
-                    <option value="A" ${q.correct_option==="A"?"selected":""}>A</option>
-                    <option value="B" ${q.correct_option==="B"?"selected":""}>B</option>
-                    <option value="C" ${q.correct_option==="C"?"selected":""}>C</option>
-                    <option value="D" ${q.correct_option==="D"?"selected":""}>D</option>
-                  </select>
-                </div>
-                <div style="margin-top:6px">${escapeHtml(q.question_text)}</div>
-                ${imgPreview}
-                <div style="margin-top:8px">
-                  <input type="file" accept="image/*" class="imgInput" data-id="${q.id}" style="font-size:12px"/>
-                </div>
-              </div>
-              <button class="btn-danger delQ">Delete</button>
-            </div>
-          </div>`);
-
-          row.querySelector(".delQ").onclick = async () => {
-            if(!await confirmAction("Delete Question", "Delete this question?")) return;
-            try{ await db.from("test_questions").delete().eq("id", q.id); loadQs(); }catch(e){ toast(e?.message||"Error"); }
-          };
-          row.querySelector(".corrSel").onchange = async e => {
-            try{ await db.from("test_questions").update({correct_option: e.target.value}).eq("id", q.id); }catch(err){ toast(err?.message||"Error"); }
-          };
-          row.querySelector(".imgInput").onchange = async e => {
-            const file = e.target.files[0];
-            if(!file) return;
-            try{
-              const path = `question-images/${crypto.randomUUID()}_${file.name}`;
-              const {error: upErr} = await db.storage.from("content").upload(path, file, {cacheControl:"3600", upsert:false});
-              if(upErr) throw upErr;
-              const {data: urlData} = await db.storage.from("content").getPublicUrl(path);
-              const publicUrl = urlData?.publicUrl;
-              if(!publicUrl) throw new Error("No public URL");
-              await db.from("test_questions").update({question_image: publicUrl}).eq("id", q.id);
-              loadQs();
-            }catch(err){ toast(err?.message||"Image upload failed"); }
-          };
-          list.appendChild(row);
-        });
-      }catch(e){ list.innerHTML = `<div class="empty">${escapeHtml(e?.message||"Error")}</div>`; }
-    };
-
-    sel.onchange = loadQs;
-
-    document.getElementById("bulkAdd").onclick = async () => {
-      const test_id = sel.value;
-      const raw = document.getElementById("bulkText").value.trim();
-      if(!test_id) return toast("Select test first");
-      if(!raw) return toast("Paste questions");
-
-      const blocks = raw.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
-      const rows = [];
-      for(const block of blocks){
-        const lines = block.split("\n").map(l => l.trim()).filter(Boolean);
-        if(lines.length < 5) continue;
-        const question_text = lines[0].replace(/^\d+[\.\)]\s*/, "");
-        const getOpt = l => {
-          const m = l.match(/^[A-Da-d][\.\)\]]\s*(.+)/);
-          return m ? m[1] : l;
-        };
-        rows.push({
-          test_id,
-          question_text,
-          option_a: getOpt(lines[1]),
-          option_b: getOpt(lines[2]),
-          option_c: getOpt(lines[3]),
-          option_d: getOpt(lines[4]),
-          correct_option: "A",
-          sort_order: rows.length + 1
-        });
-      }
-      if(!rows.length) return toast("No valid questions found.");
-      try{
-        const {error} = await db.from("test_questions").insert(rows);
-        if(error) throw error;
-        document.getElementById("bulkText").value = "";
-        toast(`${rows.length} questions added`);
-        loadQs();
-      }catch(e){ toast(e?.message||"Bulk add failed"); }
-    };
-
-    document.getElementById("setAnswers").onclick = async () => {
-      const test_id = sel.value;
-      const raw = document.getElementById("ansText").value.trim();
-      if(!test_id) return toast("Select test first");
-      if(!raw) return toast("Paste answers");
-
-      const {data: qs, error} = await db.from("test_questions").select("id,sort_order").eq("test_id", test_id).order("sort_order");
-      if(error) throw error;
-      if(!qs?.length) return toast("No questions found");
-
-      const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
-      let updated = 0;
-      for(const line of lines){
-        const m = line.match(/^(\d+)\s*[\.\)\-\:]?\s*([A-Da-d])/i);
-        if(!m) continue;
-        const num = parseInt(m[1]);
-        const ans = m[2].toUpperCase();
-        if(num < 1 || num > qs.length) continue;
-        try{
-          await db.from("test_questions").update({correct_option: ans}).eq("id", qs[num-1].id);
-          updated++;
-        }catch(e){}
-      }
-      toast(`${updated} answers updated`);
-      document.getElementById("ansText").value = "";
-      loadQs();
-    };
-  }catch(e){
-    body.innerHTML += `<div class="empty">${escapeHtml(e?.message||"Error")}</div>`;
-  }
+    const{data:tests}=await db.from("tests").select("id,title,file_path").order("created_at",{ascending:false});
+    const sel=document.getElementById("cbtTestSel");
+    (tests||[]).forEach(t=>{const o=document.createElement("option");o.value=t.id;o.textContent=t.title+(t.file_path?" (PDF)":" (CBT)");sel.appendChild(o)});
+    const loadQs=async()=>{const testId=sel.value;const list=document.getElementById("cbtQList");if(!testId){list.innerHTML=`<div class="muted">Select a test</div>`;return}try{const{data,error}=await db.from("test_questions").select("*").eq("test_id",testId).order("sort_order");if(error)throw error;if(!data?.length){list.innerHTML=`<div class="empty">No questions yet</div>`;return}list.innerHTML="";data.forEach((q,i)=>{const imgPreview=q.question_image?`<img src="${escapeHtml(q.question_image)}" style="max-width:120px;border-radius:8px;margin-top:8px;border:1px solid var(--border)"/>`:"";const row=el(`<div class="card"><div class="row"><div style="flex:1"><div class="muted">Q${i+1} · Correct: <select class="corrSel" data-id="${q.id}" style="width:auto;display:inline;padding:4px 8px;margin:0"><option value="A" ${q.correct_option==="A"?"selected":""}>A</option><option value="B" ${q.correct_option==="B"?"selected":""}>B</option><option value="C" ${q.correct_option==="C"?"selected":""}>C</option><option value="D" ${q.correct_option==="D"?"selected":""}>D</option></select></div><div style="margin-top:6px">${escapeHtml(q.question_text)}</div>${imgPreview}<div style="margin-top:8px"><input type="file" accept="image/*" class="imgInput" data-id="${q.id}" style="font-size:12px"/></div></div><button class="btn-danger delQ">Delete</button></div></div>`);row.querySelector(".delQ").onclick=async()=>{if(!await confirmAction("Delete Question","Delete this question?"))return;try{await db.from("test_questions").delete().eq("id",q.id);loadQs()}catch(e){toast(e?.message||"Error")}};row.querySelector(".corrSel").onchange=async e=>{try{await db.from("test_questions").update({correct_option:e.target.value}).eq("id",q.id)}catch(err){toast(err?.message||"Error")}};row.querySelector(".imgInput").onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const path=`question-images/${crypto.randomUUID()}_${file.name}`;const{error:upErr}=await db.storage.from("content").upload(path,file,{cacheControl:"3600",upsert:false});if(upErr)throw upErr;const{data:urlData}=await db.storage.from("content").getPublicUrl(path);const publicUrl=urlData?.publicUrl;if(!publicUrl)throw new Error("No public URL");await db.from("test_questions").update({question_image:publicUrl}).eq("id",q.id);loadQs()}catch(err){toast(err?.message||"Image upload failed")}};list.appendChild(row)})}catch(e){list.innerHTML=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}};
+    sel.onchange=loadQs;
+    document.getElementById("bulkAdd").onclick=async()=>{const test_id=sel.value;const raw=document.getElementById("bulkText").value.trim();if(!test_id)return toast("Select test first");if(!raw)return toast("Paste questions");const blocks=raw.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);const rows=[];for(const block of blocks){const lines=block.split("\n").map(l=>l.trim()).filter(Boolean);if(lines.length<5)continue;const question_text=lines[0].replace(/^\d+[\.\)]\s*/,"");const getOpt=l=>{const m=l.match(/^[A-Da-d][\.\)\]]\s*(.+)/);return m?m[1]:l};rows.push({test_id,question_text,option_a:getOpt(lines[1]),option_b:getOpt(lines[2]),option_c:getOpt(lines[3]),option_d:getOpt(lines[4]),correct_option:"A",sort_order:rows.length+1})}if(!rows.length)return toast("No valid questions found.");try{const{error}=await db.from("test_questions").insert(rows);if(error)throw error;document.getElementById("bulkText").value="";toast(`${rows.length} questions added`);loadQs()}catch(e){toast(e?.message||"Bulk add failed")}};
+    document.getElementById("setAnswers").onclick=async()=>{const test_id=sel.value;const raw=document.getElementById("ansText").value.trim();if(!test_id)return toast("Select test first");if(!raw)return toast("Paste answers");const{data:qs,error}=await db.from("test_questions").select("id,sort_order").eq("test_id",test_id).order("sort_order");if(error)throw error;if(!qs?.length)return toast("No questions found");const lines=raw.split("\n").map(l=>l.trim()).filter(Boolean);let updated=0;for(const line of lines){const m=line.match(/^(\d+)\s*[\.\)\-\:]?\s*([A-Da-d])/i);if(!m)continue;const num=parseInt(m[1]);const ans=m[2].toUpperCase();if(num<1||num>qs.length)continue;try{await db.from("test_questions").update({correct_option:ans}).eq("id",qs[num-1].id);updated++}catch(e){}}toast(`${updated} answers updated`);document.getElementById("ansText").value="";loadQs()};
+  }catch(e){body.innerHTML+=`<div class="empty">${escapeHtml(e?.message||"Error")}</div>`}
 }
 
-/* ===================== BOOT ===================== */
-async function boot(){
-  if(!db) throw new Error("Supabase not init");
-  try{
-    const {data, error} = await db.auth.getSession();
-    if(error) throw error;
-    session = data?.session || null;
-    if(session) await afterLogin();
-    else renderAuth();
-    db.auth.onAuthStateChange((e, ns) => { session = ns || null; });
-  }catch(e){ throw e; }
-}
-
+async function boot(){if(!db)throw new Error("Supabase not init");try{const{data,error}=await db.auth.getSession();if(error)throw error;session=data?.session||null;if(session)await afterLogin();else renderAuth();db.auth.onAuthStateChange((e,ns)=>{session=ns||null})}catch(e){throw e}}
 initializeApp();
 </script>
+</body>
+</html>
