@@ -197,7 +197,7 @@ let db=null,session=null,profile=null,activeTab="home",selSubject=null,selChapte
 let cbtTest=null,cbtQuestions=[],cbtAnswers={},cbtMarked=new Set(),cbtIndex=0,cbtTimerRef=null,cbtRemaining=0;
 
 const app=document.getElementById("app");
-function escapeHtml(v){return(v?^^-1: v??"").toString().replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function escapeHtml(v){return(v??"").toString().replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function el(h){const d=document.createElement("div");d.innerHTML=h.trim();return d.firstElementChild}
 function getLastScore(){try{return JSON.parse(localStorage.getItem("neetrix_last_score")||"null")}catch(e){return null}}
 function saveLastScore(obj){try{localStorage.setItem("neetrix_last_score",JSON.stringify(obj))}catch(e){}}
