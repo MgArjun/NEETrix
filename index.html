@@ -1,11 +1,12 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float, Line } from '@react-three/drei';
+import { OrbitControls, Float } from '@react-three/drei';
 import * as THREE from 'three';
 import {
+  Lock,
   Eye,
   EyeOff,
-  Lock,
   Check,
   X,
   ShieldAlert,
@@ -13,74 +14,76 @@ import {
   KeyRound,
   Sparkles,
   Activity,
-  Settings as SettingsIcon,
+  Settings,
   User,
-  Bell,
   Shield,
   CheckCircle2,
+  Zap,
+  BookOpen,
+  Youtube,
+  Edit3,
+  Play,
+  Pause,
+  RotateCcw,
+  Clock,
+  Flame,
+  BarChart3,
+  Brain,
+  ChevronRight,
+  Layers
 } from 'lucide-react';
 
 // ============================================================================
-// 1. CHANGE PASSWORD MODAL COMPONENT
+// 1. SUPABASE CLIENT INITIALIZATION
+// ============================================================================
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || 'https://your-supabase-url.supabase.co';
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || 'your-anon-key';
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// ============================================================================
+// 2. CHANGE PASSWORD MODAL COMPONENT
 // ============================================================================
 interface ChangePasswordModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccessToast?: (msg: string) => void;
-  onUpdatePasswordApi?: (currentPass: string, newPass: string) => Promise<void>;
+  onSuccessToast: (msg: string) => void;
 }
 
 export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
   isOpen,
   onClose,
   onSuccessToast,
-  onUpdatePasswordApi,
 }) => {
-  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [success, setSuccess] = useState(false);
 
-  // Validation Rules
   const hasMinLength = newPassword.length >= 8;
   const hasUpper = /[A-Z]/.test(newPassword);
   const hasLower = /[a-z]/.test(newPassword);
   const hasNumber = /[0-9]/.test(newPassword);
-  const hasSpecial = /[^A-Za-z0-9]/.test(newPassword);
 
-  const calculateStrength = () => {
+  const calculateStrength = (): number => {
     let score = 0;
-    if (hasMinLength) score += 20;
-    if (hasUpper) score += 20;
-    if (hasLower) score += 20;
-    if (hasNumber) score += 20;
-    if (hasSpecial) score += 20;
+    if (hasMinLength) score += 25;
+    if (hasUpper) score += 25;
+    if (hasLower) score += 25;
+    if (hasNumber) score += 25;
     return score;
   };
 
   const strength = calculateStrength();
   const passwordsMatch = newPassword.length > 0 && newPassword === confirmPassword;
-  const isFormValid =
-    currentPassword.trim().length > 0 &&
-    strength >= 80 &&
-    passwordsMatch &&
-    !loading;
+  const isFormValid = strength >= 75 && passwordsMatch && !loading;
 
   useEffect(() => {
     if (!isOpen) {
-      setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
       setErrorMessage('');
-      setSuccess(false);
-      setShowCurrent(false);
       setShowNew(false);
       setShowConfirm(false);
     }
@@ -96,40 +99,32 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     setErrorMessage('');
 
     try {
-      if (onUpdatePasswordApi) {
-        await onUpdatePasswordApi(currentPassword, newPassword);
-      } else {
-        await new Promise((res) => setTimeout(res, 1200));
-      }
-      setSuccess(true);
-      if (onSuccessToast) onSuccessToast('Password successfully updated!');
-      setTimeout(() => {
-        onClose();
-      }, 1500);
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) throw error;
+
+      onSuccessToast('Password successfully update ho gaya!');
+      onClose();
     } catch (err: any) {
-      setErrorMessage(
-        err?.message || 'Failed to update password. Please check your current password.'
-      );
+      setErrorMessage(err?.message || 'Update fail ho gaya. Kripya firse try karein.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden p-6 text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-md bg-slate-900 border border-indigo-500/30 rounded-3xl shadow-2xl overflow-hidden p-6 text-slate-100">
         <div className="flex items-center justify-between pb-4 border-b border-slate-800">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               <Lock className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-semibold tracking-tight">Change Password</h2>
-              <p className="text-xs text-slate-400">Update your account credentials securely</p>
+              <h2 className="text-base font-semibold tracking-tight">Security Credentials</h2>
+              <p className="text-xs text-slate-400">Update account password</p>
             </div>
           </div>
           <button
@@ -147,45 +142,17 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
           </div>
         )}
 
-        {success && (
-          <div className="mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
-            <Check className="w-4 h-4 shrink-0" />
-            <span>Password updated successfully! Closing...</span>
-          </div>
-        )}
-
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Current Password</label>
-            <div className="relative">
-              <input
-                type={showCurrent ? 'text' : 'password'}
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                required
-                className="w-full px-3.5 py-2.5 bg-slate-950/60 border border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500 text-slate-100 pr-10"
-                placeholder="••••••••"
-              />
-              <button
-                type="button"
-                onClick={() => setShowCurrent(!showCurrent)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
-              >
-                {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">New Password</label>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Naya Password</label>
             <div className="relative">
               <input
                 type={showNew ? 'text' : 'password'}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
-                className="w-full px-3.5 py-2.5 bg-slate-950/60 border border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500 text-slate-100 pr-10"
-                placeholder="••••••••"
+                className="w-full px-3.5 py-2.5 bg-slate-950/80 border border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500 text-slate-100 pr-10"
+                placeholder="Enter new password"
               />
               <button
                 type="button"
@@ -196,23 +163,26 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
               </button>
             </div>
 
+            <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-slate-400">
+              <div className={`flex items-center gap-1.5 ${hasMinLength ? 'text-emerald-400' : ''}`}>
+                {hasMinLength ? <Check className="w-3 h-3" /> : <div className="w-1.5 h-1.5 rounded-full bg-slate-700 ml-1" />} 8+ Characters
+              </div>
+              <div className={`flex items-center gap-1.5 ${hasUpper ? 'text-emerald-400' : ''}`}>
+                {hasUpper ? <Check className="w-3 h-3" /> : <div className="w-1.5 h-1.5 rounded-full bg-slate-700 ml-1" />} Uppercase Letter
+              </div>
+              <div className={`flex items-center gap-1.5 ${hasLower ? 'text-emerald-400' : ''}`}>
+                {hasLower ? <Check className="w-3 h-3" /> : <div className="w-1.5 h-1.5 rounded-full bg-slate-700 ml-1" />} Lowercase Letter
+              </div>
+              <div className={`flex items-center gap-1.5 ${hasNumber ? 'text-emerald-400' : ''}`}>
+                {hasNumber ? <Check className="w-3 h-3" /> : <div className="w-1.5 h-1.5 rounded-full bg-slate-700 ml-1" />} Number
+              </div>
+            </div>
+
             {newPassword.length > 0 && (
-              <div className="mt-2 space-y-1.5">
-                <div className="flex justify-between items-center text-[10px]">
-                  <span className="text-slate-400">Strength:</span>
-                  <span
-                    className={`font-semibold ${
-                      strength >= 80 ? 'text-emerald-400' : strength >= 40 ? 'text-amber-400' : 'text-rose-400'
-                    }`}
-                  >
-                    {strength >= 80 ? 'Strong' : strength >= 40 ? 'Medium' : 'Weak'}
-                  </span>
-                </div>
+              <div className="mt-3 space-y-1.5">
                 <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
                   <div
-                    className={`h-full transition-all duration-300 ${
-                      strength >= 80 ? 'bg-emerald-500' : strength >= 40 ? 'bg-amber-500' : 'bg-rose-500'
-                    }`}
+                    className={`h-full transition-all duration-300 ${strength >= 75 ? 'bg-emerald-500' : 'bg-amber-500'}`}
                     style={{ width: `${strength}%` }}
                   />
                 </div>
@@ -221,15 +191,15 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Confirm New Password</label>
+            <label className="block text-xs font-medium text-slate-300 mb-1">Confirm Naya Password</label>
             <div className="relative">
               <input
                 type={showConfirm ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-3.5 py-2.5 bg-slate-950/60 border border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500 text-slate-100 pr-10"
-                placeholder="••••••••"
+                className="w-full px-3.5 py-2.5 bg-slate-950/80 border border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500 text-slate-100 pr-10"
+                placeholder="Re-enter password"
               />
               <button
                 type="button"
@@ -240,25 +210,21 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
               </button>
             </div>
             {confirmPassword.length > 0 && !passwordsMatch && (
-              <p className="mt-1 text-[11px] text-rose-400">Passwords do not match</p>
+              <p className="mt-1 text-[11px] text-rose-400">Passwords match nahi ho rahe</p>
             )}
           </div>
 
           <div className="pt-2 flex items-center justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white"
-            >
+            <button type="button" onClick={onClose} className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white">
               Cancel
             </button>
             <button
               type="submit"
               disabled={!isFormValid}
-              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-500 text-white text-xs font-medium transition-all flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-500 text-white text-xs font-medium transition-all flex items-center gap-2 cursor-pointer"
             >
               {loading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-              Update Password
+              Save Password
             </button>
           </div>
         </form>
@@ -268,183 +234,135 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 };
 
 // ============================================================================
-// 2. 3D ATOM MODEL COMPONENT
+// 3. NEW FEATURE 1: LIVE POMODORO STUDY TIMER
 // ============================================================================
-const Nucleus = () => {
+const PomodoroTimer = () => {
+  const [seconds, setSeconds] = useState(25 * 60);
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    let interval: any = null;
+    if (isActive && seconds > 0) {
+      interval = setInterval(() => setSeconds((sec) => sec - 1), 1000);
+    } else if (seconds === 0) {
+      setIsActive(false);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, seconds]);
+
+  const toggleTimer = () => setIsActive(!isActive);
+  const resetTimer = () => {
+    setIsActive(false);
+    setSeconds(25 * 60);
+  };
+
+  const formatTime = (secs: number) => {
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="p-5 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 flex flex-col items-center justify-center space-y-3">
+      <div className="flex items-center gap-2 text-xs font-semibold text-indigo-400 uppercase tracking-wider">
+        <Clock className="w-4 h-4" /> NEET Focus Timer (25m)
+      </div>
+      <div className="text-4xl font-mono font-bold text-white tracking-widest">
+        {formatTime(seconds)}
+      </div>
+      <div className="flex gap-2">
+        <button
+          onClick={toggleTimer}
+          className="p-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-all cursor-pointer"
+        >
+          {isActive ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+        </button>
+        <button
+          onClick={resetTimer}
+          className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all cursor-pointer"
+        >
+          <RotateCcw className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// 4. NEW FEATURE 2: ACTIVE RECALL FLASHCARD DECK
+// ============================================================================
+const FlashcardDeck = () => {
+  const cards = [
+    { q: 'What is the powerhouse of the cell?', a: 'Mitochondria (ATP Production)' },
+    { q: 'Newton’s Second Law formula?', a: 'F = m × a' },
+    { q: 'Functional unit of human kidney?', a: 'Nephron' },
+  ];
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+
+  const nextCard = () => {
+    setFlipped(false);
+    setIndex((prev) => (prev + 1) % cards.length);
+  };
+
+  return (
+    <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 text-center">
+      <div className="flex justify-between items-center text-xs text-slate-400">
+        <span className="flex items-center gap-1 text-indigo-400 font-semibold"><Brain className="w-4 h-4" /> Active Recall Deck</span>
+        <span>Card {index + 1} of {cards.length}</span>
+      </div>
+
+      <div
+        onClick={() => setFlipped(!flipped)}
+        className="min-h-[120px] p-4 rounded-xl bg-slate-950 border border-indigo-500/20 flex items-center justify-center cursor-pointer hover:border-indigo-500/50 transition-all"
+      >
+        <p className="text-sm font-medium text-slate-200">
+          {flipped ? cards[index].a : cards[index].q}
+        </p>
+      </div>
+      <p className="text-[10px] text-slate-500">Tap card to reveal answer</p>
+
+      <div className="flex justify-center gap-2 pt-2">
+        <button onClick={nextCard} className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium flex items-center gap-1 cursor-pointer">
+          Next Card <ChevronRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// 5. 3D ATOM MODEL
+// ============================================================================
+const AtomModel = () => {
   const groupRef = useRef<THREE.Group>(null!);
-
-  const particles = useMemo(() => {
-    const temp: [number, number, number, string][] = [];
-    for (let i = 0; i < 16; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const r = Math.cbrt(Math.random()) * 0.45;
-      const x = r * Math.sin(phi) * Math.cos(theta);
-      const y = r * Math.sin(phi) * Math.sin(theta);
-      const z = r * Math.cos(phi);
-      temp.push([x, y, z, i % 2 === 0 ? '#6366f1' : '#38bdf8']);
-    }
-    return temp;
-  }, []);
-
   useFrame((_, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.2;
-      groupRef.current.rotation.x += delta * 0.1;
-    }
+    if (groupRef.current) groupRef.current.rotation.y += delta * 0.4;
   });
 
   return (
     <group ref={groupRef}>
       <mesh>
-        <sphereGeometry args={[0.3, 32, 32]} />
-        <meshBasicMaterial color="#818cf8" transparent opacity={0.5} />
+        <sphereGeometry args={[0.35, 32, 32]} />
+        <meshStandardMaterial color="#6366f1" emissive="#4f46e5" emissiveIntensity={0.8} />
       </mesh>
-      {particles.map(([x, y, z, color], idx) => (
-        <mesh key={idx} position={[x, y, z]}>
-          <sphereGeometry args={[0.16, 16, 16]} />
-          <meshStandardMaterial color={color} roughness={0.2} metalness={0.8} emissive={color} emissiveIntensity={0.3} />
-        </mesh>
-      ))}
-    </group>
-  );
-};
-
-const ElectronRing = ({ radius, rotation, speed, electronColor = '#38bdf8' }: any) => {
-  const electronRef = useRef<THREE.Mesh>(null!);
-  const ringRef = useRef<THREE.Group>(null!);
-
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime() * speed;
-    if (electronRef.current) {
-      electronRef.current.position.x = Math.cos(t) * radius;
-      electronRef.current.position.z = Math.sin(t) * radius;
-    }
-    if (ringRef.current) {
-      ringRef.current.rotation.y += 0.002;
-    }
-  });
-
-  return (
-    <group ref={ringRef} rotation={rotation}>
-      <mesh rotation-x={Math.PI / 2}>
-        <torusGeometry args={[radius, 0.007, 16, 100]} />
-        <meshBasicMaterial color="#475569" transparent opacity={0.35} />
+      <mesh rotation-x={Math.PI / 3}>
+        <torusGeometry args={[1.5, 0.012, 16, 100]} />
+        <meshBasicMaterial color="#38bdf8" />
       </mesh>
-      <mesh ref={electronRef}>
-        <sphereGeometry args={[0.08, 16, 16]} />
-        <meshStandardMaterial color={electronColor} emissive={electronColor} emissiveIntensity={1.5} roughness={0.1} />
-        <pointLight color={electronColor} intensity={0.5} distance={1.5} />
+      <mesh rotation-x={-Math.PI / 3}>
+        <torusGeometry args={[1.7, 0.012, 16, 100]} />
+        <meshBasicMaterial color="#a855f7" />
       </mesh>
     </group>
   );
 };
 
-export const Atom3DVisualization = () => {
-  return (
-    <div className="w-full h-80 sm:h-96 relative rounded-2xl overflow-hidden bg-slate-950/90 border border-slate-800">
-      <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <directionalLight position={[-5, -5, -5]} intensity={0.5} />
-        <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-          <Nucleus />
-          <ElectronRing radius={1.6} rotation={[Math.PI / 3, Math.PI / 6, 0]} speed={1.8} />
-          <ElectronRing radius={2.0} rotation={[-Math.PI / 4, Math.PI / 3, 0]} speed={1.3} electronColor="#a855f7" />
-          <ElectronRing radius={2.4} rotation={[Math.PI / 6, -Math.PI / 4, Math.PI / 2]} speed={2.2} electronColor="#34d399" />
-        </Float>
-        <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
-      </Canvas>
-    </div>
-  );
-};
-
 // ============================================================================
-// 3. 3D NERVOUS SYSTEM MODEL COMPONENT
+// 6. MAIN MODERNIZED NEETRIX DASHBOARD
 // ============================================================================
-const SynapsePulse = ({ curve }: { curve: THREE.CatmullRomCurve3 }) => {
-  const meshRef = useRef<THREE.Mesh>(null!);
-  const speed = useMemo(() => 0.2 + Math.random() * 0.3, []);
-
-  useFrame((state) => {
-    const t = (state.clock.getElapsedTime() * speed) % 1;
-    const point = curve.getPoint(t);
-    if (meshRef.current) {
-      meshRef.current.position.copy(point);
-    }
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <sphereGeometry args={[0.04, 12, 12]} />
-      <meshBasicMaterial color="#38bdf8" />
-      <pointLight color="#0284c7" intensity={0.8} distance={1} />
-    </mesh>
-  );
-};
-
-const NeuralNetwork = () => {
-  const groupRef = useRef<THREE.Group>(null!);
-
-  const pathways = useMemo(() => {
-    const lines = [];
-    for (let i = 0; i < 16; i++) {
-      const points = [];
-      let currentPoint = new THREE.Vector3((Math.random() - 0.5) * 0.2, 1.7, (Math.random() - 0.5) * 0.2);
-      points.push(currentPoint.clone());
-
-      for (let j = 0; j < 5; j++) {
-        currentPoint.x += (Math.random() - 0.5) * 0.7;
-        currentPoint.y -= 0.6 + Math.random() * 0.2;
-        currentPoint.z += (Math.random() - 0.5) * 0.7;
-        points.push(currentPoint.clone());
-      }
-
-      const curve = new THREE.CatmullRomCurve3(points);
-      lines.push({ curve, points: curve.getPoints(40) });
-    }
-    return lines;
-  }, []);
-
-  useFrame((_, delta) => {
-    if (groupRef.current) groupRef.current.rotation.y += delta * 0.15;
-  });
-
-  return (
-    <group ref={groupRef}>
-      <mesh position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.05, 0.025, 3.6, 16]} />
-        <meshStandardMaterial color="#818cf8" emissive="#4f46e5" emissiveIntensity={0.4} />
-      </mesh>
-      {pathways.map((path, idx) => (
-        <group key={idx}>
-          <Line points={path.points} color="#0ea5e9" lineWidth={1.2} transparent opacity={0.6} />
-          <SynapsePulse curve={path.curve} />
-        </group>
-      ))}
-    </group>
-  );
-};
-
-export const NervousSystem3DVisualization = () => {
-  return (
-    <div className="w-full h-80 sm:h-96 relative rounded-2xl overflow-hidden bg-slate-950/90 border border-slate-800">
-      <Canvas camera={{ position: [0, 0, 4.5], fov: 45 }}>
-        <ambientLight intensity={0.5} />
-        <pointLight position={[5, 5, 5]} intensity={1} />
-        <NeuralNetwork />
-        <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.3} />
-      </Canvas>
-    </div>
-  );
-};
-
-// ============================================================================
-// 4. MAIN INTEGRATED PAGE (DEFAULT EXPORT)
-// ============================================================================
-export default function App() {
+export default function ModernNEETrixApp() {
+  const [activeTab, setActiveTab] = useState<'home' | 'activeRecall' | 'youtube' | 'editing' | 'settings'>('home');
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -454,72 +372,184 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-12 selection:bg-indigo-500 selection:text-white">
+      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl shadow-xl backdrop-blur-md">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl shadow-2xl backdrop-blur-md">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span className="text-xs font-medium">{toastMessage}</span>
         </div>
       )}
 
-      {/* Header */}
-      <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      {/* Modern Floating Header Bar */}
+      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-xl sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-indigo-600 text-white">
-              <Sparkles className="w-5 h-5" />
+            <div className="p-2 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-500/20">
+              <Zap className="w-5 h-5" />
             </div>
-            <span className="font-bold text-base text-white">Quantum Portal</span>
+            <div>
+              <span className="font-bold text-lg tracking-tight text-white block leading-none">NEETrix</span>
+              <span className="text-[10px] text-indigo-400 font-mono">Next-Gen Prep Portal</span>
+            </div>
           </div>
+
+          {/* Nav Tabs */}
+          <nav className="hidden md:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
+            {[
+              { id: 'home', label: 'Dashboard', icon: BarChart3 },
+              { id: 'activeRecall', label: 'Active Recall', icon: Brain },
+              { id: 'youtube', label: 'YouTube Lectures', icon: Youtube },
+              { id: 'editing', label: 'Editor', icon: Edit3 },
+              { id: 'settings', label: 'Settings', icon: Settings },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                  activeTab === tab.id
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <tab.icon className="w-3.5 h-3.5" />
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+
           <button
             onClick={() => setIsPasswordModalOpen(true)}
-            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium flex items-center gap-2 shadow-lg shadow-indigo-600/20 transition-all cursor-pointer"
+            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-medium flex items-center gap-2 transition-all cursor-pointer"
           >
-            <KeyRound className="w-3.5 h-3.5" />
-            <span>Change Password</span>
+            <KeyRound className="w-3.5 h-3.5 text-indigo-400" />
+            <span className="hidden sm:inline">Password</span>
           </button>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Settings Overview Section */}
-        <section className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-slate-800 text-indigo-400">
-                <SettingsIcon className="w-5 h-5" />
+      {/* Main Body */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Banner Section */}
+        <section className="relative overflow-hidden bg-gradient-to-r from-indigo-950 via-slate-900 to-slate-900 border border-indigo-500/20 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-2xl">
+          <div className="space-y-2 max-w-2xl relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-medium border border-indigo-500/20">
+              <Flame className="w-3.5 h-3.5 text-amber-400" />
+              12-Day Study Streak Active
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              NEET Preparation Dashboard
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              3D interactive visualization, live Pomodoro focus timer, active recall cards, and account controls.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setIsPasswordModalOpen(true)}
+            className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium shadow-lg shadow-indigo-600/20 transition-all flex items-center gap-2 shrink-0 cursor-pointer relative z-10"
+          >
+            <Shield className="w-4 h-4" />
+            <span>Manage Security</span>
+          </button>
+        </section>
+
+        {/* Dynamic View Sections */}
+        {activeTab === 'home' && (
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* 3D Atom Simulator Card */}
+              <div className="lg:col-span-2 bg-slate-900/60 border border-slate-800 rounded-3xl p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-indigo-400" /> 3D Atomic Structure Visualizer
+                  </h3>
+                  <span className="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+                    WebGL Render
+                  </span>
+                </div>
+                <div className="w-full h-64 bg-slate-950/80 rounded-2xl border border-slate-800 overflow-hidden relative">
+                  <Canvas camera={{ position: [0, 0, 4.5] }}>
+                    <ambientLight intensity={0.5} />
+                    <pointLight position={[10, 10, 10]} />
+                    <Float speed={2}>
+                      <AtomModel />
+                    </Float>
+                    <OrbitControls enableZoom={false} />
+                  </Canvas>
+                </div>
               </div>
+
+              {/* Pomodoro Timer Feature */}
+              <div className="space-y-6">
+                <PomodoroTimer />
+                <FlashcardDeck />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'activeRecall' && (
+          <div className="max-w-xl mx-auto space-y-6">
+            <FlashcardDeck />
+          </div>
+        )}
+
+        {activeTab === 'youtube' && (
+          <div className="p-8 bg-slate-900/60 border border-slate-800 rounded-3xl text-center space-y-4">
+            <Youtube className="w-12 h-12 text-rose-500 mx-auto" />
+            <h2 className="text-xl font-bold text-white">Curated NEET Video Lectures</h2>
+            <p className="text-xs text-slate-400 max-w-md mx-auto">
+              High-yield Physics, Chemistry, and Biology lectures tailored for NEET revision.
+            </p>
+          </div>
+        )}
+
+        {activeTab === 'editing' && (
+          <div className="p-8 bg-slate-900/60 border border-slate-800 rounded-3xl text-center space-y-4">
+            <Edit3 className="w-12 h-12 text-cyan-400 mx-auto" />
+            <h2 className="text-xl font-bold text-white">Question & Note Editor</h2>
+            <p className="text-xs text-slate-400 max-w-md mx-auto">
+              Create custom flashcards and study modules for NEETrix.
+            </p>
+          </div>
+        )}
+
+        {/* Security Settings Section */}
+        <section className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div className="flex items-center gap-3">
+              <Settings className="w-5 h-5 text-indigo-400" />
               <div>
-                <h2 className="text-lg font-semibold text-white">Account Settings</h2>
-                <p className="text-xs text-slate-400">Manage security options & system access</p>
+                <h2 className="text-base font-semibold text-white">Account Settings</h2>
+                <p className="text-xs text-slate-400">Security & Credentials Management</p>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Shield className="w-4 h-4 text-indigo-400" />
                 <div>
-                  <p className="text-xs font-medium text-slate-200">Security Credentials</p>
-                  <p className="text-[11px] text-slate-400">Password status: Active</p>
+                  <p className="text-xs font-medium text-slate-200">Password Control</p>
+                  <p className="text-[11px] text-slate-400">Status: Secured</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsPasswordModalOpen(true)}
-                className="text-xs text-indigo-400 hover:text-indigo-300 font-medium underline"
+                className="text-xs text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer"
               >
-                Edit
+                Change
               </button>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <User className="w-4 h-4 text-cyan-400" />
                 <div>
-                  <p className="text-xs font-medium text-slate-200">Profile Identity</p>
-                  <p className="text-[11px] text-slate-400">Research Member</p>
+                  <p className="text-xs font-medium text-slate-200">User Profile</p>
+                  <p className="text-[11px] text-slate-400">Database connected</p>
                 </div>
               </div>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -527,47 +557,23 @@ export default function App() {
               </span>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Bell className="w-4 h-4 text-amber-400" />
+                <Layers className="w-4 h-4 text-amber-400" />
                 <div>
-                  <p className="text-xs font-medium text-slate-200">Notifications</p>
-                  <p className="text-[11px] text-slate-400">Alerts active</p>
+                  <p className="text-xs font-medium text-slate-200">System Modules</p>
+                  <p className="text-[11px] text-slate-400">Active Recall & Timer</p>
                 </div>
               </div>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                On
+                Ready
               </span>
             </div>
           </div>
         </section>
-
-        {/* 3D Visualizations Grid */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5 text-indigo-400">
-                <Sparkles className="w-4 h-4" />
-                <h3 className="text-sm font-semibold text-slate-200">3D Atomic Structure</h3>
-              </div>
-              <span className="text-[10px] text-slate-400 font-mono">Interactive</span>
-            </div>
-            <Atom3DVisualization />
-          </div>
-
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5 text-cyan-400">
-                <Activity className="w-4 h-4" />
-                <h3 className="text-sm font-semibold text-slate-200">3D Neural Network</h3>
-              </div>
-              <span className="text-[10px] text-slate-400 font-mono">Interactive</span>
-            </div>
-            <NervousSystem3DVisualization />
-          </div>
-        </section>
       </main>
 
+      {/* Password Modal */}
       <ChangePasswordModal
         isOpen={isPasswordModalOpen}
         onClose={() => setIsPasswordModalOpen(false)}
