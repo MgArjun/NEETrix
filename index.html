@@ -2164,5 +2164,183 @@ __x.getSettings = getSettings;
 
 __r("app");
 </script>
+  <script>
+/* ZNEETRIX lecture-player fix. Paste this whole block just before </body>, after the last </script>. */
+if (typeof __m !== "undefined") {
+(function () {
+  var st = document.createElement("style"); st.textContent = "/* player */\nbody.pl-on{overflow:hidden}\n.pl{position:fixed;inset:0;z-index:70;background:#060304;display:flex;flex-direction:column;overflow:auto;animation:fade .25s}\n.pl-top{display:flex;align-items:center;gap:12px;padding:calc(var(--sat) + 10px) 12px 10px}\n.pl-ti{min-width:0}.pl-ti b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pl-ti span{font-size:12px;color:var(--muted)}\n.pl-stage{position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden;flex-shrink:0}\n.pl-stage iframe,.pl-stage #ytbox{position:absolute;inset:0;width:100%;height:100%;border:0}\n.pl-msg{position:absolute;inset:0;z-index:7;display:grid;place-items:center;text-align:center;padding:24px;background:rgba(6,3,4,.92);font-weight:600}\n.pl-msg p{margin-bottom:14px;line-height:1.6}\n.pl-info{padding:16px;max-width:760px;width:100%;margin:0 auto}.pl-info .muted{margin:12px 0;line-height:1.6}\n.pl-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.pl-tools .btn{padding:12px 6px}\n.pl-exit{display:none}\n@media(min-width:860px){.pl-stage{max-width:1000px;margin:0 auto;border-radius:18px}}\n\n/* landscape mode */\n.pl.land{overflow:hidden}\n.pl.land .pl-top,.pl.land .pl-info{display:none}\n.pl.land .pl-stage{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;aspect-ratio:auto;max-width:none;margin:0;border-radius:0;z-index:2}\n.pl.land .pl-exit{display:block;position:absolute;top:calc(var(--sat) + 8px);left:50%;transform:translateX(-50%);z-index:8;padding:6px 14px;border-radius:99px;background:rgba(16,8,11,.75);border:1px solid var(--glass-b);color:#fff;font-size:12px;font-weight:700;opacity:.85}\n/* phones without a fullscreen API: rotate the video by CSS */\n.pl.land.rot .pl-stage{inset:auto;top:0;left:0;right:auto;bottom:auto;width:100vh;width:100dvh;height:100vw;transform-origin:0 0;transform:translateX(100vw) rotate(90deg)}\n\n\n.pl-stage{touch-action:auto;-webkit-user-select:auto;user-select:auto}\n"; document.head.appendChild(st);
+  var mt = document.createElement("meta"); mt.name = "referrer"; mt.content = "strict-origin-when-cross-origin"; document.head.appendChild(mt);
+})();
+__m["player"] = function (__x) {
+// Lecture player: YouTube's own controls (so play/pause/seek always work, even on iOS),
+// plus our own tools row, resume/progress saving, next/prev and a Landscape mode.
+const { api } = __r("api");
+const { E, toast, clock, ic } = __r("ui3");
+
+let ytReady = null;
+function loadYT() {
+  if (window.YT && window.YT.Player) return Promise.resolve();
+  if (ytReady) return ytReady;
+  ytReady = new Promise((res, rej) => {
+    const t = setTimeout(() => { ytReady = null; rej(new Error("Video player did not load. Check your internet or turn off ad-blocker.")); }, 12000);
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { clearTimeout(t); if (prev) prev(); res(); };
+    if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+      const s = document.createElement("script");
+      s.src = "https://www.youtube.com/iframe_api";
+      s.onerror = () => { clearTimeout(t); ytReady = null; rej(new Error("Could not load the video player. Check your internet.")); };
+      document.head.appendChild(s);
+    }
+  });
+  return ytReady;
+}
+const SPEEDS = [0.5, 1, 1.25, 1.5, 2];
+
+// opts: { list, index, ctx, startAt, onClose }
+async function openPlayer(opts) {
+  const { list, ctx } = opts, uid = ctx.user.id;
+  let idx = opts.index, video = list[idx], player = null, tick = null, lastRemote = 0, lastSaved = -1;
+  let speed = +ctx.settings.speed || 1, ended = false, destroyed = false, rateApplied = false;
+  let landscape = false, fsFallback = false;
+
+  const root = document.createElement("div");
+  root.className = "pl"; document.body.classList.add("pl-on");
+  root.innerHTML = `<div class="pl-top"><button class="ib" data-p="close" aria-label="Close">${ic("back")}</button><div class="pl-ti"><b id="plt"></b><span id="pls"></span></div></div>
+    <div class="pl-stage" id="stage"><div id="ytbox"></div><div class="pl-msg" id="msg" hidden></div><button class="pl-exit" data-p="land">✕ Exit landscape</button></div>
+    <div class="pl-info">
+      <div class="pl-tools"><button class="btn ghost" data-p="b10">−10s</button><button class="btn ghost" data-p="f10">+10s</button><button class="btn ghost" data-p="speed" id="spd">1x</button><button class="btn ghost" data-p="land">⟳ Landscape</button></div>
+      <div class="brow"><button class="btn ghost" data-p="prev">‹ Previous</button><button class="btn" data-p="next">Next lecture ›</button></div>
+      <div class="muted">Tip: use the YouTube controls on the video. Tap “Landscape” for a big full-screen view.</div>
+    </div>`;
+  document.body.appendChild(root);
+  const q = (s) => root.querySelector(s);
+
+  const state = () => { try { return player.getPlayerState(); } catch (e) { return -1; } };
+  const dur = () => { try { return player.getDuration() || 0; } catch (e) { return 0; } };
+  const pos = () => { try { return player.getCurrentTime() || 0; } catch (e) { return 0; } };
+  const setTitle = () => { q("#plt").textContent = video.title; q("#pls").textContent = `${idx + 1} of ${list.length}`; q("[data-p=prev]").disabled = idx === 0; q("[data-p=next]").disabled = idx === list.length - 1; };
+  const showMsg = (html) => { const m = q("#msg"); m.innerHTML = html; m.hidden = false; };
+  const failMsg = (t) => showMsg(`<div><p>${E(t)}</p><a class="btn" href="https://www.youtube.com/watch?v=${encodeURIComponent(video.youtube_id)}" target="_blank" rel="noopener">Open on YouTube</a></div>`);
+
+  function save(force) {
+    if (!player) return;
+    const p = pos(), d = dur(); if (!d) return;
+    const completed = ended || p >= d * 0.95;
+    if (!force && Math.abs(p - lastSaved) < 1) return;
+    lastSaved = p;
+    const remote = force || Date.now() - lastRemote > 10000; if (remote) lastRemote = Date.now();
+    api.saveWatch(uid, video.id, { position: completed && ended ? 0 : p, duration: d, completed }, remote);
+  }
+  function loop() {
+    if (!player || destroyed) return;
+    if (state() === 1 && Math.abs(pos() - lastSaved) >= 5) save(false);
+  }
+
+  const onErr = (e) => {
+    const c = e && e.data;
+    failMsg(c === 101 || c === 150 || c === 153 ? "The owner of this video does not allow playing it inside other apps."
+      : c === 100 ? "This video is private or removed." : "This video cannot be played right now.");
+  };
+  function onState(e) {
+    if (e.data === 1 && !rateApplied) { rateApplied = true; try { player.setPlaybackRate(speed); } catch (x) {} }
+    if (e.data === 0) { ended = true; save(true); if (ctx.settings.autoplay && idx < list.length - 1) go(1); }
+    else if (e.data === 2) save(true);
+  }
+
+  async function load(startAt) {
+    ended = false; lastSaved = -1; rateApplied = false; setTitle(); q("#msg").hidden = true;
+    const start = Math.floor(startAt || 0);
+    if (!player) {
+      await loadYT();
+      await new Promise((res, rej) => {
+        const to = setTimeout(() => rej(new Error("The video player is not responding.")), 15000);
+        player = new YT.Player("ytbox", {
+          host: "https://www.youtube-nocookie.com", videoId: video.youtube_id, width: "100%", height: "100%",
+          playerVars: { controls: 1, fs: 1, rel: 0, playsinline: 1, modestbranding: 1, iv_load_policy: 3, autoplay: 1, start, origin: location.origin },
+          events: {
+            onReady: () => { clearTimeout(to); res(); },
+            onStateChange: onState, onError: onErr,
+            onPlaybackRateChange: (e) => { if (rateApplied) { speed = e.data; q("#spd").textContent = speed + "x"; } }
+          }
+        });
+      });
+    } else {
+      player.loadVideoById({ videoId: video.youtube_id, startSeconds: start });
+    }
+    q("#spd").textContent = speed + "x";
+  }
+
+  async function go(dir) {
+    const n = idx + dir; if (n < 0 || n >= list.length) return;
+    save(true); idx = n; video = list[idx];
+    const w = (await api.watchMap(uid))[String(video.id)];
+    try { await load(w && !w.completed ? w.position : 0); } catch (e) { failMsg(e.message); }
+  }
+  const seekBy = (d) => { try { player.seekTo(Math.max(0, Math.min(dur() - 0.5, pos() + d)), true); } catch (e) {} };
+  const cycleSpeed = () => { speed = SPEEDS.find((s) => s > speed) || SPEEDS[0]; try { player.setPlaybackRate(speed); } catch (e) {} q("#spd").textContent = speed + "x"; };
+
+  /* ---------- landscape ---------- */
+  const inFs = () => document.fullscreenElement || document.webkitFullscreenElement;
+  const fitRot = () => root.classList.toggle("rot", landscape && fsFallback && innerHeight > innerWidth);
+  async function toggleLandscape() {
+    landscape = !landscape;
+    root.classList.toggle("land", landscape);
+    if (landscape) {
+      let ok = false;
+      try {
+        const rq = root.requestFullscreen || root.webkitRequestFullscreen;
+        if (rq) { await rq.call(root); ok = true; }
+        if (ok && screen.orientation && screen.orientation.lock) await screen.orientation.lock("landscape").catch(() => {});
+      } catch (e) { ok = false; }
+      fsFallback = !ok; fitRot();   // iPhone: no fullscreen API -> rotate the video by CSS
+    } else {
+      fsFallback = false; root.classList.remove("rot");
+      try { if (inFs()) await (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
+    }
+  }
+  const onFs = () => {
+    if (landscape && !fsFallback && !inFs()) {   // user left fullscreen with a gesture
+      landscape = false; root.classList.remove("land", "rot");
+      try { screen.orientation && screen.orientation.unlock && screen.orientation.unlock(); } catch (e) {}
+    }
+  };
+  document.addEventListener("fullscreenchange", onFs); document.addEventListener("webkitfullscreenchange", onFs);
+  addEventListener("resize", fitRot); addEventListener("orientationchange", fitRot);
+
+  const onVis = () => { if (document.hidden) save(true); };
+  const onHide = () => save(true);
+  document.addEventListener("visibilitychange", onVis); addEventListener("pagehide", onHide);
+
+  function close() {
+    if (destroyed) return; destroyed = true;
+    save(true); clearInterval(tick);
+    document.removeEventListener("fullscreenchange", onFs); document.removeEventListener("webkitfullscreenchange", onFs);
+    document.removeEventListener("visibilitychange", onVis); removeEventListener("pagehide", onHide);
+    removeEventListener("resize", fitRot); removeEventListener("orientationchange", fitRot);
+    try { player.destroy(); } catch (e) {}
+    try { if (inFs()) { const r = (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (r && r.catch) r.catch(() => {}); } } catch (e) {}
+    try { screen.orientation && screen.orientation.unlock && screen.orientation.unlock(); } catch (e) {}
+    root.remove(); document.body.classList.remove("pl-on");
+    if (opts.onClose) opts.onClose();
+  }
+
+  root.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-p]"); if (!b) return;
+    const f = { close, b10: () => seekBy(-10), f10: () => seekBy(10), land: toggleLandscape, prev: () => go(-1), next: () => go(1), speed: cycleSpeed }[b.dataset.p];
+    if (f) f();
+  });
+
+  setTitle();
+  try { await load(opts.startAt || 0); } catch (e) { failMsg(e.message || "Could not start the video."); }
+  tick = setInterval(loop, 1000);
+  return { close };
+}
+
+__x.openPlayer = openPlayer;
+
+};
+
+if (typeof __c !== "undefined") delete __c["player"];
+}
+</script>
 </body>
-</html>
