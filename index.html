@@ -227,40 +227,48 @@ body.cbt-on .nav{display:none}body.cbt-on main{padding:calc(var(--sat) + 10px) 1
 .vb{flex:1;min-width:0}.vb b{display:block;font-size:14.5px;word-break:break-word}.prow{display:flex;align-items:center;gap:10px;padding:14px}.pbody{flex:1;text-align:left;min-width:0}.pbody b{display:block;word-break:break-word}.ib.starred{color:var(--amber);border-color:rgba(251,191,36,.5)}
 
 /* player */
-/* PATCH-VIDEO-V4 */
-/* hidden elements stay hidden: fixes the dark overlay that blocked the video */
+/* PATCH-PLAYER-V5 */
+/* hidden elements stay hidden */
 [hidden]{display:none!important}
 body.pl-on{overflow:hidden}
 .pl{position:fixed;inset:0;z-index:70;background:#060304;display:flex;flex-direction:column;overflow:auto;animation:fade .25s}
-.pl-top{display:flex;align-items:center;gap:12px;padding:calc(var(--sat) + 10px) 12px 10px}.pl-top .pro-btn{margin-left:auto}
+.pl-top{display:flex;align-items:center;gap:12px;padding:calc(var(--sat) + 10px) 12px 10px}
 .pl-ti{min-width:0}.pl-ti b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pl-ti span{font-size:12px;color:var(--muted)}
-.pl-stage{position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden;flex-shrink:0}
-.pl-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.pl-shield,.pl-dim,.pl-hud,.pl-ctl,.pl-exit{display:none}
+.pl-stage{position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden;flex-shrink:0;user-select:none;-webkit-user-select:none}
+.pl-yt,.pl-yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.pl-dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:3}
+.pl-gs{position:absolute;inset:0;z-index:4;touch-action:none}
+.pl.plain .pl-gs,.pl.plain .pl-dim,.pl.plain .pl-ctl,.pl.plain .pl-hud,.pl.plain .pl-db{display:none}
+.pl-hud{position:absolute;top:14px;left:50%;transform:translate(-50%,-10px);z-index:7;display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:20px;color:#fff;font-weight:700;font-size:11.5px;background:rgba(16,8,11,.7);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12);opacity:0;pointer-events:none;transition:opacity .25s,transform .4s var(--ease)}
+.pl-hud.on{opacity:1;transform:translate(-50%,0)}
+.pl-hud b{text-transform:uppercase;letter-spacing:.06em;font-size:10.5px}
+.pl-hud i{width:80px;height:4px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden}
+.pl-hud s{display:block;height:100%;text-decoration:none;background:linear-gradient(90deg,var(--blue),var(--green))}
+.pl-hud em{font-style:normal}
+.pl-db{position:absolute;top:42%;z-index:7;padding:7px 14px;border-radius:18px;color:#fff;font-weight:700;font-size:13px;background:rgba(16,8,11,.7);pointer-events:none;opacity:0}
+.pl-ctl{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .3s;background:linear-gradient(transparent 55%,rgba(0,0,0,.75)),linear-gradient(rgba(0,0,0,.45),transparent 30%)}
+.pl.show .pl-ctl,.pl.paused .pl-ctl{opacity:1}
+.pl.show .pl-ctl>*,.pl.paused .pl-ctl>*{pointer-events:auto}
+.pl-mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:22px}
+.pb2{width:46px;height:46px;border-radius:50%;background:rgba(16,8,11,.6);border:1px solid var(--glass-b);font-weight:800;font-size:13px;color:#fff;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.pb2.big{width:76px;height:76px;background:rgba(16,8,11,.92)}.pb2 svg{width:28px;height:28px;stroke:#fff;fill:#fff;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}.pb2:active{transform:scale(.92)}
+.pl-bot{position:absolute;left:0;right:0;bottom:0;padding:0 12px 10px}
+.pl-row{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;color:#fff}
+.pl-row .ib{width:36px;height:36px;color:#fff;background:rgba(16,8,11,.55)}
+.pl-row .chip{color:#fff;background:rgba(16,8,11,.55);min-width:46px;justify-content:center}
+.pl-seek{position:relative;flex:1;height:26px;display:flex;align-items:center;touch-action:none}.pl-seek::before{content:"";position:absolute;left:0;right:0;height:4px;border-radius:4px;background:rgba(255,255,255,.2)}
+.pl-seek .buf,.pl-seek .pos{position:absolute;left:0;height:4px;border-radius:4px}.pl-seek .buf{background:rgba(255,255,255,.3)}.pl-seek .pos{background:linear-gradient(90deg,var(--blue),var(--green))}.pl-seek .knob{position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;transform:translateX(-50%);box-shadow:0 0 12px rgba(190,45,85,.8)}
 .pl-info{padding:16px;max-width:760px;width:100%;margin:0 auto}
 .pl-info .btn.on{border-color:var(--ok);color:var(--ok)}
 @media(min-width:860px){.pl-stage{max-width:1000px;margin:0 auto;border-radius:18px}}
 
-/* full-screen player */
-.pl.pro{overflow:hidden}
-.pl.pro .pl-top,.pl.pro .pl-info{display:none}
-.pl.pro .pl-stage{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;aspect-ratio:auto;max-width:none;margin:0;border-radius:0;z-index:2;user-select:none;-webkit-user-select:none}
-.pl.pro .pl-exit{display:block;position:absolute;top:calc(var(--sat) + 8px);left:50%;transform:translateX(-50%);z-index:8;padding:6px 14px;border-radius:99px;background:rgba(16,8,11,.75);border:1px solid var(--glass-b);color:#fff;font-size:12px;font-weight:700;opacity:.85}
-.pl.pro .pl-dim{display:block;position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:3}
-.pl.pro .pl-hud{display:block;position:absolute;left:50%;top:14%;transform:translateX(-50%);z-index:6;padding:8px 16px;border-radius:99px;background:rgba(16,8,11,.8);font-weight:800;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none}.pl.pro .pl-hud.on{opacity:1}
-.pl.pro.started .pl-shield{display:block;position:absolute;inset:0;z-index:2;touch-action:none}
-.pl.pro.started .pl-ctl{display:block;position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .3s;background:linear-gradient(transparent 55%,rgba(0,0,0,.75)),linear-gradient(rgba(0,0,0,.5),transparent 30%)}
-.pl.pro.started.paused .pl-ctl{opacity:1;background:rgba(0,0,0,.6)}
-.pl.pro.show .pl-ctl{opacity:1}.pl.pro.started .pl-ctl>*{pointer-events:auto}
-.pl-mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:22px}
-.pb2{width:46px;height:46px;border-radius:50%;background:rgba(16,8,11,.6);border:1px solid var(--glass-b);font-weight:800;font-size:13px;color:#fff;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.pb2.big{width:76px;height:76px;background:rgba(16,8,11,.92)}.pb2 svg{width:28px;height:28px;stroke:#fff;fill:#fff;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}.pb2:active{transform:scale(.92)}
-.pl-bot{position:absolute;left:0;right:0;bottom:0;padding:0 14px 10px}.pl-row{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;color:#fff}.pl-row .sp{flex:1}
-.pl-seek{position:relative;height:26px;display:flex;align-items:center;touch-action:none}.pl-seek::before{content:"";position:absolute;left:0;right:0;height:4px;border-radius:4px;background:rgba(255,255,255,.2)}
-.pl-seek .buf,.pl-seek .pos{position:absolute;left:0;height:4px;border-radius:4px}.pl-seek .buf{background:rgba(255,255,255,.3)}.pl-seek .pos{background:linear-gradient(90deg,var(--blue),var(--green))}.pl-seek .knob{position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;transform:translateX(-50%);box-shadow:0 0 12px rgba(190,45,85,.8)}
-.pl-side{position:absolute;top:18%;bottom:30%;width:6px;border-radius:6px;background:rgba(255,255,255,.18);touch-action:none}.pl-side.l{left:12px}.pl-side.r{right:12px}.pl-side::before{content:"";position:absolute;inset:-14px -16px}
-.pl-side i{position:absolute;left:0;right:0;bottom:0;border-radius:6px;background:linear-gradient(0deg,var(--blue),var(--green))}.pl-side span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;color:#fff;white-space:nowrap}
+/* full screen */
+.pl-stage:fullscreen{width:100vw;height:100vh;max-width:none;margin:0;border-radius:0;aspect-ratio:auto}
+.pl-stage:-webkit-full-screen{width:100vw;height:100vh;max-width:none;margin:0;border-radius:0;aspect-ratio:auto}
+.pl.fsx{overflow:hidden}
+.pl.fsx .pl-top,.pl.fsx .pl-info{display:none}
+.pl.fsx .pl-stage{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;aspect-ratio:auto;max-width:none;margin:0;border-radius:0;z-index:2}
 /* phones without a fullscreen API: rotate the video by CSS */
-.pl.pro.rot .pl-stage{inset:auto;top:0;left:0;right:auto;bottom:auto;width:100vh;width:100dvh;height:100vw;transform-origin:0 0;transform:translateX(100vw) rotate(90deg)}
+.pl.fsx.rot .pl-stage{inset:auto;top:0;left:0;right:auto;bottom:auto;width:100vh;width:100dvh;height:100vw;transform-origin:0 0;transform:translateX(100vw) rotate(90deg)}
 
 /* PDF reader */
 .rd{position:fixed;inset:0;z-index:70;background:#080406;display:flex;flex-direction:column;animation:fade .25s}
@@ -685,12 +693,13 @@ __x.api3 = api3;
 
 };
 
-/* PATCH-VIDEO-V4 */
+/* PATCH-PLAYER-V5 */
 __m["player"] = function (__x) {
-// Lecture player. Normal view = plain YouTube embed (all YouTube features work).
-// The expand icon (top right) opens our own full-screen player that controls the same video.
+// Lecture player. The video is a YouTube embed with our own controls on top:
+// tap = controls, double tap = -10 / +10 s, swipe up/down = volume (right) / brightness (left),
+// swipe sideways = seek, hold = 2x, speed button, full screen.
 const { api } = __r("api");
-const { E, ic, toast, clock } = __r("ui3");
+const { ic, toast, clock } = __r("ui3");
 
 let ytReady = null;
 function loadYT() {
@@ -710,44 +719,55 @@ function loadYT() {
 }
 const SPEEDS = [0.5, 1, 1.25, 1.5, 2];
 const I = {
-  expand: '<svg class="ic" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
   play: '<svg viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></svg>',
-  pause: '<svg viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></svg>'
+  pause: '<svg viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></svg>',
+  full: '<svg class="ic" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+  fullx: '<svg class="ic" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>'
 };
+const embed = (v, at) => "https://www.youtube.com/embed/" + encodeURIComponent(v.youtube_id) + "?playsinline=1&rel=0&autoplay=1&origin=" + encodeURIComponent(location.origin) + (at > 5 ? "&start=" + Math.floor(at) : "");
 
 // opts: { list, index, ctx, startAt, onClose }
 async function openPlayer(opts) {
   const { list, ctx } = opts, uid = ctx.user.id;
   let idx = opts.index, video = list[idx], player = null, tick = null, hideT = null, lastRemote = 0, lastSaved = -1;
-  let speed = +ctx.settings.speed || 1, vol = 100, bright = 1, ended = false, destroyed = false, rateApplied = false, fast = false, pro = false, fsFallback = false, watched = false;
-  const embed = (v, at) => "https://www.youtube.com/embed/" + encodeURIComponent(v.youtube_id) + "?enablejsapi=1&playsinline=1&rel=0&autoplay=1&origin=" + encodeURIComponent(location.origin) + (at > 5 ? "&start=" + Math.floor(at) : "");
+  let speed = +ctx.settings.speed || 1, vol = 100, bright = 1, ended = false, destroyed = false, rateApplied = false, fast = false;
+  let ready = false, plain = false, seeking = false, fsOn = false, fsFallback = false, watched = false, firstVid = null, firstAt = opts.startAt || 0;
 
   const root = document.createElement("div");
-  root.className = "pl"; document.body.classList.add("pl-on");
-  root.innerHTML = `<div class="pl-top"><button class="ib" data-p="close" aria-label="Close">${ic("back")}</button><div class="pl-ti"><b id="plt"></b><span id="pls"></span></div><button class="ib pro-btn" data-p="pro" aria-label="Full-screen player">${I.expand}</button></div>
-    <div class="pl-stage" id="stage"><iframe id="yt" title="Lecture video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-      <div class="pl-shield" id="shield"></div><div class="pl-dim" id="dim"></div><div class="pl-hud" id="hud"></div>
+  root.className = "pl paused"; document.body.classList.add("pl-on");
+  root.innerHTML = `<div class="pl-top"><button class="ib" data-p="close" aria-label="Close">${ic("back")}</button><div class="pl-ti"><b id="plt"></b><span id="pls"></span></div></div>
+    <div class="pl-stage" id="stage"><div class="pl-yt" id="ytw"><div id="yt"></div></div><div class="pl-dim" id="dim"></div><div class="pl-gs" id="gs"></div><div class="pl-hud" id="hud"></div><div class="pl-db" id="db"></div>
       <div class="pl-ctl" id="ctl">
-        <div class="pl-side l" id="bri"><i></i><span>Bright</span></div><div class="pl-side r" id="vol"><i></i><span>Vol</span></div>
         <div class="pl-mid"><button class="pb2" data-p="b10" aria-label="Back 10 seconds">−10</button><button class="pb2 big" data-p="play" id="pp" aria-label="Play or pause"></button><button class="pb2" data-p="f10" aria-label="Forward 10 seconds">+10</button></div>
-        <div class="pl-bot"><div class="pl-seek" id="seek"><div class="buf" id="buf"></div><div class="pos" id="pos"></div><div class="knob" id="knob"></div></div>
-          <div class="pl-row"><span id="tm">0:00 / 0:00</span><span class="sp"></span><button class="chip" data-p="speed" id="spd">1x</button></div></div>
-      </div>
-      <button class="pl-exit" data-p="pro">✕ Exit full screen</button></div>
+        <div class="pl-bot"><div class="pl-row"><span id="tm">0:00</span><div class="pl-seek" id="seek"><div class="buf" id="buf"></div><div class="pos" id="pos"></div><div class="knob" id="knob"></div></div><span id="td">0:00</span><button class="chip" data-p="speed" id="spd">1x</button><button class="ib" data-p="fs" id="fsb" aria-label="Full screen"></button></div></div>
+      </div></div>
     <div class="pl-info"><div class="brow"><button class="btn ghost" data-p="prev">‹ Previous</button><button class="btn" data-p="next">Next lecture ›</button></div>
       <button class="btn ghost w" data-p="done" id="wd" style="margin-top:10px">Mark watched</button></div>`;
   document.body.appendChild(root);
   const q = (s) => root.querySelector(s);
-  const stage = q("#stage"), hud = q("#hud");
+  const stage = q("#stage"), hud = q("#hud"), gs = q("#gs"), dim = q("#dim"), dbEl = q("#db");
 
   const state = () => { try { return player.getPlayerState(); } catch (e) { return -1; } };
   const dur = () => { try { return player.getDuration() || 0; } catch (e) { return 0; } };
   const pos = () => { try { return player.getCurrentTime() || 0; } catch (e) { return 0; } };
-  const showHud = (t) => { hud.textContent = t; hud.classList.add("on"); clearTimeout(showHud.t); showHud.t = setTimeout(() => hud.classList.remove("on"), 900); };
+  const showHud = (label, val, txt) => {
+    hud.innerHTML = `<b>${label}</b>${val == null ? "" : `<i><s style="width:${Math.round(val * 100)}%"></s></i>`}<em>${txt || ""}</em>`;
+    hud.classList.add("on"); clearTimeout(showHud.t); showHud.t = setTimeout(() => hud.classList.remove("on"), 900);
+  };
+  const flash = (d) => {
+    dbEl.textContent = d < 0 ? "‹‹  10 s" : "10 s  ››";
+    dbEl.style.left = d < 0 ? "14%" : "auto"; dbEl.style.right = d > 0 ? "14%" : "auto";
+    dbEl.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, offset: 0.25 }, { opacity: 0, transform: "translateY(-6px)" }], { duration: 650 });
+  };
   const paintPlay = () => { const on = state() === 1; q("#pp").innerHTML = on ? I.pause : I.play; root.classList.toggle("paused", !on); };
-  const poke = () => { root.classList.add("show"); clearTimeout(hideT); if (state() === 1) hideT = setTimeout(() => root.classList.remove("show"), 3200); };
+  const poke = () => { root.classList.add("show"); clearTimeout(hideT); if (state() === 1) hideT = setTimeout(() => root.classList.remove("show"), 2800); };
+  const toggleCtl = () => { root.classList.contains("show") && state() === 1 ? root.classList.remove("show") : poke(); };
   const paintWatched = () => { const b = q("#wd"); b.textContent = watched ? "✓ Watched" : "Mark watched"; b.classList.toggle("on", watched); };
   const setSpeed = (v) => { speed = v; try { player.setPlaybackRate(v); } catch (e) {} q("#spd").textContent = v + "x"; };
+  const setBri = (v) => { bright = Math.max(0.35, Math.min(1.15, v)); dim.style.opacity = String(Math.max(0, 1 - bright) * 0.85); };
+  const setVol = (v) => { vol = Math.max(0, Math.min(100, Math.round(v))); try { player.setVolume(vol); vol ? player.unMute() : player.mute(); } catch (e) {} };
+  const seekTo = (s) => { const d = dur(); if (!d) return; try { player.seekTo(Math.max(0, Math.min(d - 0.5, s)), true); } catch (e) {} };
+  const toggle = () => { if (!ready) return; try { state() === 1 ? player.pauseVideo() : player.playVideo(); } catch (e) {} };
 
   function save(force) {
     if (!player) return;
@@ -760,45 +780,56 @@ async function openPlayer(opts) {
     api.saveWatch(uid, video.id, { position: completed && ended ? 0 : p, duration: d, completed: watched }, remote);
   }
   function loop() {
-    if (!player || destroyed) return;
+    if (!ready || destroyed) return;
     const p = pos(), d = dur();
-    if (pro) {
-      q("#tm").textContent = `${clock(p)} / ${clock(d)}`;
+    if (!seeking) {
+      q("#tm").textContent = clock(p); q("#td").textContent = clock(d);
       const pct = d ? (p / d) * 100 : 0; q("#pos").style.width = pct + "%"; q("#knob").style.left = pct + "%";
-      try { q("#buf").style.width = player.getVideoLoadedFraction() * 100 + "%"; } catch (e) {}
     }
+    try { q("#buf").style.width = player.getVideoLoadedFraction() * 100 + "%"; } catch (e) {}
     if (state() === 1 && Math.abs(p - lastSaved) >= 5) save(false);
   }
 
   function onState(e) {
-    if (e.data === 1) { root.classList.add("started"); if (!rateApplied) { rateApplied = true; setSpeed(speed); } }
-    paintPlay(); if (pro) poke();
+    if (e.data === 1) { ended = false; if (!rateApplied) { rateApplied = true; setSpeed(speed); } }
+    paintPlay(); poke();
     if (e.data === 0) { ended = true; save(true); if (ctx.settings.autoplay && idx < list.length - 1) go(1); }
     else if (e.data === 2) save(true);
+  }
+  function fallback() {
+    player = null; ready = false; plain = true; root.classList.add("plain"); root.classList.remove("show");
+    const f = document.createElement("iframe");
+    f.id = "yt"; f.title = "Lecture video"; f.src = embed(video, firstAt); f.referrerPolicy = "strict-origin-when-cross-origin"; f.setAttribute("allowfullscreen", "");
+    f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen";
+    q("#ytw").innerHTML = ""; q("#ytw").appendChild(f);
   }
   async function attach() {
     try {
       await loadYT();
+      if (destroyed) return;
       await new Promise((res, rej) => {
         const to = setTimeout(() => rej(new Error("no api")), 12000);
-        player = new YT.Player("yt", { events: { onReady: () => { clearTimeout(to); res(); }, onStateChange: onState,
-          onPlaybackRateChange: (e) => { if (rateApplied && !fast) { speed = e.data; q("#spd").textContent = speed + "x"; } } } });
+        firstVid = video;
+        player = new YT.Player("yt", { width: "100%", height: "100%", videoId: video.youtube_id,
+          playerVars: { controls: 0, playsinline: 1, rel: 0, modestbranding: 1, fs: 0, disablekb: 1, autoplay: 1, iv_load_policy: 3, start: Math.floor(firstAt), origin: location.origin },
+          events: { onReady: () => { clearTimeout(to); res(); }, onStateChange: onState,
+            onError: () => { if (!ready) { clearTimeout(to); rej(new Error("yt error")); } else toast("This video cannot be played here.", true); } } });
       });
-      sync();
-    } catch (e) { player = null; }
-  }
-  function sync() {
-    const s = state(); if (s === 1 || s === 2) root.classList.add("started");
-    try { vol = player.getVolume(); } catch (e) {}
-    paintPlay(); paintVol(); paintBri(); q("#spd").textContent = speed + "x";
+      if (destroyed) return;
+      ready = true;
+      if (firstVid !== video) player.loadVideoById({ videoId: video.youtube_id, startSeconds: Math.floor(firstAt) });
+      try { vol = player.getVolume(); } catch (e) {}
+      paintPlay(); q("#spd").textContent = speed + "x";
+    } catch (e) { if (!destroyed) fallback(); }
   }
 
   function show(at) {
-    ended = false; lastSaved = -1; rateApplied = false; watched = false; root.classList.remove("started"); paintWatched();
+    ended = false; lastSaved = -1; rateApplied = false; watched = false; paintWatched();
     q("#plt").textContent = video.title; q("#pls").textContent = `${idx + 1} of ${list.length}`;
     q("[data-p=prev]").disabled = idx === 0; q("[data-p=next]").disabled = idx === list.length - 1;
-    if (player && player.loadVideoById) player.loadVideoById({ videoId: video.youtube_id, startSeconds: Math.floor(at || 0) });
-    else q("#yt").src = embed(video, at);
+    if (ready) player.loadVideoById({ videoId: video.youtube_id, startSeconds: Math.floor(at || 0) });
+    else if (plain) q("#yt").src = embed(video, at);
+    else firstAt = at || 0;
     const mine = video;
     api.watchMap(uid).then((m) => { const w = m[String(mine.id)]; if (!destroyed && mine === video && w && w.completed) { watched = true; paintWatched(); } }).catch(() => {});
   }
@@ -812,89 +843,99 @@ async function openPlayer(opts) {
     watched = !watched; paintWatched();
     try { await api.saveWatch(uid, video.id, { position: 0, duration: dur(), completed: watched }); } catch (e) {}
   }
-  const seekTo = (s) => { try { player.seekTo(Math.max(0, Math.min(dur() - 0.5, s)), true); } catch (e) {} };
-  const toggle = () => { try { state() === 1 ? player.pauseVideo() : player.playVideo(); } catch (e) {} };
 
-  /* ---------- full-screen "pro" player ---------- */
+  /* ---------- full screen ---------- */
   const inFs = () => document.fullscreenElement || document.webkitFullscreenElement;
-  const fitRot = () => root.classList.toggle("rot", pro && fsFallback && innerHeight > innerWidth);
-  async function setPro(on) {
-    if (on === pro) return;
-    if (on && !player) { await attach(); if (!player) return toast("Full-screen player could not start. Check internet or ad-blocker.", true); }
-    pro = on; root.classList.toggle("pro", on);
+  const paintFs = () => { q("#fsb").innerHTML = fsOn ? I.fullx : I.full; };
+  const fitRot = () => root.classList.toggle("rot", fsOn && fsFallback && innerHeight > innerWidth);
+  async function setFs(on) {
+    if (on === fsOn) return;
     if (on) {
-      sync(); poke();
       let ok = false;
       try {
-        const rq = root.requestFullscreen || root.webkitRequestFullscreen;
-        if (rq) { await rq.call(root); ok = true; }
+        const rq = stage.requestFullscreen || stage.webkitRequestFullscreen;
+        if (rq) { await rq.call(stage); ok = true; }
         if (ok && screen.orientation && screen.orientation.lock) await screen.orientation.lock("landscape").catch(() => {});
       } catch (e) { ok = false; }
-      fsFallback = !ok; fitRot();   // iPhone: no fullscreen API -> rotate by CSS
+      fsOn = true; fsFallback = !ok; root.classList.toggle("fsx", fsFallback);
     } else {
-      fsFallback = false; root.classList.remove("rot", "show");
+      fsOn = false; fsFallback = false; root.classList.remove("fsx", "rot");
       try { if (inFs()) await (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
     }
+    paintFs(); fitRot();
   }
-  const onFs = () => { if (pro && !fsFallback && !inFs()) setPro(false); };
+  const onFs = () => {
+    if (fsOn && !fsFallback && !inFs()) { fsOn = false; try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {} paintFs(); }
+  };
   document.addEventListener("fullscreenchange", onFs); document.addEventListener("webkitfullscreenchange", onFs);
   addEventListener("resize", fitRot); addEventListener("orientationchange", fitRot);
 
-  // vertical sliders (volume right, brightness left)
-  const side = (el, get, set) => {
-    const paint = () => (el.firstElementChild.style.height = get() * 100 + "%"); paint();
-    let on = false; const move = (e) => { const r = el.getBoundingClientRect(); set(Math.max(0, Math.min(1, 1 - (e.clientY - r.top) / r.height))); paint(); };
-    el.addEventListener("pointerdown", (e) => { on = true; el.setPointerCapture(e.pointerId); move(e); e.stopPropagation(); });
-    el.addEventListener("pointermove", (e) => { if (on) { move(e); poke(); } });
-    el.addEventListener("pointerup", () => (on = false));
-    return paint;
+  /* ---------- seek bar ---------- */
+  const seek = q("#seek");
+  const seekMove = (e) => {
+    const r = seek.getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)), d = dur();
+    if (!d) return;
+    seekTo(f * d); q("#pos").style.width = f * 100 + "%"; q("#knob").style.left = f * 100 + "%"; q("#tm").textContent = clock(f * d);
   };
-  const dim = q("#dim"), setBri = (v) => { bright = Math.max(0.15, v); dim.style.opacity = 1 - bright; };
-  const setVol = (v) => { vol = Math.round(v * 100); try { player.setVolume(vol); vol ? player.unMute() : player.mute(); } catch (e) {} };
-  const paintBri = side(q("#bri"), () => bright, setBri), paintVol = side(q("#vol"), () => vol / 100, setVol);
-
-  // seek bar
-  const seek = q("#seek"); let seeking = false;
-  const seekMove = (e) => { const r = seek.getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); seekTo(f * dur()); q("#pos").style.width = f * 100 + "%"; q("#knob").style.left = f * 100 + "%"; };
-  seek.addEventListener("pointerdown", (e) => { seeking = true; seek.setPointerCapture(e.pointerId); seekMove(e); e.stopPropagation(); });
+  seek.addEventListener("pointerdown", (e) => { seeking = true; try { seek.setPointerCapture(e.pointerId); } catch (x) {} seekMove(e); });
   seek.addEventListener("pointermove", (e) => { if (seeking) { seekMove(e); poke(); } });
   seek.addEventListener("pointerup", () => (seeking = false));
+  seek.addEventListener("pointercancel", () => (seeking = false));
 
-  // gestures: tap = controls, double tap sides = +/-10s, hold = 2x, swipe up/down = volume (right) / brightness (left)
-  const shield = q("#shield"); let lastTap = 0, lp = null, sx = 0, sy = 0, sv = 0, sb = 0, swiping = false, moved = false;
-  shield.addEventListener("pointerdown", (e) => {
-    sx = e.clientX; sy = e.clientY; moved = false; swiping = false; sv = vol; sb = bright;
-    lp = setTimeout(() => { if (!moved && state() === 1) { fast = true; try { player.setPlaybackRate(2); } catch (x) {} showHud("2x"); } }, 500);
+  /* ---------- gestures: tap, double tap, hold = 2x, swipe up/down = volume / brightness, swipe sideways = seek ---------- */
+  let st = null, lp = null, lastTap = 0, tapX = 0;
+  gs.addEventListener("pointerdown", (e) => {
+    if (!ready) return;
+    const r = gs.getBoundingClientRect();
+    st = { x: e.clientX, y: e.clientY, w: r.width, h: r.height, left: e.clientX < r.left + r.width / 2, v0: vol, b0: bright, t0: pos(), d: dur(), mode: 0, tgt: 0 };
+    try { gs.setPointerCapture(e.pointerId); } catch (x) {}
+    lp = setTimeout(() => { if (st && !st.mode && state() === 1) { fast = true; try { player.setPlaybackRate(2); } catch (x) {} showHud("Speed", null, "2x"); } }, 500);
   });
-  shield.addEventListener("pointermove", (e) => {
-    const dx = e.clientX - sx, dy = e.clientY - sy;
-    if (Math.abs(dx) > 8 || Math.abs(dy) > 8) { moved = true; clearTimeout(lp); }
-    if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) {
-      swiping = true; const r = shield.getBoundingClientRect(), d = -dy / r.height;
-      if (sx - r.left > r.width / 2) { setVol(Math.max(0, Math.min(1, sv / 100 + d * 1.2))); paintVol(); showHud("Volume " + vol + "%"); }
-      else { setBri(sb + d * 1.2); paintBri(); showHud("Brightness " + Math.round(bright * 100) + "%"); }
+  gs.addEventListener("pointermove", (e) => {
+    if (!st || fast) return;
+    const dx = e.clientX - st.x, dy = e.clientY - st.y;
+    if (Math.abs(dx) > 8 || Math.abs(dy) > 8) clearTimeout(lp);
+    if (!st.mode) {
+      if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) st.mode = "v";
+      else if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) st.mode = "h";
+      else return;
+    }
+    if (st.mode === "v") {
+      const k = -dy / st.h * 1.3;
+      if (st.left) { setBri(st.b0 + k); showHud("Brightness", (bright - 0.35) / 0.8, Math.round(bright * 100) + "%"); }
+      else { setVol(st.v0 + k * 100); showHud("Volume", vol / 100, String(vol)); }
+    } else {
+      st.tgt = Math.max(0, Math.min(st.d || 0, st.t0 + dx / st.w * 90));
+      const df = Math.round(st.tgt - st.t0);
+      showHud(df < 0 ? "Rewind" : "Forward", null, (df > 0 ? "+" : "") + df + " s · " + clock(st.tgt));
     }
   });
-  shield.addEventListener("pointerup", (e) => {
+  const gsUp = (e) => {
     clearTimeout(lp);
+    const s = st; st = null;
+    if (!s) return;
     if (fast) { fast = false; try { player.setPlaybackRate(speed); } catch (x) {} return; }
-    if (moved || swiping) return;
-    const now = Date.now(), r = shield.getBoundingClientRect();
-    if (now - lastTap < 280) { const right = e.clientX - r.left > r.width / 2; seekTo(pos() + (right ? 10 : -10)); showHud(right ? "+10s" : "−10s"); lastTap = 0; poke(); return; }
-    lastTap = now;
-    setTimeout(() => { if (lastTap === now) { root.classList.contains("show") && state() === 1 ? root.classList.remove("show") : poke(); } }, 290);
-  });
-  shield.addEventListener("pointercancel", () => { clearTimeout(lp); if (fast) { fast = false; try { player.setPlaybackRate(speed); } catch (x) {} } });
+    if (e.type !== "pointerup") return;
+    if (s.mode === "h") { seekTo(s.tgt); poke(); return; }
+    if (s.mode) return;
+    const x = (e.clientX - gs.getBoundingClientRect().left) / s.w, now = Date.now();
+    if (now - lastTap < 280 && Math.abs(x - tapX) < 0.25 && (x < 0.35 || x > 0.65)) {
+      const d = x < 0.5 ? -10 : 10; seekTo(pos() + d); lastTap = 0; poke(); flash(d); return;
+    }
+    lastTap = now; tapX = x;
+    setTimeout(() => { if (lastTap === now && !destroyed) toggleCtl(); }, 290);
+  };
+  gs.addEventListener("pointerup", gsUp); gs.addEventListener("pointercancel", gsUp);
 
   function close() {
     if (destroyed) return; destroyed = true;
-    save(true); clearInterval(tick); clearTimeout(hideT);
+    save(true); clearInterval(tick); clearTimeout(hideT); clearTimeout(lp);
     document.removeEventListener("fullscreenchange", onFs); document.removeEventListener("webkitfullscreenchange", onFs);
     document.removeEventListener("visibilitychange", onVis); removeEventListener("pagehide", onHide);
     removeEventListener("resize", fitRot); removeEventListener("orientationchange", fitRot);
     try { player.destroy(); } catch (e) {}
     try { if (inFs()) { const r = (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (r && r.catch) r.catch(() => {}); } } catch (e) {}
-    try { screen.orientation && screen.orientation.unlock && screen.orientation.unlock(); } catch (e) {}
+    try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
     root.remove(); document.body.classList.remove("pl-on");
     if (opts.onClose) opts.onClose();
   }
@@ -904,13 +945,14 @@ async function openPlayer(opts) {
 
   root.addEventListener("click", (e) => {
     const b = e.target.closest("[data-p]"); if (!b) return;
-    const f = { close, pro: () => setPro(!pro), done: toggleWatched, prev: () => go(-1), next: () => go(1), play: toggle,
+    const f = { close, fs: () => setFs(!fsOn), done: toggleWatched, prev: () => go(-1), next: () => go(1), play: toggle,
       b10: () => seekTo(pos() - 10), f10: () => seekTo(pos() + 10), speed: () => setSpeed(SPEEDS.find((s) => s > speed) || SPEEDS[0]) }[b.dataset.p];
-    if (f) { f(); if (pro) poke(); }
+    if (f) { f(); if (!destroyed) poke(); }
   });
 
+  paintFs(); paintPlay();
   show(opts.startAt || 0);
-  tick = setInterval(loop, 500);
+  tick = setInterval(loop, 250);
   attach();
   return { close };
 }
