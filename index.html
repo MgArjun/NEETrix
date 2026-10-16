@@ -237,10 +237,9 @@ body.pl-on{overflow:hidden}
 .pl-stage{position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden;flex-shrink:0;user-select:none;-webkit-user-select:none}
 .pl-yt,.pl-yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 .pl-dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:3}
-/* PATCH-SKIP-FADE-V1 */
-.pl-stage.skip-fade::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.58),transparent 27%,transparent 73%,rgba(0,0,0,.68));opacity:1;animation:skipFadeOut .85s ease-out forwards}
-@keyframes skipFadeOut{0%,35%{opacity:1}100%{opacity:0}}
-
+/* PATCH-REQUESTED-UI-2026 */
+.pl-stage.skip-fade::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 28%,transparent 72%,rgba(0,0,0,.62));animation:znxSkipFade .9s ease-out forwards}@keyframes znxSkipFade{0%,35%{opacity:1}100%{opacity:0}}
+.rd-tools{display:flex;gap:8px;align-items:center;padding:8px 12px;background:#10090d;border-bottom:1px solid #39202a}.rd-tools input{min-width:0;flex:1}.rd-note{width:100%;min-height:72px;resize:vertical;background:#1b1016;color:#fff;border:1px solid #59303c;border-radius:10px;padding:10px;font:inherit}.rd-note-wrap{padding:8px 12px;background:#10090d;border-top:1px solid #39202a}.rd-lock{font-size:12px;color:#e9b8c7}
 .pl-gs{position:absolute;inset:0;z-index:4;touch-action:none}
 .pl.plain .pl-gs,.pl.plain .pl-dim,.pl.plain .pl-ctl,.pl.plain .pl-hud,.pl.plain .pl-db{display:none}
 .pl-hud{position:absolute;top:14px;left:50%;transform:translate(-50%,-10px);z-index:7;display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:20px;color:#fff;font-weight:700;font-size:11.5px;background:rgba(16,8,11,.7);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12);opacity:0;pointer-events:none;transition:opacity .25s,transform .4s var(--ease)}
@@ -278,7 +277,7 @@ body.pl-on{overflow:hidden}
 .rd{position:fixed;inset:0;z-index:70;background:#080406;display:flex;flex-direction:column;animation:fade .25s}
 .rd-top{display:flex;align-items:center;gap:8px;padding:calc(var(--sat) + 8px) 10px 8px;background:rgba(16,8,11,.85);border-bottom:1px solid var(--glass-b)}.rd-ti{flex:1;min-width:0}.rd-ti b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rd-view{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:8px;position:relative;-webkit-overflow-scrolling:touch}.rd-page{margin:auto;background:#fff;border-radius:6px;box-shadow:0 14px 50px rgba(0,0,0,.6);line-height:0;flex-shrink:0}.rd-page canvas{display:block;border-radius:6px}
-.rd-page.in-r{animation:turnR .32s var(--ease)}.rd-page.in-l{animation:turnL .32s var(--ease)}@keyframes turnR{from{opacity:.2;transform:translateX(40px) rotateY(-8deg)}}@keyframes turnL{from{opacity:.2;transform:translateX(-40px) rotateY(8deg)}}
+.rd-view{perspective:1400px;perspective-origin:50% 45%}.rd-page{transform-style:preserve-3d;backface-visibility:hidden;position:relative;overflow:hidden}.rd-page:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(0,0,0,.20),transparent 20%,transparent 78%,rgba(0,0,0,.12));}.rd-page.in-r{transform-origin:left center;animation:turnR .48s cubic-bezier(.2,.75,.25,1)}.rd-page.in-l{transform-origin:right center;animation:turnL .48s cubic-bezier(.2,.75,.25,1)}.rd-page.in-r:after,.rd-page.in-l:after{animation:pageShade .48s ease-out}@keyframes turnR{0%{opacity:.86;transform:rotateY(-18deg) translateX(16px);filter:brightness(.78)}55%{transform:rotateY(5deg) translateX(-2px);filter:brightness(1.03)}100%{opacity:1;transform:rotateY(0);filter:brightness(1)}}@keyframes turnL{0%{opacity:.86;transform:rotateY(18deg) translateX(-16px);filter:brightness(.78)}55%{transform:rotateY(-5deg) translateX(2px);filter:brightness(1.03)}100%{opacity:1;transform:rotateY(0);filter:brightness(1)}}@keyframes pageShade{0%{opacity:.85}100%{opacity:0}}
 .rd-msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:var(--muted)}
 .rd-bot{display:flex;align-items:center;gap:8px;padding:8px 10px calc(var(--sab) + 8px);background:rgba(16,8,11,.9);border-top:1px solid var(--glass-b)}.rd-bot input[type=range]{flex:1;accent-color:var(--blue);min-width:0}.rd-bot span{font-size:12.5px;font-weight:700;min-width:62px;text-align:center}
 .bulk{font-family:ui-monospace,Menlo,monospace;font-size:13px}.fmt{background:rgba(255,255,255,.05);border:1px dashed var(--glass-b);border-radius:12px;padding:10px 12px;font-size:12.5px;color:var(--muted);margin-bottom:10px;white-space:pre-wrap}.bstat{margin-top:10px;font-size:13.5px;line-height:1.7}
@@ -348,6 +347,7 @@ h2.title{font-weight:800;letter-spacing:-.035em;background:linear-gradient(120de
 .uidc:active{transform:scale(.94,.9)}
 
 </style>
+<!-- PATCH-REQUESTED-UI-2026 -->
 </head>
 <body>
 <canvas id="particles" aria-hidden="true"></canvas>
@@ -771,15 +771,7 @@ async function openPlayer(opts) {
   const setBri = (v) => { bright = Math.max(0.35, Math.min(1.15, v)); dim.style.opacity = String(Math.max(0, 1 - bright) * 0.85); };
   const setVol = (v) => { vol = Math.max(0, Math.min(100, Math.round(v))); try { player.setVolume(vol); vol ? player.unMute() : player.mute(); } catch (e) {} };
   let skipFadeT = null;
-const seekTo = (s) => {
-  const d = dur(); if (!d) return;
-  stage.classList.remove("skip-fade");
-  void stage.offsetWidth;
-  stage.classList.add("skip-fade");
-  clearTimeout(skipFadeT);
-  skipFadeT = setTimeout(() => stage.classList.remove("skip-fade"), 900);
-  try { player.seekTo(Math.max(0, Math.min(d - 0.5, s)), true); } catch (e) {}
-};
+  const seekTo = (s) => { const d = dur(); if (!d) return; stage.classList.remove("skip-fade"); void stage.offsetWidth; stage.classList.add("skip-fade"); clearTimeout(skipFadeT); skipFadeT = setTimeout(() => stage.classList.remove("skip-fade"), 950); try { player.seekTo(Math.max(0, Math.min(d - 0.5, s)), true); } catch (e) {} };
   const toggle = () => { if (!ready) return; try { state() === 1 ? player.pauseVideo() : player.playVideo(); } catch (e) {} };
 
   function save(force) {
@@ -1005,10 +997,11 @@ async function chaptersView() {
   nav.c = null;
   const [chs, vids, wm] = await Promise.all([api.allChapters(), api.allVideos(), api.watchMap(ctx.user.id)]);
   const list = chs.filter((x) => String(x.subject_id) === String(nav.s.id));
-  root.innerHTML = `<div class="view"><button class="back" data-b>${ic("back")} Subjects</button><h2 class="title">${E(nav.s.name)}</h2>${list.map((c) => {
+  root.innerHTML = `<div class="view"><button class="back" data-b>${ic("back")} Subjects</button><h2 class="title">${E(nav.s.name)}</h2><input class="field" id="learnChapterSearch" type="search" placeholder="Search chapters…" style="width:100%;margin-bottom:12px">${list.map((c) => {
     const vs = vids.filter((v) => String(v.chapter_id) === String(c.id)), done = vs.filter((v) => wm[String(v.id)]?.completed).length;
     return `<button class="glass card chrow" data-c="${E(c.id)}"><div><b>${E(c.name)}</b><div class="muted">${vs.length} video${vs.length === 1 ? "" : "s"} · ${done} watched</div></div><div class="ring-s" style="--p:${pct(done, vs.length)}"><span>${pct(done, vs.length)}%</span></div></button>`;
   }).join("") || '<div class="glass card empty">No chapters here yet.</div>'}</div>`;
+  root.querySelector("#learnChapterSearch").addEventListener("input", (e) => { const q = e.target.value.trim().toLowerCase(); root.querySelectorAll("[data-c]").forEach((el) => { el.hidden = !el.innerText.toLowerCase().includes(q); }); });
   root.querySelector(".view").onclick = (e) => {
     if (e.target.closest("[data-b]")) return subjectsView();
     const b = e.target.closest("[data-c]"); if (b) { nav.c = list.find((x) => String(x.id) === b.dataset.c); chapterView(); }
@@ -1017,10 +1010,11 @@ async function chaptersView() {
 
 async function chapterView() {
   const [vids, wm] = await Promise.all([api.videos(nav.c.id), api.watchMap(ctx.user.id)]);
-  root.innerHTML = `<div class="view"><button class="back" data-b>${ic("back")} ${E(nav.s.name)}</button><h2 class="title">${E(nav.c.name)}</h2>${vids.map((v, i) => {
+  root.innerHTML = `<div class="view"><button class="back" data-b>${ic("back")} ${E(nav.s.name)}</button><h2 class="title">${E(nav.c.name)}</h2><input class="field" id="learnVideoSearch" type="search" placeholder="Search lectures…" style="width:100%;margin-bottom:12px">${vids.map((v, i) => {
     const w = wm[String(v.id)], st = state(w), p = w?.duration ? pct(w.position, w.duration) : 0;
     return `<button class="glass card vrow" data-i="${i}"><span class="vn">${st === "done" ? ic("check") : i + 1}</span><div class="vb"><b>${E(v.title)}</b><div class="muted sm">${E(nav.s.name)} · ${E(nav.c.name)}</div>${st === "part" ? `<div class="bar thin"><i style="width:${p}%"></i></div>` : ""}</div><span class="badge ${st === "done" ? "mail" : st === "part" ? "guest" : ""}">${st === "done" ? "Watched" : st === "part" ? "Resume " + clock(w.position) : "New"}</span></button>`;
   }).join("") || '<div class="glass card empty">No lectures in this chapter yet.</div>'}</div>`;
+  root.querySelector("#learnVideoSearch").addEventListener("input", (e) => { const q = e.target.value.trim().toLowerCase(); root.querySelectorAll("[data-i]").forEach((el) => { el.hidden = !el.innerText.toLowerCase().includes(q); }); });
   root.querySelector(".view").onclick = (e) => {
     if (e.target.closest("[data-b]")) return chaptersView();
     const b = e.target.closest("[data-i]"); if (!b) return;
@@ -1089,12 +1083,15 @@ async function savedView() {
   wirePdfList(pdfs, bm, () => catView(), () => savedView());
 }
 function pdfRows(pdfs, bm, pm) {
-  return pdfs.map((p, i) => {
+  const rows = pdfs.map((p, i) => {
     const pr = pm[String(p.id)], on = bm.has(String(p.id));
-    return `<div class="glass card prow"><button class="pbody" data-o="${i}"><b>${E(p.title)}</b>${p.description ? `<div class="muted sm">${E(p.description)}</div>` : ""}<div class="muted sm">${pr?.total_pages ? `Page ${pr.last_page} of ${pr.total_pages}` : "Not opened yet"}</div></button><button class="ib sm ${on ? "starred" : ""}" data-m="${i}" aria-label="Bookmark">${on ? "★" : "☆"}</button></div>`;
-  }).join("") || '<div class="glass card empty">No PDFs here yet.</div>';
+    return `<div class="glass card prow" data-pdf-row="${i}" data-search="${E((p.title+" "+(p.description||"")).toLowerCase())}"><button class="pbody" data-o="${i}"><b>${E(p.title)}</b>${p.description ? `<div class="muted sm">${E(p.description)}</div>` : ""}<div class="muted sm">${pr?.total_pages ? `Page ${pr.last_page} of ${pr.total_pages}` : "Not opened yet"}</div></button><button class="ib sm ${on ? "starred" : ""}" data-m="${i}" aria-label="Bookmark">${on ? "★" : "☆"}</button></div>`;
+  }).join("");
+  return `<input class="field" id="pdfListSearch" type="search" placeholder="Search PDFs by title or description…" aria-label="Search PDFs" style="width:100%;margin:0 0 12px"> <div id="pdfRowsWrap">${rows || '<div class="glass card empty">No PDFs here yet.</div>'}</div>`;
 }
 function wirePdfList(pdfs, bm, goBack, refresh) {
+  const search = root.querySelector("#pdfListSearch");
+  if (search) search.addEventListener("input", () => { const term = search.value.trim().toLowerCase(); root.querySelectorAll("[data-pdf-row]").forEach((row) => { row.hidden = !row.dataset.search.includes(term); }); });
   bind(async (e) => {
     if (e.target.closest("[data-b]")) return goBack();
     const o = e.target.closest("[data-o]"), mk = e.target.closest("[data-m]");
@@ -1121,10 +1118,10 @@ function turnSound() {
   if (!ctx.settings.sound) return;
   try {
     ac = ac || new (window.AudioContext || window.webkitAudioContext)();
-    const n = Math.floor(ac.sampleRate * 0.09), buf = ac.createBuffer(1, n, ac.sampleRate), d = buf.getChannelData(0);
-    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3);
+    const n = Math.floor(ac.sampleRate * 0.16), buf = ac.createBuffer(1, n, ac.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2.4);
     const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
-    src.buffer = buf; f.type = "lowpass"; f.frequency.value = 1400; g.gain.value = 0.10;
+    src.buffer = buf; f.type = "lowpass"; f.frequency.setValueAtTime(1800, ac.currentTime); f.frequency.exponentialRampToValueAtTime(500, ac.currentTime + .15); g.gain.setValueAtTime(.0001, ac.currentTime); g.gain.exponentialRampToValueAtTime(.085, ac.currentTime + .018); g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + .16);
     src.connect(f); f.connect(g); g.connect(ac.destination); src.start();
   } catch (e) {}
 }
@@ -1132,13 +1129,19 @@ function turnSound() {
 async function openReader(pdf, c, onClose) {
   ctx = c || ctx; const uid = ctx.user.id;
   const el = document.createElement("div"); el.className = "rd"; document.body.classList.add("pl-on");
-  el.innerHTML = `<div class="rd-top"><button class="ib" data-r="close" aria-label="Close">${ic("back")}</button><div class="rd-ti"><b>${E(pdf.title)}</b></div><button class="ib sm" data-r="snd" aria-label="Page sound" id="snd"></button><button class="ib sm" data-r="bm" aria-label="Bookmark" id="bm"></button><button class="ib sm" data-r="dl" aria-label="Download">${ic("download")}</button></div>
+  el.innerHTML = `<div class="rd-top"><button class="ib" data-r="close" aria-label="Close">${ic("back")}</button><div class="rd-ti"><b>${E(pdf.title)}</b></div><button class="ib sm" data-r="snd" aria-label="Page sound" id="snd"></button><button class="ib sm" data-r="bm" aria-label="Bookmark" id="bm"></button><button class="btn sm" data-r="dl" aria-label="Download PDF">${ic("download")} Download</button></div>
+    <div class="rd-tools"><button class="ib sm" data-r="fit" aria-label="Fit page">Fit</button><button class="ib sm" data-r="lock" aria-label="Lock zoom" id="zl">Zoom lock: Off</button><span class="rd-lock">Page-fit / zoom</span></div>
     <div class="rd-view" id="rv"><div class="rd-page" id="rp"><canvas id="cv"></canvas></div><div class="rd-msg" id="rm">Loading…</div></div>
+    <div class="rd-note-wrap"><textarea id="pdfNote" class="rd-note" placeholder="Private notes for this PDF…"></textarea><div class="muted sm" id="noteStatus">Notes are saved on this device for this account and PDF.</div></div>
     <div class="rd-bot"><button class="ib sm" data-r="zo" aria-label="Zoom out">−</button><button class="ib sm" data-r="prev" aria-label="Previous page">‹</button><input type="range" id="sl" min="1" max="1" value="1"><span id="pg">1 / 1</span><button class="ib sm" data-r="next" aria-label="Next page">›</button><button class="ib sm" data-r="zi" aria-label="Zoom in">+</button></div>`;
   document.body.appendChild(el);
   const q = (s) => el.querySelector(s), view = q("#rv"), page = q("#rp"), cv = q("#cv");
-  let doc = null, n = 1, cur = 1, zoom = 1, token = 0, bmOn = false, closed = false, lastRemote = 0;
-  const paintBtns = () => { q("#snd").textContent = ctx.settings.sound ? "♪" : "×"; q("#bm").textContent = bmOn ? "★" : "☆"; };
+  let doc = null, n = 1, cur = 1, zoom = 1, token = 0, bmOn = false, closed = false, lastRemote = 0, zoomLocked = false;
+  const noteKey = `znx_pdf_note_${uid}_${pdf.id}`;
+  const noteBox = q("#pdfNote");
+  try { noteBox.value = localStorage.getItem(noteKey) || ""; } catch (e) {}
+  noteBox.addEventListener("input", () => { try { localStorage.setItem(noteKey, noteBox.value); q("#noteStatus").textContent = "Note saved on this device."; } catch (e) { q("#noteStatus").textContent = "Browser storage unavailable; copy your note to keep it."; } });
+  const paintBtns = () => { q("#snd").textContent = ctx.settings.sound ? "♪" : "×"; q("#bm").textContent = bmOn ? "★" : "☆"; q("#zl").textContent = "Zoom lock: " + (zoomLocked ? "On" : "Off"); };
   const close = () => { if (closed) return; closed = true; saveProg(true); el.remove(); document.body.classList.remove("pl-on"); try { doc?.destroy(); } catch (e) {} if (onClose) onClose(); };
   function saveProg(force) { if (!doc) return; const remote = force || Date.now() - lastRemote > 8000; if (remote) lastRemote = Date.now(); api.savePdfProg(uid, pdf.id, { last_page: cur, total_pages: n }, remote); }
 
@@ -1158,17 +1161,23 @@ async function openReader(pdf, c, onClose) {
     q("#pg").textContent = `${cur} / ${n}`; q("#sl").value = cur;
   }
   const go = async (to, snd = true) => { to = Math.max(1, Math.min(n, to)); if (to === cur) return; const dir = to > cur ? 1 : -1; cur = to; if (snd) turnSound(); zoom = 1; view.scrollTo(0, 0); await draw(dir); saveProg(false); };
-  const setZoom = async (z) => { zoom = Math.max(1, Math.min(4, z)); await draw(0); };
+  const setZoom = async (z) => { if (zoomLocked && z !== 1) return; zoom = Math.max(1, Math.min(4, z)); await draw(0); };
 
   el.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-r]"); if (!b) return; const a = b.dataset.r;
     try {
       if (a === "close") close();
       else if (a === "prev") go(cur - 1); else if (a === "next") go(cur + 1);
+      else if (a === "fit") { zoomLocked = false; zoom = 1; paintBtns(); await draw(0); }
+      else if (a === "lock") { zoomLocked = !zoomLocked; if (zoomLocked) zoom = 1; paintBtns(); await draw(0); }
       else if (a === "zi") setZoom(zoom + 0.5); else if (a === "zo") setZoom(zoom - 0.5);
       else if (a === "snd") { ctx.settings.sound = !ctx.settings.sound; lsSet("znx_settings", ctx.settings); paintBtns(); toast(ctx.settings.sound ? "Page sound on" : "Page sound off"); }
       else if (a === "bm") { await api.toggleBookmark(uid, pdf.id, bmOn); bmOn = !bmOn; paintBtns(); toast(bmOn ? "Saved" : "Removed from saved"); }
-      else if (a === "dl") { const u = await api.pdfUrl(pdf, true); const l = document.createElement("a"); l.href = u; l.target = "_blank"; l.rel = "noopener"; l.download = (pdf.title || "document") + ".pdf"; document.body.appendChild(l); l.click(); l.remove(); }
+      else if (a === "dl") {
+        const u = await api.pdfUrl(pdf, true);
+        try { const r = await fetch(u); if (!r.ok) throw new Error("Download request failed"); const blob = await r.blob(); const blobUrl = URL.createObjectURL(blob); const l = document.createElement("a"); l.href = blobUrl; l.download = (pdf.title || "document").replace(/[\\/:*?"<>|]+/g, "-") + ".pdf"; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(blobUrl), 1500); toast("PDF download started"); }
+        catch (downloadErr) { const l = document.createElement("a"); l.href = u; l.target = "_blank"; l.rel = "noopener"; l.download = (pdf.title || "document") + ".pdf"; document.body.appendChild(l); l.click(); l.remove(); toast("If it opens in a new tab, use Share → Save to Files"); }
+      }
     } catch (err) { toast(err.message, true); }
   });
   q("#sl").oninput = (e) => { q("#pg").textContent = `${e.target.value} / ${n}`; };
@@ -1653,6 +1662,7 @@ async function vLectures(box) {
           { k: "link", label: "YouTube link", req: true, ph: "https://youtu.be/…", hint: "Watch, youtu.be, shorts, live or embed links all work." }],
         onSubmit: async (x) => {
           const yid = ytId(x.link); if (!yid) throw new Error("That does not look like a YouTube link");
+          if (videos.some((q) => String(q.youtube_id) === String(yid))) throw new Error("This YouTube link already exists.");
           const chapter_id = await resolveChapter(x, chapters);
           await A.ins("videos", { chapter_id, title: x.title, youtube_id: yid, sort_order: nextOrder(videos.filter((q) => same(q.chapter_id, chapter_id))) });
           toast("Lecture added"); load();
@@ -1666,6 +1676,7 @@ async function vLectures(box) {
           ],
         onSubmit: async (x) => {
           const yid = ytId(x.link); if (!yid) throw new Error("That does not look like a YouTube link");
+          if (videos.some((q) => String(q.id) !== String(id) && String(q.youtube_id) === String(yid))) throw new Error("This YouTube link already exists.");
           const chapter_id = await resolveChapter(x, chapters), patch = { title: x.title, youtube_id: yid };
           if (!same(chapter_id, v.chapter_id)) { patch.chapter_id = chapter_id; patch.sort_order = nextOrder(videos.filter((q) => same(q.chapter_id, chapter_id))); }
           await A.upd("videos", id, patch); toast("Lecture updated"); load();
@@ -1707,7 +1718,7 @@ async function vPdfs(box) {
         formModal({ title: "Add PDF", submit: "Save PDF", fields: [
           { k: "category", label: "Category", type: "select", options: CATS, value: f.cat },
           { type: "subchap", subjects, chapters, subject_id: f.s, chapter_id: f.c, allowNew: true, req: true },
-          { k: "title", label: "PDF title", req: true },
+          { k: "title", label: "PDF title (defaults to chapter name)", req: true },
           { k: "description", label: "Description (optional)", type: "textarea", rows: 2 },
           { k: "file", label: "Upload PDF from device", type: "file", accept: "application/pdf" },
           { k: "url", label: "…or paste a direct PDF link", ph: "https://…" }],
@@ -1720,6 +1731,19 @@ async function vPdfs(box) {
           await A.ins("pdfs", { chapter_id, title: x.title, category: x.category, description: x.description || null, file_path, url: x.file ? null : x.url });
           toast("PDF added"); load();
         } });
+        // Default the title to the selected chapter name; keep user edits intact.
+        setTimeout(() => {
+          const modals = document.querySelectorAll(".modal");
+          const modalEl = modals[modals.length - 1];
+          if (!modalEl) return;
+          const titleInput = [...modalEl.querySelectorAll("input")].find((x) => x.previousElementSibling?.textContent?.includes("PDF title"));
+          const chapterSelect = [...modalEl.querySelectorAll(".fg")].find((fg) => fg.querySelector("label")?.textContent?.startsWith("Chapter"))?.querySelector("select");
+          if (!titleInput || !chapterSelect) return;
+          let manual = false;
+          titleInput.addEventListener("input", () => { manual = true; delete titleInput.dataset.autofilled; });
+          const syncTitle = () => { const ch = chapters.find((c) => String(c.id) === chapterSelect.value); if (ch && (!manual || !titleInput.value.trim())) { titleInput.value = ch.name; titleInput.dataset.autofilled = "1"; } };
+          chapterSelect.addEventListener("change", syncTitle); syncTitle();
+        }, 0);
       } else if (b.dataset.act === "edit") {
         const ch = chapters.find((c) => same(c.id, p.chapter_id));
         formModal({ title: "Edit PDF", fields: [
